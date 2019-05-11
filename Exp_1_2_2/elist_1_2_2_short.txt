@@ -1,0 +1,2 @@
+    1     "red_circle"     1 "target (red_circle)"     
+    2    "blue_circle"     2 "non-target (blue_circle)"
