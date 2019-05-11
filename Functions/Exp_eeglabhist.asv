@@ -8,19 +8,13 @@ electrode_location_file = [disk_prefix, ':\\eeglab14_1_2b\\sample_locs\\gGAMMAca
 output_folder = [disk_prefix, ':\EEG_Experiments\EEGLAB_eSports_datasets\'];
 ERPLAB_scripts_folder = [disk_prefix, ':\eeglab14_1_2b\ERPLAB_Scripts_for_eSports\'];
 
-% exp_id = '1_1_2'; target_type = [1]; target_bin = 1; epoch_boundary = [-200.0,  450.0];
-% ar_rm_from_ch = 1; mwpp_thld = 80; tstep_thld = 50; stim_duration_ms = 250;%ms
+exp_id = '1_1_2'; target_type = [1]; target_bin = 1; epoch_boundary = [-200.0,  450.0];
+ar_rm_from_ch = 1; mwpp_thld = 80; tstep_thld = 50; stim_duration_ms = 250;%ms
 
 % exp_id = '1_2_2'; target_type = [1]; target_bin = 1; epoch_boundary = [-200.0,  700.0]; ar_rm_from_ch = 8; mwpp_thld = 80; tstep_thld = 50; stim_duration_ms = 250;%ms 
 
 % exp_id = '2_2_2'; target_type = [8:14]; target_bin = 1; epoch_boundary = [-200.0,  700.0];
 % ar_rm_from_ch = 8; mwpp_thld = 80; tstep_thld = 50; stim_duration_ms = 400;%ms
-
-% exp_id = '2_2_4'; target_type = [8:14]; target_bin = 1; epoch_boundary = [-200.0,  700.0];
-% ar_rm_from_ch = 8; mwpp_thld = 80; tstep_thld = 50; stim_duration_ms = 400;%ms
-
-exp_id = '2_2_5'; target_type = [1:5]; target_bin = 1; epoch_boundary = [-200.0,  700.0];
-ar_rm_from_ch = 8; mwpp_thld = 80; tstep_thld = 50; stim_duration_ms = 400;%ms
 
 import_data_flag = 1;
 plot_initial_data = 1;
