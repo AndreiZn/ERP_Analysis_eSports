@@ -6,6 +6,7 @@ function CFG = select_files_and_folders(CFG)
     CFG.beginning_cut_at_idx = 7000; % where to cut original data at the beginning
     CFG.end_cut_at_idx = 3000; % where to cut original data at the end
     CFG.total_num_channels = 32;
+    gray_clr = gray; gray_clr = gray_clr(round(2*size(gray_clr,1)/3),:);
     
 %% Select a root folder (it implies that the root folder will contain the code, data and output folders
 
@@ -74,16 +75,24 @@ function CFG = select_files_and_folders(CFG)
                 delta_y = 6*median_ch_std_cut; % delta y between channels on plots
                 data_to_plot = ch_data + delta_y*(CFG.total_num_channels-plot_idx+1);
                 ytick_value(plot_idx) = mean(data_to_plot);
-                plot(times(idx_to_cut_beginning), data_to_plot(idx_to_cut_beginning), 'color', 'k')
+                plot(times(idx_to_cut_beginning), data_to_plot(idx_to_cut_beginning), 'color', gray_clr)
                 hold on
-                plot(times(idx_to_cut_end), data_to_plot(idx_to_cut_end), 'color', 'k')
+                plot(times(idx_to_cut_end), data_to_plot(idx_to_cut_end), 'color', gray_clr)
                 clr = lines(plot_idx); clr = clr(end,:);
                 plot(times(idx_to_keep), data_to_plot(idx_to_keep), 'color', clr)
             end
             title(['EEG data plot, file: ', file_struct.name], 'Interpreter', 'None')
             xlabel('Time, s')
             ylabel('Amplitude')
-            set(gca, 'ylim', [0, delta_y*(1+CFG.total_num_channels)], 'Ytick', ytick_value(end:-1:1), 'YTickLabel', ch_labels(end:-1:1))
+            ylim = [0, delta_y*(1+CFG.total_num_channels)];
+            plot([times(idx_to_cut_beginning(end)), times(idx_to_cut_beginning(end))], [ylim(1), ylim(2)], '--r', 'linewidth', 3)
+            plot([times(idx_to_cut_end(1)), times(idx_to_cut_end(1))], [ylim(1), ylim(2)], '--r', 'linewidth', 3)
+            trigger_ch = y(34,:);
+            first_trigger_idx = find(trigger_ch ~= 0,1, 'first');
+            last_trigger_idx = find(trigger_ch == 1, 1, 'last');
+            plot([times(first_trigger_idx), times(first_trigger_idx)], [ylim(1), ylim(2)], '--g', 'linewidth', 3)
+            plot([times(last_trigger_idx), times(last_trigger_idx)], [ylim(1), ylim(2)], '--g', 'linewidth', 3)
+            set(gca, 'ylim', ylim, 'Ytick', ytick_value(end:-1:1), 'YTickLabel', ch_labels(end:-1:1))
             
         end
     end
