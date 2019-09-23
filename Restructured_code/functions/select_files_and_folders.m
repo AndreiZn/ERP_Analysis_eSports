@@ -50,20 +50,40 @@ function CFG = select_files_and_folders(CFG)
             filepath = fullfile(file_struct.folder, file_struct.name);
             y = load(filepath); y = y.y;
             times = (1:size(y,2))' - 1; times = times/CFG.sample_rate;
+            
             % cut data at the beginning and end
             idx_to_keep = CFG.beginning_cut_at_idx:size(y,2)-CFG.end_cut_at_idx;
-            times_cut = times(idx_to_keep);
+            idx_to_cut_beginning = 1:idx_to_keep(1)-1;
+            idx_to_cut_end = idx_to_keep(2)+1:size(y,2);
             y_cut = y(:, idx_to_keep);
-            median_ch_std_cut = median(std(y_cut,[],2)); % evalute median channel std for further plotting
-            figure;
+            
+            % evalute median channel std for further plotting
+            median_ch_std_cut = median(std(y_cut,[],2)); 
+            
+            % load sample eeglab file to extract channel labels
+            sample_file = dir(fullfile(CFG.root_folder, '**', 'sample_set.set'));
+            EEG = pop_loadset('filename','sample_set.set','filepath',sample_file.folder);
+            ch_labels = {EEG.chanlocs.labels};
+            
+            % plot data
+            figure('units','normalized','outerposition',[0 0 1 1])
+            ytick_value = zeros(CFG.total_num_channels,1);
             for plot_idx = 1:CFG.total_num_channels
                 ch_idx = plot_idx + 1; % 1st channel is time
-                ch_data = y_cut(ch_idx,:);
+                ch_data = y(ch_idx,:);
                 delta_y = 6*median_ch_std_cut; % delta y between channels on plots
-                plot(times_cut, ch_data + delta_y*(CFG.total_num_channels-plot_idx+1))
+                data_to_plot = ch_data + delta_y*(CFG.total_num_channels-plot_idx+1);
+                ytick_value(plot_idx) = mean(data_to_plot);
+                plot(times(idx_to_cut_beginning), data_to_plot(idx_to_cut_beginning), 'color', 'k')
                 hold on
+                plot(times(idx_to_cut_end), data_to_plot(idx_to_cut_end), 'color', 'k')
+                clr = lines(plot_idx); clr = clr(end,:);
+                plot(times(idx_to_keep), data_to_plot(idx_to_keep), 'color', clr)
             end
-            set(gca, 'ylim', [0, delta_y*(1+CFG.total_num_channels)])
+            title(['EEG data plot, file: ', file_struct.name], 'Interpreter', 'None')
+            xlabel('Time, s')
+            ylabel('Amplitude')
+            set(gca, 'ylim', [0, delta_y*(1+CFG.total_num_channels)], 'Ytick', ytick_value(end:-1:1), 'YTickLabel', ch_labels(end:-1:1))
             
         end
     end
