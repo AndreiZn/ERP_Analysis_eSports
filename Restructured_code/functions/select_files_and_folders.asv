@@ -54,16 +54,20 @@ function CFG = select_files_and_folders(CFG)
             idx_to_keep = CFG.beginning_cut_at_idx:size(y,2)-CFG.end_cut_at_idx;
             times_cut = times(idx_to_keep);
             y_cut = y(:, idx_to_keep);
-            median_ch_std_cut = median(std(y_cut,[],2)); % evalute median channel std for further plotting
+            ch_std_cut = std(y_cut);
             figure;
             for plot_idx = 1:CFG.total_num_channels
                 ch_idx = plot_idx + 1; % 1st channel is time
                 ch_data = y_cut(ch_idx,:);
-                delta_y = 6*median_ch_std_cut; % delta y between channels on plots
-                plot(times_cut, ch_data + delta_y*(CFG.total_num_channels-plot_idx+1))
+                
+                delta_y = 6*ch_std_cut; % delta y between channels on plots
+                plot(times_cut, ch_data)
                 hold on
             end
-            set(gca, 'ylim', [0, delta_y*(1+CFG.total_num_channels)])
-            
         end
     end
+    files = dir(CFG.initial_data_folder);
+    dirflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.name},'.');
+    CFG.data_files = files(dirflag);
+    CFG.num_sessions = size(CFG.data_files,1);
+    fprintf('Number of data files found is: %d \n', CFG.num_sessions);

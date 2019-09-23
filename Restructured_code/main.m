@@ -2,6 +2,7 @@
 % project
 
 CFG = []; EEG = [];
+CFG.sample_rate = 250;
 
 %% Select files and folders
 
