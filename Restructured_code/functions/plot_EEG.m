@@ -10,7 +10,7 @@ else
 end
 y_cut = y(:, idx_to_keep);
 
-times = y(1,:);
+times = y(CFG.time_channel,:);
 
 % evalute median channel std for further plotting
 median_ch_std_cut = median(std(y_cut,[],2));
@@ -45,7 +45,7 @@ if cut_beginning_end
     plot([times(idx_to_cut_end(1)), times(idx_to_cut_end(1))], [ylim(1), ylim(2)], '--r', 'linewidth', 3)
 end
 
-trigger_ch = y(34,:);
+trigger_ch = y(CFG.trigger_channel,:);
 first_trigger_idx = find(trigger_ch ~= 0,1, 'first');
 last_trigger_idx = find(trigger_ch == 1, 1, 'last');
 plot([times(first_trigger_idx), times(first_trigger_idx)], [ylim(1), ylim(2)], '--g', 'linewidth', 3)

@@ -1,7 +1,7 @@
 function [file_processed, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_name)
     
     file_processed = 0;
-    times = y(1,:)';
+    times = y(CFG.time_channel,:)';
 
     cut_beginning_end = 1;
     y_cut = plot_EEG(y, CFG, file_name, cut_beginning_end);
