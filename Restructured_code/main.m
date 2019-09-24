@@ -2,7 +2,6 @@
 % project
 
 %% Define default variables
-
 CFG = define_defaults();
 
 %% Cut data (delete beginning and end of data files if necessary)
@@ -10,6 +9,7 @@ cut_data_flag = 1;
 if cut_data_flag
     CFG = cut_data(CFG);
 end
+
 %% Select files and folders
 
 %% PreICA (import, remove bad channels, rereference, filter, etc.)
