@@ -1,10 +1,10 @@
-function [file_processed, cur_fig] = plot_and_cut_data(y, CFG, file_name)
+function [file_processed, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_name)
     
     file_processed = 0;
-    times = y(1,:);
+    times = y(1,:)';
 
     cut_beginning_end = 1;
-    plot_EEG(y, cut_beginning_end);
+    y_cut = plot_EEG(y, CFG, file_name, cut_beginning_end);
 
     answer = questdlg('Do you want to change time limits?', 'Time limits', ...
         'Yes', 'No', 'No');
@@ -38,11 +38,10 @@ function [file_processed, cur_fig] = plot_and_cut_data(y, CFG, file_name)
             CFG.beginning_cut_at_idx = dsearchn(times,idx_x1);
             CFG.end_cut_at_idx = size(y,2) - dsearchn(times,idx_x2);
 
-            [file_processed, cur_fig] = plot_and_cut_data(y, CFG, file_name);
+            [file_processed, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_name);
         end
         file_processed = 1;
     else
-        save([CFG.output_data_folder_cur, '\', file_name], 'y_cut')
         cur_fig = gcf;
         file_processed = 1;
     end

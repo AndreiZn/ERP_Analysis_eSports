@@ -1,4 +1,4 @@
-function plot_EEG(y, cut_beginning_end)
+function y_cut = plot_EEG(y, CFG, file_name, cut_beginning_end)
 
 if cut_beginning_end
 % cut data at the beginning and end
@@ -50,4 +50,4 @@ first_trigger_idx = find(trigger_ch ~= 0,1, 'first');
 last_trigger_idx = find(trigger_ch == 1, 1, 'last');
 plot([times(first_trigger_idx), times(first_trigger_idx)], [ylim(1), ylim(2)], '--g', 'linewidth', 3)
 plot([times(last_trigger_idx), times(last_trigger_idx)], [ylim(1), ylim(2)], '--g', 'linewidth', 3)
-set(gca, 'ylim', ylim, 'Ytick', ytick_value(end:-1:1), 'YTickLabel', ch_labels(end:-1:1))
+set(gca, 'ylim', ylim, 'Ytick', ytick_value(end:-1:1), 'YTickLabel', CFG.ch_labels(end:-1:1))

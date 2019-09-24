@@ -6,7 +6,6 @@ CFG.output_data_folder_name = 'stage_1_cut\data';
 CFG.output_plots_folder_name = 'stage_1_cut\plots';
 
 %% Select a root folder (it implies that the root folder will contain the code, data and output folders
-
 CFG.root_folder = uigetdir('./','Select a root folder...');
 
 cell_root_folder = split(CFG.root_folder, "\");
@@ -42,6 +41,12 @@ if ~exist(CFG.output_plots_folder, 'dir')
     mkdir(CFG.output_plots_folder)
 end
 
+%% load sample eeglab file to extract channel labels
+sample_file = dir(fullfile(CFG.root_folder, '**', 'sample_set.set'));
+EEG = pop_loadset('filename','sample_set.set','filepath',sample_file.folder);
+CFG.ch_labels = {EEG.chanlocs.labels};
+
+%% Loop through folders
 subject_folders = dir(CFG.data_folder_path );
 subject_folders = subject_folders(3:end);
 
@@ -69,7 +74,8 @@ for subi=1:numel(subject_folders)
         end
         
         % plot data
-        [~, cur_fig] = plot_and_cut_data(y, CFG, file_struct.name);
+        [~, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_struct.name);
+        save([CFG.output_data_folder_cur, '\', file_struct.name], 'y_cut')
         saveas(cur_fig, [CFG.output_plots_folder_cur, '\Plot_', file_struct.name(1:end-3), 'png'])
         close(cur_fig);
     end
