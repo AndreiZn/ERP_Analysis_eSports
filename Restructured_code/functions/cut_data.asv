@@ -74,13 +74,12 @@ for subi=1:numel(subject_folders)
         end
         
         % plot data to set bginning and end markers
-        file_name = file_struct.name(1:end-4);
-        [~, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_name);
+        [~, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_struct.name);
         save([CFG.output_data_folder_cur, '\', file_struct.name], 'y_cut')
         saveas(cur_fig, [CFG.output_plots_folder_cur, '\Plot_', file_struct.name(1:end-3), 'png'])
         close(cur_fig);
         
         % plot data to mark bad channels
-        mark_bad_channels(y, CFG, file_name);
+        
     end
 end

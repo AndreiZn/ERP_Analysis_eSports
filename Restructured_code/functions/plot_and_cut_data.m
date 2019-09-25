@@ -4,7 +4,9 @@ function [file_processed, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_name)
     times = y(CFG.time_channel,:)';
 
     cut_beginning_end = 1;
-    y_cut = plot_EEG(y, CFG, file_name, cut_beginning_end);
+    mark_bad_chs = 0;
+    bad_chs = [];
+    y_cut = plot_EEG(y, CFG, file_name, cut_beginning_end, mark_bad_chs, bad_chs);
 
     answer = questdlg('Do you want to change time limits?', 'Time limits', ...
         'Yes', 'No', 'No');
