@@ -60,6 +60,7 @@ xlabel('Time, s')
 ylabel('Amplitude')
 ylim = [0, delta_y*(1+CFG.total_num_channels)];
 
+% show cuts and first/last events with dashed lines
 if cut_beginning_end
     plot([times(idx_to_cut_beginning(end)), times(idx_to_cut_beginning(end))], [ylim(1), ylim(2)], '--r', 'linewidth', 3)
     plot([times(idx_to_cut_end(1)), times(idx_to_cut_end(1))], [ylim(1), ylim(2)], '--r', 'linewidth', 3)

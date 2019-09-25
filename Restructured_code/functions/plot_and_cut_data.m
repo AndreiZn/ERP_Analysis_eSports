@@ -1,4 +1,4 @@
-function [file_processed, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_name)
+function [file_processed, cur_fig, y_cut, CFG] = plot_and_cut_data(y, CFG, file_name)
     
     file_processed = 0;
     times = y(CFG.time_channel,:)';
@@ -40,7 +40,7 @@ function [file_processed, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_name)
             CFG.beginning_cut_at_idx = dsearchn(times,idx_x1);
             CFG.end_cut_at_idx = size(y,2) - dsearchn(times,idx_x2);
 
-            [file_processed, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_name);
+            [file_processed, cur_fig, y_cut, CFG] = plot_and_cut_data(y, CFG, file_name);
         end
         file_processed = 1;
     else

@@ -5,9 +5,7 @@ function CFG = cut_data(CFG)
 CFG.output_data_folder_name = 'stage_1_cut\data';
 CFG.output_plots_folder_name = 'stage_1_cut\plots';
 
-%% Select a root folder (it implies that the root folder will contain the code, data and output folders
-CFG.root_folder = uigetdir('./','Select a root folder...');
-
+%% Find code, data and output folders
 cell_root_folder = split(CFG.root_folder, "\");
 root_folder_name = cell_root_folder{end};
 code_folder_name = [root_folder_name, '_code'];
@@ -41,11 +39,6 @@ if ~exist(CFG.output_plots_folder, 'dir')
     mkdir(CFG.output_plots_folder)
 end
 
-%% load sample eeglab file to extract channel labels
-sample_file = dir(fullfile(CFG.root_folder, '**', 'sample_set.set'));
-EEG = pop_loadset('filename','sample_set.set','filepath',sample_file.folder);
-CFG.ch_labels = {EEG.chanlocs.labels};
-
 %% Loop through folders
 subject_folders = dir(CFG.data_folder_path );
 subject_folders = subject_folders(3:end);
@@ -63,11 +56,11 @@ for subi=1:numel(subject_folders)
         filepath = fullfile(file_struct.folder, file_struct.name);
         y = load(filepath); y = y.y;
         
+        % create output folders
         CFG.output_data_folder_cur = [CFG.output_data_folder, '\', subj_folder.name];
         if ~exist(CFG.output_data_folder_cur, 'dir')
             mkdir(CFG.output_data_folder_cur)
-        end
-        
+        end 
         CFG.output_plots_folder_cur = [CFG.output_plots_folder, '\', subj_folder.name];
         if ~exist(CFG.output_plots_folder_cur, 'dir')
             mkdir(CFG.output_plots_folder_cur)
@@ -75,12 +68,20 @@ for subi=1:numel(subject_folders)
         
         % plot data to set bginning and end markers
         file_name = file_struct.name(1:end-4);
-        [~, cur_fig, y_cut] = plot_and_cut_data(y, CFG, file_name);
-        save([CFG.output_data_folder_cur, '\', file_struct.name], 'y_cut')
+        CFG.beginning_cut_at_idx = 7000; % where to cut original data at the beginning by default
+        CFG.end_cut_at_idx = 3000; % where to cut original data at the end by default
+        [~, cur_fig, y_cut, CFG] = plot_and_cut_data(y, CFG, file_name);
+        % save plot
         saveas(cur_fig, [CFG.output_plots_folder_cur, '\Plot_', file_struct.name(1:end-3), 'png'])
         close(cur_fig);
         
         % plot data to mark bad channels
-        mark_bad_channels(y, CFG, file_name);
+        [cur_fig, bad_ch_idx, bad_ch_lbl] = mark_bad_channels(y, CFG, file_name);
+        % save plot
+        saveas(cur_fig, [CFG.output_plots_folder_cur, '\Plot_Bad_chs_', file_name, '.png'])
+        close(cur_fig)
+        
+        % save cut_data and bad_chs
+        save([CFG.output_data_folder_cur, '\', file_struct.name], 'y_cut', 'bad_ch_idx', 'bad_ch_lbl')
     end
 end
