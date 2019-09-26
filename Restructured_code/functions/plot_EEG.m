@@ -15,11 +15,11 @@ median_ch_std_cut = median(ch_std_cut(CFG.EEG_channels));
 delta_y = 6*median_ch_std_cut; % delta y between channels on plots
 
 figure('units','normalized','outerposition',[0 0 1 1])
-ytick_value = zeros(CFG.total_num_channels,1);
-for plot_idx = 1:CFG.total_num_channels
+ytick_value = zeros(CFG.total_num_data_channels,1);
+for plot_idx = 1:CFG.total_num_data_channels
     ch_idx = plot_idx + 1; % 1st channel is time
     ch_data = y(ch_idx,:);
-    data_to_plot = ch_data + delta_y*(CFG.total_num_channels-plot_idx+1);
+    data_to_plot = ch_data + delta_y*(CFG.total_num_data_channels-plot_idx+1);
     ytick_value(plot_idx) = mean(data_to_plot);
     % it can happen that delta_y would not decrease ytick_value enough,
     % because of low mean(ch_data) term of the previous channel. Thus:
@@ -58,7 +58,7 @@ end
 title(['EEG data plot, file: ', file_name], 'Interpreter', 'None')
 xlabel('Time, s')
 ylabel('Amplitude')
-ylim = [0, delta_y*(1+CFG.total_num_channels)];
+ylim = [0, delta_y*(1+CFG.total_num_data_channels)];
 
 % show cuts and first/last events with dashed lines
 if cut_beginning_end

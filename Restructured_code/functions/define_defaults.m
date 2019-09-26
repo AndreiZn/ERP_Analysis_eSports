@@ -3,9 +3,10 @@ function CFG = define_defaults()
 CFG = [];
 CFG.sample_rate = 250;
 
+CFG.total_num_channels = 36;
 CFG.time_channel = 1;
 CFG.EEG_channels = 2:33;
-CFG.total_num_channels = numel(CFG.EEG_channels);
+CFG.total_num_data_channels = numel(CFG.EEG_channels);
 CFG.trigger_channel = 34;
 CFG.target_channel = 35;
 CFG.groupid_channel = 36;
@@ -18,6 +19,10 @@ CFG.root_folder = uigetdir('./','Select a root folder...');
 sample_file = dir(fullfile(CFG.root_folder, '**', 'sample_set.set'));
 EEG = pop_loadset('filename','sample_set.set','filepath',sample_file.folder);
 CFG.ch_labels = {EEG.chanlocs.labels};
+
+%% Electrode location file
+electrode_location_file_struct = dir(fullfile(CFG.root_folder, '**', 'gGAMMAcap32ch_10-20.locs'));
+CFG.electrode_location_file = fullfile(electrode_location_file_struct.folder, electrode_location_file_struct.name);
 
 %% Define (or select manually) code, data and output folders
 cell_root_folder = split(CFG.root_folder, "\");
