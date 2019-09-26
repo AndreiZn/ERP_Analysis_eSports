@@ -35,8 +35,8 @@ for subi=1:numel(subject_folders)
         % read file
         file_struct = files(filei);
         filepath = fullfile(file_struct.folder, file_struct.name);
-        %file = load(filepath);
-        %y = file.y_cut; bad_ch_idx = file.bad_ch_idx; bad_ch_lbl = file.bad_ch_lbl;
+        file = load(filepath);
+        y = file.y_cut; bad_ch_idx = file.bad_ch_idx; bad_ch_lbl = file.bad_ch_lbl;
         %file_name = file_struct.name(1:end-4);
         
         exp_id = file_struct.name(9:13);
@@ -49,7 +49,7 @@ for subi=1:numel(subject_folders)
         
         % import data to eeglab
         eeglab_set_name = ['sub', sub_ID, '_', exp_id];
-        [EEG] = import_mat_to_eeglab(CFG, filepath, eeglab_set_name, sub_ID);
+        [EEG] = import_mat_to_eeglab(CFG, y, eeglab_set_name, sub_ID);
         
 %         output_set_name = [set_name, '_', output_suffix, '.set'];
 %         EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',output_folder_cur);

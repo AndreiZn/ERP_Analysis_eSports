@@ -1,8 +1,9 @@
-function [EEG] = import_mat_to_eeglab(CFG, mat_file_path, eeglab_set_name, sub_ID)
+function [EEG] = import_mat_to_eeglab(CFG, y, eeglab_set_name, sub_ID)
 
-EEG = pop_importdata('dataformat','matlab','nbchan',0,'data',mat_file_path,'setname',eeglab_set_name,'srate',CFG.sample_rate,'subject',sub_ID,'pnts',0,'xmin',0);
+assignin('base','y',y)
+EEG = pop_importdata('dataformat','array','nbchan',0,'data','y','setname',eeglab_set_name,'srate',CFG.sample_rate,'subject',sub_ID,'pnts',0,'xmin',0);
 EEG = eeg_checkset(EEG);
-EEG = pop_chanevent(EEG, CFG.total_num_channels,'edge','leading','edgelen',0);
+EEG = pop_chanevent(EEG, CFG.groupid_channel,'edge','leading','edgelen',0);
 EEG = eeg_checkset(EEG);
 EEG = pop_select(EEG,'channel',CFG.EEG_channels);
 EEG = eeg_checkset(EEG);
