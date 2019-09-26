@@ -10,10 +10,16 @@
 function [CFG, EEG] = preICA(CFG)
 %% Define function-specific variables
 CFG.output_data_folder_name = 'stage_2_convert_to_eeglab\data';
+CFG.output_plots_folder_name = 'stage_2_convert_to_eeglab\plots';
 
 CFG.output_data_folder = [CFG.output_folder_path, '\', CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
     mkdir(CFG.output_data_folder)
+end
+
+CFG.output_plots_folder = [CFG.output_folder_path, '\', CFG.output_plots_folder_name];
+if ~exist(CFG.output_plots_folder, 'dir')
+    mkdir(CFG.output_plots_folder)
 end
 
 %% Loop through folders
@@ -45,19 +51,30 @@ for subi=1:numel(subject_folders)
         CFG.output_data_folder_cur = [CFG.output_data_folder, '\', subj_folder.name];
         if ~exist(CFG.output_data_folder_cur, 'dir')
             mkdir(CFG.output_data_folder_cur)
-        end 
+        end
+        CFG.output_plots_folder_cur = [CFG.output_plots_folder, '\', subj_folder.name];
+        if ~exist(CFG.output_plots_folder_cur, 'dir')
+            mkdir(CFG.output_plots_folder_cur)
+        end
         
         % import data to eeglab
         eeglab_set_name = ['sub', sub_ID, '_', exp_id];
         [EEG] = import_mat_to_eeglab(CFG, y, eeglab_set_name, sub_ID);
         
-        % TO DO:
-        % save bad channels in the EEG structure
-        % save eeglab dataset
+        % add info on bad channels to the EEG structure
+        EEG.bad_ch.bad_ch_idx = bad_ch_idx;
+        EEG.bad_ch.bad_ch_lbl = bad_ch_lbl;
         
-%         output_set_name = [set_name, '_', output_suffix, '.set'];
-%         EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',output_folder_cur);
-%         EEG = eeg_checkset(EEG);
+        % visualize data using the eeglab function eegplot (compare
+        % obtained plots with stage_1 plots as a sanity check)
+        fig = eeglab_plot_EEG(EEG);
+        saveas(fig,[CFG.output_plots_folder_cur, '\', eeglab_set_name '_plot','.png'])
+        close(fig)
+        
+        % save the eeglab dataset
+        output_set_name = [eeglab_set_name, '_init', '.set'];
+        EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
+        EEG = eeg_checkset(EEG);
         
     end
 end
