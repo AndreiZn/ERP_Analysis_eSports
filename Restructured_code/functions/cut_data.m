@@ -1,3 +1,4 @@
+% cut_data function works with 02_ERP_data_selected data folder
 % Visually inspect data (mark datasets clearly not appropriate for
 % analysis, cut beginning and end of datafiles, mark clearly bad channels)
 function CFG = cut_data(CFG)

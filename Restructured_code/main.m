@@ -6,7 +6,7 @@ CFG = define_defaults();
 
 %% Visually inspect data (mark datasets clearly not appropriate for
 % analysis, cut beginning and end of datafiles, mark clearly bad channels)
-cut_data_flag = 1;
+cut_data_flag = 0;
 if cut_data_flag
     CFG = cut_data(CFG);
 end
