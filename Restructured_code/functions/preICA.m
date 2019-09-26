@@ -1,8 +1,6 @@
 %% PreICA script:
-% - Import data
-% - Visually inspect data (mark datasets clearly not appropriate for
-% analysis, cut beginning and end of datafiles, mark clearly bad channels)
-% - Import data to eeglab, fill in dataset info, add channel locations
+% - Import data in matlab format, convert it to the eeglab format, fill in dataset info,
+% add channel locations and save resulting datasets
 % - Rereference data
 % - Filter data
 % - Split data into epochs

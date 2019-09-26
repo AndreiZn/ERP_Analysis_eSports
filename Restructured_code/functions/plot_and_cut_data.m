@@ -1,3 +1,5 @@
+% the function plot_and_cut_data plots the data and allows to change time
+% limits that will be used to cut beginning and end of the original file
 function [file_processed, cur_fig, y_cut, CFG] = plot_and_cut_data(y, CFG, file_name)
     
     file_processed = 0;

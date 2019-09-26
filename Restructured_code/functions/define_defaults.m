@@ -18,3 +18,27 @@ CFG.root_folder = uigetdir('./','Select a root folder...');
 sample_file = dir(fullfile(CFG.root_folder, '**', 'sample_set.set'));
 EEG = pop_loadset('filename','sample_set.set','filepath',sample_file.folder);
 CFG.ch_labels = {EEG.chanlocs.labels};
+
+%% Define (or select manually) code, data and output folders
+cell_root_folder = split(CFG.root_folder, "\");
+root_folder_name = cell_root_folder{end};
+code_folder_name = [root_folder_name, '_code'];
+data_folder_name = [root_folder_name, '_data'];
+output_folder_name = [root_folder_name, '_output'];
+
+code_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, code_folder_name}, '\');
+data_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, data_folder_name}, '\');
+output_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, output_folder_name}, '\');
+
+answer = questdlg('Use default locations of code, data and output folders?', 'Location of other folders', ...
+    'Yes', 'No', 'Yes');
+switch answer
+    case 'Yes'
+        CFG.code_folder_path = code_folder_path;
+        CFG.data_folder_path = data_folder_path;
+        CFG.output_folder_path = output_folder_path;
+    case 'No'
+        CFG.code_folder_path = uigetdir('./','Select a code folder...');
+        CFG.data_folder_path = uigetdir('./','Select a data folder...');
+        CFG.output_folder_path = uigetdir('./','Select an output folder...');
+end

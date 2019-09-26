@@ -1,3 +1,5 @@
+% the function mark_bad_channels allows to visually investigate data and
+% mark clearly bad channels
 function [cur_fig, bad_ch_idx, bad_ch_lbl] = mark_bad_channels(y, CFG, file_name)
 
 %% Define flags 
