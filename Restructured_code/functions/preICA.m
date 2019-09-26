@@ -51,6 +51,10 @@ for subi=1:numel(subject_folders)
         eeglab_set_name = ['sub', sub_ID, '_', exp_id];
         [EEG] = import_mat_to_eeglab(CFG, y, eeglab_set_name, sub_ID);
         
+        % TO DO:
+        % save bad channels in the EEG structure
+        % save eeglab dataset
+        
 %         output_set_name = [set_name, '_', output_suffix, '.set'];
 %         EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',output_folder_cur);
 %         EEG = eeg_checkset(EEG);
