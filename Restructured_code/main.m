@@ -12,7 +12,15 @@ if cut_data_flag
 end
 
 %% PreICA (import, rereference, filter, etc.)
-[CFG, EEG] = preICA(CFG);
+import_mat_to_eeglab_flag = 0;
+if import_mat_to_eeglab_flag
+    [CFG, EEG] = import_data(CFG);
+end
+
+flag = 1;
+if flag
+    [CFG, EEG] = preICA(CFG);
+end
 
 %% Run ICA (run ICA, save weight, save bad components)
 

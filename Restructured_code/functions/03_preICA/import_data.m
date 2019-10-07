@@ -1,13 +1,8 @@
-%% PreICA function works with 03_ERP_data_cut data folder:
+%% import_data function works with 03_ERP_data_cut data folder:
 % - Import data in matlab format, convert it to the eeglab format, fill in dataset info,
-% add channel locations and save resulting datasets
-% - Rereference data
-% - Filter data
-% - Split data into epochs
-% - Perform baseline correction
-% - Reject bad trials
+% add channel locations and save resulting datasets to 04_ERP_esports_data_eeglab_init data folder
 
-function [CFG, EEG] = preICA(CFG)
+function [CFG, EEG] = import_data(CFG)
 %% Define function-specific variables
 CFG.output_data_folder_name = 'stage_2_convert_to_eeglab\data';
 CFG.output_plots_folder_name = 'stage_2_convert_to_eeglab\plots';
@@ -17,7 +12,8 @@ if ~exist(CFG.output_data_folder, 'dir')
     mkdir(CFG.output_data_folder)
 end
 
-CFG.output_plots_folder = [CFG.output_folder_path, '\', CFG.output_plots_folder_name];
+CFG.output_plots_folder = [CFG.output_folder_path, '\', CFG.output_plots_folder_name];'
+
 if ~exist(CFG.output_plots_folder, 'dir')
     mkdir(CFG.output_plots_folder)
 end
