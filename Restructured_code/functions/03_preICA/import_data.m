@@ -13,7 +13,6 @@ if ~exist(CFG.output_data_folder, 'dir')
 end
 
 CFG.output_plots_folder = [CFG.output_folder_path, '\', CFG.output_plots_folder_name];'
-
 if ~exist(CFG.output_plots_folder, 'dir')
     mkdir(CFG.output_plots_folder)
 end
