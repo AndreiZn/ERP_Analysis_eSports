@@ -1,4 +1,4 @@
-function fig = eeglab_plot_EEG(EEG)
+function fig = eeglab_plot_EEG(EEG, CFG)
 
 % get sample rate
 srate = EEG.srate;
@@ -12,7 +12,7 @@ spacing = min([regular_spacing, extreme_case_spacing]);
 max_time_s = size(EEG.data,2)/srate;
 
 % plot data using the eeglab function eegplot 
-eegplot('noui', EEG.data, 'winlength', max_time_s, 'srate', srate, 'spacing', spacing);
+eegplot('noui', EEG.data, 'winlength', max_time_s, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
 
 % get axis handle
 fig = gcf;

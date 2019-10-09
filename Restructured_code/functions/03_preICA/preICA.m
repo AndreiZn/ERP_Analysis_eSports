@@ -36,28 +36,12 @@ for subi=1:numel(subject_folders)
     sub_ID = subj_folder.name(4:7);
     
     for filei=2:2:numel(files)
+        
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
-        %filepath = fullfile(file_struct.folder, file_struct.name);
+        eeglab_set_name = ['sub', sub_ID, '_', exp_id];
         
-        % Load dataset
-        EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
-        EEG = eeg_checkset(EEG);
-        
-        % Filter data with a basic FIR filter from 1 to 30 Hz
-        EEG = pop_eegfiltnew(EEG,1,30);
-        EEG = eeg_checkset(EEG);
-        
-        % Common average referencing
-        EEG = pop_reref(EEG, []);
-        EEG = eeg_checkset(EEG);
-        
-        % Interpolate channels marked as bad ones during the visual
-        % inspection
-        EEG = pop_interp(EEG, EEG.bad_ch.bad_ch_idx, 'spherical');
-        EEG = eeg_checkset( EEG );
-
         % create output folders
         CFG.output_data_folder_cur = [CFG.output_data_folder, '\', subj_folder.name];
         if ~exist(CFG.output_data_folder_cur, 'dir')
@@ -68,17 +52,61 @@ for subi=1:numel(subject_folders)
             mkdir(CFG.output_plots_folder_cur)
         end
         
-        eeglab_set_name = ['sub', sub_ID, '_', exp_id];
-
-        % visualize data using the eeglab function eegplot (compare
-        % obtained plots with stage_1 plots as a sanity check)
-        fig = eeglab_plot_EEG(EEG);
-        saveas(fig,[CFG.output_plots_folder_cur, '\', eeglab_set_name '_plot','.png'])
+        CFG.eeg_plot_spacing = 80;
+        
+        % Load dataset
+        EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
+        EEG = eeg_checkset(EEG);
+        % visualize data using the eeglab function eegplot
+        fig = eeglab_plot_EEG(EEG, CFG);
+        cur_set_name = [eeglab_set_name, '_01_init'];
+        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
+        close(fig)
+        
+        % Filter data with a basic FIR filter from 1 to 30 Hz
+        EEG_filt = pop_eegfiltnew(EEG,1,30);
+        EEG_filt = eeg_checkset(EEG_filt);
+        % visualize data using the eeglab function eegplot
+        fig = eeglab_plot_EEG(EEG_filt, CFG);
+        cur_set_name = [eeglab_set_name, '_02_filtered'];
+        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
+        close(fig)
+        
+        % Common average referencing
+        EEG_CAR = pop_reref(EEG_filt, []);
+        EEG_CAR = eeg_checkset(EEG_CAR);
+        % visualize data using the eeglab function eegplot
+        fig = eeglab_plot_EEG(EEG_CAR, CFG);
+        cur_set_name = [eeglab_set_name, '_03_CAR'];
+        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
+        close(fig)
+        
+        % Interpolate channels marked as bad ones during the visual
+        % inspection
+        EEG_interp = pop_interp(EEG_CAR, EEG.bad_ch.bad_ch_idx, 'spherical');
+        EEG_interp = eeg_checkset(EEG_interp);
+        % visualize data using the eeglab function eegplot
+        fig = eeglab_plot_EEG(EEG_interp, CFG);
+        cur_set_name = [eeglab_set_name, '_04_interp'];
+        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
+        close(fig)
+        
+        % Epoch all trials
+        EEG_epoch = (EEG_interp);
+        EEG_epoch = eeg_checkset(EEG_epoch);
+        
+        % Remove baseline
+        EEG_bs = (EEG_epoch);
+        EEG_bs = eeg_checkset(EEG_bs);
+        % visualize data using the eeglab function eegplot
+        fig = eeglab_plot_EEG(EEG_bs, CFG);
+        cur_set_name = [eeglab_set_name, '_05_baseline'];
+        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
         % save the eeglab dataset
-        output_set_name = [eeglab_set_name, '_init', '.set'];
-        EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
+        output_set_name = [eeglab_set_name, '_after_preICA', '.set'];
+        EEG = pop_saveset(EEG_bs, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
         EEG = eeg_checkset(EEG);
         
     end
