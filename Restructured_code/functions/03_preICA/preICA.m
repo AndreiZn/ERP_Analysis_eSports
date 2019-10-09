@@ -52,14 +52,14 @@ for subi=1:numel(subject_folders)
             mkdir(CFG.output_plots_folder_cur)
         end
         
-        CFG.eeg_plot_spacing = 80;
+        CFG.eeg_plot_spacing = 50;
         
         % Load dataset
         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
         EEG = eeg_checkset(EEG);
         % visualize data using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG, CFG);
-        cur_set_name = [eeglab_set_name, '_01_init'];
+        cur_set_name = [eeglab_set_name, '_01init'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
@@ -68,7 +68,7 @@ for subi=1:numel(subject_folders)
         EEG_filt = eeg_checkset(EEG_filt);
         % visualize data using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG_filt, CFG);
-        cur_set_name = [eeglab_set_name, '_02_filtered'];
+        cur_set_name = [eeglab_set_name, '_02filtered'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
@@ -77,7 +77,7 @@ for subi=1:numel(subject_folders)
         EEG_CAR = eeg_checkset(EEG_CAR);
         % visualize data using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG_CAR, CFG);
-        cur_set_name = [eeglab_set_name, '_03_CAR'];
+        cur_set_name = [eeglab_set_name, '_03CAR'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
@@ -87,26 +87,13 @@ for subi=1:numel(subject_folders)
         EEG_interp = eeg_checkset(EEG_interp);
         % visualize data using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG_interp, CFG);
-        cur_set_name = [eeglab_set_name, '_04_interp'];
-        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
-        close(fig)
-        
-        % Epoch all trials
-        EEG_epoch = (EEG_interp);
-        EEG_epoch = eeg_checkset(EEG_epoch);
-        
-        % Remove baseline
-        EEG_bs = (EEG_epoch);
-        EEG_bs = eeg_checkset(EEG_bs);
-        % visualize data using the eeglab function eegplot
-        fig = eeglab_plot_EEG(EEG_bs, CFG);
-        cur_set_name = [eeglab_set_name, '_05_baseline'];
+        cur_set_name = [eeglab_set_name, '_04interp'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
         % save the eeglab dataset
         output_set_name = [eeglab_set_name, '_after_preICA', '.set'];
-        EEG = pop_saveset(EEG_bs, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
+        EEG = pop_saveset(EEG_interp, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
         EEG = eeg_checkset(EEG);
         
     end
