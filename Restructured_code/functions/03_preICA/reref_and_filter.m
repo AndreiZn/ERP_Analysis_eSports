@@ -1,11 +1,13 @@
 %% preICA function works with 04_ERP_esports_data_eeglab_init folder:
-% - Rereference data
+% - Interpolate bad electrodes
+% - Rereference data (CAR)
 % - Filter data
+
 % - Split data into epochs
 % - Perform baseline correction
 % - Reject bad trials
 
-function [CFG, EEG] = preICA(CFG)
+function [CFG, EEG] = reref_and_filter(CFG)
 %% Define function-specific variables
 CFG.output_data_folder_name = 'stage_3_preICA\data';
 CFG.output_plots_folder_name = 'stage_3_preICA\plots';
@@ -62,18 +64,19 @@ for subi=1:numel(subject_folders)
         cur_set_name = [eeglab_set_name, '_01init'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
-        
-        % Filter data with a basic FIR filter from 1 to 30 Hz
-        EEG_filt = pop_eegfiltnew(EEG,1,30);
-        EEG_filt = eeg_checkset(EEG_filt);
+
+        % Interpolate channels marked as bad ones during the visual
+        % inspection
+        EEG_interp = pop_interp(EEG, EEG.bad_ch.bad_ch_idx, 'spherical');
+        EEG_interp = eeg_checkset(EEG_interp);
         % visualize data using the eeglab function eegplot
-        fig = eeglab_plot_EEG(EEG_filt, CFG);
-        cur_set_name = [eeglab_set_name, '_02filtered'];
+        fig = eeglab_plot_EEG(EEG_interp, CFG);
+        cur_set_name = [eeglab_set_name, '_02interp'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
         % Common average referencing
-        EEG_CAR = pop_reref(EEG_filt, []);
+        EEG_CAR = pop_reref(EEG_interp, []);
         EEG_CAR = eeg_checkset(EEG_CAR);
         % visualize data using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG_CAR, CFG);
@@ -81,19 +84,18 @@ for subi=1:numel(subject_folders)
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
-        % Interpolate channels marked as bad ones during the visual
-        % inspection
-        EEG_interp = pop_interp(EEG_CAR, EEG.bad_ch.bad_ch_idx, 'spherical');
-        EEG_interp = eeg_checkset(EEG_interp);
+        % Filter data with a basic FIR filter from 1 to 30 Hz
+        EEG_filt = pop_eegfiltnew(EEG_CAR,1,30);
+        EEG_filt = eeg_checkset(EEG_filt);
         % visualize data using the eeglab function eegplot
-        fig = eeglab_plot_EEG(EEG_interp, CFG);
-        cur_set_name = [eeglab_set_name, '_04interp'];
+        fig = eeglab_plot_EEG(EEG_filt, CFG);
+        cur_set_name = [eeglab_set_name, '_04filtered'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
         % save the eeglab dataset
         output_set_name = [eeglab_set_name, '_after_preICA', '.set'];
-        EEG = pop_saveset(EEG_interp, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
+        EEG = pop_saveset(EEG_filt, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
         EEG = eeg_checkset(EEG);
         
     end
