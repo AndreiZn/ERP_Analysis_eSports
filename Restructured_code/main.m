@@ -17,10 +17,25 @@ if convert_mat_to_eeglab_flag
     [CFG, EEG] = convert_data(CFG);
 end
 
-rereference_and_filter_flag = 1;
+rereference_and_filter_flag = 0;
 if rereference_and_filter_flag
     [CFG, EEG] = reref_and_filter(CFG);
 end
+
+% add epoching, baseline correction and trial rejection (review mike
+% cohen's lecture
+
+% save datasets after trial rejection (folder 06_...)
+
+% run ICA
+
+% save datasets with ICA weights  (folder 07_...)
+
+% delete bad components/trials (review the lecture)
+
+% convert datasets to continuous EEG
+
+% save resulting datasets (folder 08_...)
 
 %% Run ICA (run ICA, save weight, save bad components)
 

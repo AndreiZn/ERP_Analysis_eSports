@@ -9,8 +9,8 @@
 
 function [CFG, EEG] = reref_and_filter(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_3_preICA\data';
-CFG.output_plots_folder_name = 'stage_3_preICA\plots';
+CFG.output_data_folder_name = 'stage_3_reref_and_filter\data';
+CFG.output_plots_folder_name = 'stage_3_reref_and_filter\plots';
 
 CFG.output_data_folder = [CFG.output_folder_path, '\', CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
