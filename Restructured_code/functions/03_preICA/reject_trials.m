@@ -1,12 +1,12 @@
-%% reref_and_filter function works with 04_ERP_esports_data_eeglab_init folder:
-% - Interpolate bad electrodes
-% - Rereference data (CAR)
-% - Filter data
+%% reject_trials function works with 05_ERP_esports_data_reref_and_filter folder:
+% - Split data into epochs
+% - Remove baseline
+% - Reject bad trials
 
-function [CFG, EEG] = reref_and_filter(CFG)
+function [CFG, EEG] = reject_trials(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_3_reref_and_filter\data';
-CFG.output_plots_folder_name = 'stage_3_reref_and_filter\plots';
+CFG.output_data_folder_name = 'stage_4_reject_trials\data';
+CFG.output_plots_folder_name = 'stage_4_reject_trials\plots';
 
 CFG.output_data_folder = [CFG.output_folder_path, '\', CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -57,42 +57,32 @@ for subi=1:numel(subject_folders)
         EEG = eeg_checkset(EEG);
         % visualize data using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG, CFG);
-        cur_set_name = [eeglab_set_name, '_01init'];
+        cur_set_name = [eeglab_set_name, '_01before_rejection'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
 
-        % Interpolate channels marked as bad ones during the visual
-        % inspection
-        EEG_interp = pop_interp(EEG, EEG.bad_ch.bad_ch_idx, 'spherical');
-        EEG_interp = eeg_checkset(EEG_interp);
-        % visualize data using the eeglab function eegplot
-        fig = eeglab_plot_EEG(EEG_interp, CFG);
-        cur_set_name = [eeglab_set_name, '_02interp'];
-        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
-        close(fig)
+        EEG = pop_epoch(EEG, {}, [-0.2 0.7], 'newname', [eeglab_set_name, '_epochs'], 'epochinfo', 'yes');
+        EEG = eeg_checkset(EEG);
+        EEG = pop_rmbase( EEG, [-200 0]);
+        EEG = eeg_checkset( EEG );
         
-        % Common average referencing
-        EEG_CAR = pop_reref(EEG_interp, []);
-        EEG_CAR = eeg_checkset(EEG_CAR);
-        % visualize data using the eeglab function eegplot
-        fig = eeglab_plot_EEG(EEG_CAR, CFG);
-        cur_set_name = [eeglab_set_name, '_03CAR'];
-        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
-        close(fig)
+        %command string for reject marked trials... all marked epochs...
+        eegplot(EEG.data,'eloc_file',EEG.chanlocs);
+        [tmprej tmprejE] = eegplot2trial( TMPREJ, EEG.pnts,EEG.trials);
+        EEG = pop_rejepoch(EEG,tmprej,0);
+        %eeg_rejmacro
         
-        % Filter data with a basic FIR filter from 1 to 30 Hz
-        EEG_filt = pop_eegfiltnew(EEG_CAR,1,30);
-        EEG_filt = eeg_checkset(EEG_filt);
         % visualize data using the eeglab function eegplot
-        fig = eeglab_plot_EEG(EEG_filt, CFG);
-        cur_set_name = [eeglab_set_name, '_04filtered'];
+        fig = eeglab_plot_EEG(EEG, CFG);
+        cur_set_name = [eeglab_set_name, '_02after_rejection'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
         % save the eeglab dataset
-        output_set_name = [eeglab_set_name, '_after_preICA', '.set'];
-        EEG = pop_saveset(EEG_filt, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
+        output_set_name = [eeglab_set_name, '_after_trial_rejection', '.set'];
+        EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
         EEG = eeg_checkset(EEG);
         
     end
 end
+

@@ -12,18 +12,24 @@ if cut_data_flag
 end
 
 %% PreICA (import, rereference, filter, etc.)
+
+% Convert matlab *.mat files to eeglab datasets *.set 
 convert_mat_to_eeglab_flag = 0;
 if convert_mat_to_eeglab_flag
     [CFG, EEG] = convert_data(CFG);
 end
 
+% rereference + filter data
 rereference_and_filter_flag = 0;
 if rereference_and_filter_flag
     [CFG, EEG] = reref_and_filter(CFG);
 end
 
-% add epoching, baseline correction and trial rejection (review mike
-% cohen's lecture
+% add epoching, baseline correction and trial rejection
+reject_trials_flag = 1;
+if reject_trials_flag
+    [CFG, EEG] = reject_trials(CFG);
+end
 
 % save datasets after trial rejection (folder 06_...)
 
