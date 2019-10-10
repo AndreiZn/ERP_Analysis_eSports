@@ -4,15 +4,19 @@ function fig = eeglab_plot_EEG(EEG, CFG)
 srate = EEG.srate;
 
 % define distance between plots for each channel
-regular_spacing = median(6*std(EEG.data,[],2));
-extreme_case_spacing = 1000; % microvolts
-spacing = min([regular_spacing, extreme_case_spacing]);
+%regular_spacing = median(6*std(EEG.data,[],2));
+%extreme_case_spacing = 1000; % microvolts
+%spacing = min([regular_spacing, extreme_case_spacing]);
 
-% max time in seconds
-max_time_s = size(EEG.data,2)/srate;
 
-% plot data using the eeglab function eegplot 
-eegplot('noui', EEG.data, 'winlength', max_time_s, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
+if length(size(EEG.data)) == 2 % channels x time points 
+    % max time in seconds
+    max_time_s = size(EEG.data,2)/srate;
+    % plot data using the eeglab function eegplot 
+    eegplot('noui', EEG.data, 'winlength', max_time_s, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
+else % channels x time points x n_trials
+    eegplot('noui', EEG.data, 'winlength', EEG.trials, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
+end
 
 % get axis handle
 fig = gcf;
@@ -25,13 +29,15 @@ for i=1:numel(chldrn)
 end
 ax = chldrn(ax_idx);
 
-% define x_tick_time_step 
-%n_ticks = 20;
-x_tick_time_step = 10;% round(max_time_s/n_ticks); 
-
-% set xticks
-xticks(ax, 0:srate*x_tick_time_step:size(EEG.data,2));
-xticklabels(ax, 0:x_tick_time_step:max_time_s);
+if length(size(EEG.data)) == 2 % channels x time points
+    % define x_tick_time_step
+    %n_ticks = 20;
+    x_tick_time_step = 10;% round(max_time_s/n_ticks);
+    
+    % set xticks
+    xticks(ax, 0:srate*x_tick_time_step:size(EEG.data,2));
+    xticklabels(ax, 0:x_tick_time_step:max_time_s);
+end
 
 % set yticks
 yt = get(ax, 'YTick');
