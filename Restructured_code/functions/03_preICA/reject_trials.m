@@ -23,7 +23,7 @@ end
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-for subi=1:numel(subject_folders)
+for subi=1:1%numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -58,9 +58,11 @@ for subi=1:numel(subject_folders)
         EEG = eeg_checkset(EEG);
         
         % Split data into epochs and remove baseline
-        EEG = pop_epoch(EEG, {}, [-0.2 0.7], 'newname', [CFG.eeglab_set_name, '_epochs'], 'epochinfo', 'yes');
+        epoch_boundary_s = CFG.exp_param(exp_id).epoch_boundary_s;
+        baseline_ms = CFG.exp_param(exp_id).baseline_ms;
+        EEG = pop_epoch(EEG, {}, epoch_boundary_s, 'newname', [CFG.eeglab_set_name, '_epochs'], 'epochinfo', 'yes');
         EEG = eeg_checkset(EEG);
-        EEG = pop_rmbase(EEG, [-200 0]);
+        EEG = pop_rmbase(EEG, baseline_ms);
         EEG = eeg_checkset(EEG);
         % visualize data using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG, CFG);
@@ -71,6 +73,7 @@ for subi=1:numel(subject_folders)
         cmd = ['if ~isempty(TMPREJ); ' ...
                     '[tmprej tmprejE] = eegplot2trial(TMPREJ, EEG.pnts, EEG.trials); ' ...
                     '[EEG ~] = pop_rejepoch(EEG, tmprej, 0); ' ...
+                    'EEG.reject.rejmanual = tmprej; ', ...
                'end; ' ....
                'callback_reject_button_pressed(CFG, EEG);'
               ];
