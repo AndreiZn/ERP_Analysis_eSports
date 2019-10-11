@@ -8,27 +8,22 @@ srate = EEG.srate;
 %extreme_case_spacing = 1000; % microvolts
 %spacing = min([regular_spacing, extreme_case_spacing]);
 
-if isfield(CFG, 'plot_ICA_components') 
-    if CFG.plot_ICA_components
-        eegplot('noui', EEG.icaact, 'winlength', EEG.trials, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
-    else 
-        if length(size(EEG.data)) == 2 % channels x time points 
-            % max time in seconds
-            max_time_s = size(EEG.data,2)/srate;
-            % plot data using the eeglab function eegplot 
-            eegplot('noui', EEG.data, 'winlength', max_time_s, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
-        else % channels x time points x n_trials
-            eegplot('noui', EEG.data, 'winlength', EEG.trials, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
-        end
-    end
+% older scripts didn't have plot_ICA_components field; Thus, it's necessary
+% to add it to avoid errors
+if ~isfield(CFG, 'plot_ICA_components')
+    CFG.plot_ICA_components = 0;
+end
+
+if CFG.plot_ICA_components
+    eegplot('noui', EEG.icaact(1:CFG.num_components_to_plot,:,:), 'winlength', EEG.trials, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
 else
-    if length(size(EEG.data)) == 2 % channels x time points 
-            % max time in seconds
-            max_time_s = size(EEG.data,2)/srate;
-            % plot data using the eeglab function eegplot 
-            eegplot('noui', EEG.data, 'winlength', max_time_s, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
-        else % channels x time points x n_trials
-            eegplot('noui', EEG.data, 'winlength', EEG.trials, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
+    if length(size(EEG.data)) == 2 % channels x time points
+        % max time in seconds
+        max_time_s = size(EEG.data,2)/srate;
+        % plot data using the eeglab function eegplot
+        eegplot('noui', EEG.data, 'winlength', max_time_s, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
+    else % channels x time points x n_trials
+        eegplot('noui', EEG.data, 'winlength', EEG.trials, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
     end
 end
 
@@ -72,22 +67,13 @@ else
     end
 end
 
-if ~isfield(CFG, 'plot_ICA_components') 
+if ~CFG.plot_ICA_components
     % set yticks
     yt = get(ax, 'YTick');
     yt = yt(2:end);
     set(ax, 'YTick', yt);
     ch_labels = {EEG.chanlocs.labels};
     set(ax, 'YTickLabel', fliplr(ch_labels));
-else
-    if ~CFG.plot_ICA_components
-        % set yticks
-        yt = get(ax, 'YTick');
-        yt = yt(2:end);
-        set(ax, 'YTick', yt);
-        ch_labels = {EEG.chanlocs.labels};
-        set(ax, 'YTickLabel', fliplr(ch_labels));
-    end
 end
 % add grid
 grid on;
