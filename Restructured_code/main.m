@@ -12,7 +12,6 @@ if cut_data_flag
 end
 
 %% PreICA (import, rereference, filter, etc.)
-
 % Convert matlab *.mat files to eeglab datasets *.set 
 convert_mat_to_eeglab_flag = 0;
 if convert_mat_to_eeglab_flag
@@ -26,15 +25,18 @@ if rereference_and_filter_flag
 end
 
 % add epoching, baseline correction and trial rejection
-reject_trials_flag = 1;
+reject_trials_flag = 0;
 if reject_trials_flag
     % start reject_trials a separate script
     reject_trials(CFG);
 end
 
 %% Run ICA (run ICA, save weight, save bad components)
-
 % run ICA
+runICA_flag = 1;
+if runICA_flag
+    CFG = runICA(CFG);
+end
 
 % save datasets with ICA weights  (folder 07_...)
 

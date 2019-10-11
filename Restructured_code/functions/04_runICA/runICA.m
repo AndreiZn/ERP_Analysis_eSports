@@ -1,13 +1,11 @@
-%% reject_trials function works with 05_ERP_esports_data_reref_and_filter folder:
-% - Split data into epochs
-% - Remove baseline
-% - Reject bad trials
+%% runICA function works with 06_ERP_esports_data_reject_trials folder:
+% - Run ICA
+% - Plot ICA components
 
-% reject_trials(CFG)
-CFG = define_defaults();
+function CFG = runICA(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_4_reject_trials\data';
-CFG.output_plots_folder_name = 'stage_4_reject_trials\plots';
+CFG.output_data_folder_name = 'stage_5_runICA\data';
+CFG.output_plots_folder_name = 'stage_5_runICA\plots';
 
 CFG.output_data_folder = [CFG.output_folder_path, '\', CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -23,7 +21,7 @@ end
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-for subi=11:11%numel(subject_folders)
+for subi=1:numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -57,28 +55,20 @@ for subi=11:11%numel(subject_folders)
         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
         EEG = eeg_checkset(EEG);
         
-        % Split data into epochs and remove baseline
-        epoch_boundary_s = CFG.exp_param(exp_id).epoch_boundary_s;
-        baseline_ms = CFG.exp_param(exp_id).baseline_ms;
-        EEG = pop_epoch(EEG, {}, epoch_boundary_s, 'newname', [CFG.eeglab_set_name, '_epochs'], 'epochinfo', 'yes');
-        EEG = eeg_checkset(EEG);
-        EEG = pop_rmbase(EEG, baseline_ms);
-        EEG = eeg_checkset(EEG);
-        % visualize data using the eeglab function eegplot
+        EEG = pop_runica(EEG, 'extended',1,'interupt','on');
+        % visualize components using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG, CFG);
-        cur_set_name = [CFG.eeglab_set_name, '_01before_rejection'];
+        cur_set_name = [eeglab_set_name, '_ICAcomponents'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
+
+        % save the eeglab dataset
+        output_set_name = [CFG.eeglab_set_name, '_after_ICA', '.set'];
+        EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
+        eeg_checkset(EEG);
         
-        cmd = ['if ~isempty(TMPREJ); ' ...
-                    '[tmprej tmprejE] = eegplot2trial(TMPREJ, EEG.pnts, EEG.trials); ' ...
-                    '[EEG ~] = pop_rejepoch(EEG, tmprej, 0); ' ...
-                    'EEG.manually_rej_trials = tmprej; ', ...
-               'end; ' ....
-               'callback_reject_button_pressed(CFG, EEG);'
-              ];
-        eegplot(EEG.data,'eloc_file',EEG.chanlocs,'command',cmd);
-        keyboard
+
     end
 end
+
 
