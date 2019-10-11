@@ -32,8 +32,7 @@ for subi=1:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=2:2:numel(files)
-        
+    for filei=2:2:numel(files)       
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -49,16 +48,17 @@ for subi=1:numel(subject_folders)
             mkdir(CFG.output_plots_folder_cur)
         end
         
-        CFG.eeg_plot_spacing = 50;
+        CFG.plot_ICA_components = 1;
+        CFG.eeg_plot_spacing = 15;
         
         % Load dataset
         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
         EEG = eeg_checkset(EEG);
         
-        EEG = pop_runica(EEG, 'extended',1,'interupt','on');
+        EEG = pop_runica(EEG,'extended',1,'interupt','on');
         % visualize components using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG, CFG);
-        cur_set_name = [eeglab_set_name, '_ICAcomponents'];
+        cur_set_name = [CFG.eeglab_set_name, '_ICAcomponents'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
 
@@ -67,7 +67,6 @@ for subi=1:numel(subject_folders)
         EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
         eeg_checkset(EEG);
         
-
     end
 end
 
