@@ -28,10 +28,11 @@ end
 % add epoching, baseline correction and trial rejection
 reject_trials_flag = 1;
 if reject_trials_flag
-    [CFG, EEG] = reject_trials(CFG);
+    % start reject_trials a separate script
+    reject_trials(CFG);
 end
 
-% save datasets after trial rejection (folder 06_...)
+%% Run ICA (run ICA, save weight, save bad components)
 
 % run ICA
 
@@ -42,9 +43,6 @@ end
 % convert datasets to continuous EEG
 
 % save resulting datasets (folder 08_...)
-
-%% Run ICA (run ICA, save weight, save bad components)
-
 %% Level-1 analysis (within subject study)
 
 %% Level-2 analysis (group study)
