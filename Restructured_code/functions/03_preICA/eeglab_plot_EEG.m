@@ -13,9 +13,14 @@ srate = EEG.srate;
 if ~isfield(CFG, 'plot_ICA_components')
     CFG.plot_ICA_components = 0;
 end
+if ~isfield(CFG, 'eeglab_plot_fullscreen')
+    CFG.eeglab_plot_fullscreen = 1;
+end
 
 if CFG.plot_ICA_components
-    eegplot('noui', EEG.icaact(1:CFG.num_components_to_plot,:,:), 'winlength', EEG.trials, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
+    IC_all = 1:CFG.num_components_to_plot;
+    IC_marked_for_rejection = find(EEG.reject.gcompreject);
+    eegplot('noui', EEG.icaact(IC_all,:,:), 'winlength', EEG.trials, 'srate', srate, 'spacing', CFG.eeg_plot_spacing);
 else
     if length(size(EEG.data)) == 2 % channels x time points
         % max time in seconds
@@ -29,7 +34,9 @@ end
 
 % get axis handle
 fig = gcf;
-set(fig, 'units','normalized','outerposition',[0 0 1 1])
+if CFG.eeglab_plot_fullscreen
+    set(fig, 'units','normalized','outerposition',[0 0 1 1])
+end
 chldrn = fig.Children;
 ax_idx = 4; % usually 4 works, but it's better to check additionally
 for i=1:numel(chldrn)
@@ -39,6 +46,15 @@ for i=1:numel(chldrn)
 end
 ax = chldrn(ax_idx);
 
+% Change the color of marked components to red
+if CFG.plot_ICA_components
+    lines = get(ax, 'Children');
+    for lini = IC_marked_for_rejection
+        ln = lines(lini);
+        ln.Color = [1 0 0];
+    end
+end   
+    
 if length(size(EEG.data)) == 2 % channels x time points
     % define x_tick_time_step
     %n_ticks = 20;
@@ -75,5 +91,9 @@ if ~CFG.plot_ICA_components
     ch_labels = {EEG.chanlocs.labels};
     set(ax, 'YTickLabel', fliplr(ch_labels));
 end
+
 % add grid
 grid on;
+
+% No action required when moving mouse across the figure
+set(gcf, 'WindowButtonMotionFcn', '')
