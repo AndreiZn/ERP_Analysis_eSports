@@ -10,5 +10,7 @@ pop_eegplot( EEG, 1, 1, 1);
 EEG = pop_subcomp( EEG, [1  2], 0);
 EEG = eeg_checkset( EEG );
 
-figHandles = findall(groot, 'Type', 'figure')
+figHandles = findall(groot, 'Type', 'figure');
 pop_prop( EEG, 0, 1:2, 1,{ 'freqrange' [1 30] });
+
+envtopo()
