@@ -27,18 +27,22 @@ end
 % add epoching, baseline correction and trial rejection
 reject_trials_flag = 0;
 if reject_trials_flag
-    % start reject_trials a separate script
+    % run reject_trials as a separate script
     reject_trials(CFG);
 end
 
 %% Run ICA (run ICA, save weight, save bad components)
 % run ICA
-runICA_flag = 1;
+runICA_flag = 0;
 if runICA_flag
     CFG = runICA(CFG);
 end
 
-% save datasets with ICA weights  (folder 07_...)
+reject_IC_flag = 1;
+if reject_IC_flag
+    % run reject_IC as a separate script
+    reject_IC();
+end
 
 % delete bad components/trials (review the lecture)
 
