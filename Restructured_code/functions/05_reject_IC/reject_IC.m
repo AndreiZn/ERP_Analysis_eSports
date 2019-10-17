@@ -22,7 +22,7 @@ global EEG
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-for subi=1:1%1:numel(subject_folders)
+for subi=1:numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -65,7 +65,7 @@ for subi=1:1%1:numel(subject_folders)
 
         % Create CFG.num_components_to_plot figures with IC properties
         % (topoplot, power spectrum and ERP image)
-        CFG.num_components_to_plot = round(0.5*size(EEG.icaact,1));
+        CFG.num_components_to_plot = round(size(EEG.icaact,1));
         pop_prop(EEG, 0, 1:CFG.num_components_to_plot, 1,{'freqrange' [1 30]});
         
         % Plot time-series of each IC
