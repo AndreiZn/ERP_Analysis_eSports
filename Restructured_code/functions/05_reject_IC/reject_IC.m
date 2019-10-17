@@ -68,8 +68,6 @@ for subi=1:1%1:numel(subject_folders)
         CFG.num_components_to_plot = round(0.5*size(EEG.icaact,1));
         pop_prop(EEG, 0, 1:CFG.num_components_to_plot, 1,{'freqrange' [1 30]});
         
-        keyboard
-        
         % Plot time-series of each IC
         CFG.plot_ICA_components = 1;
         CFG.eeg_plot_spacing = 15;
