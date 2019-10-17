@@ -21,7 +21,7 @@ end
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-for subi=1:numel(subject_folders)
+for subi=1:1%1:numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -64,8 +64,8 @@ for subi=1:numel(subject_folders)
         
         % Create CFG.num_components_to_plot figures with IC properties
         % (topoplot, power spectrum and ERP image)
-        CFG.num_components_to_plot = 3%;round(0.5*size(EEG.icaact,1));
-        pop_prop( EEG, 0, 1:CFG.num_components_to_plot, 1,{'freqrange' [1 30]});
+        CFG.num_components_to_plot = round(0.5*size(EEG.icaact,1));
+        pop_prop(EEG, 0, 1:CFG.num_components_to_plot, 1,{'freqrange' [1 30]});
         
         % Plot time-series of each IC
         CFG.plot_ICA_components = 1;
@@ -76,7 +76,7 @@ for subi=1:numel(subject_folders)
         % get handles of all figures and save them
         figHandles = findall(groot, 'Type', 'figure');
         num_figs = numel(figHandles);
-        for figi = 2:num_figs
+        for figi = num_figs:-1:2
             cur_fig = figHandles(figi);
             cur_fig_name = cur_fig.Name(14:end);
             saveas(cur_fig,[CFG.output_plots_folder_cur, '\', cur_set_name, '_', cur_fig_name,'.png'])
@@ -85,7 +85,7 @@ for subi=1:numel(subject_folders)
         % Wait till the user marks bad components
         keyboard
         
-        % close components' time-series plots
+        % close components' time-series plot
         close(figHandles(1))
         % plot again but with marked components highlighted with red color
         fig = eeglab_plot_EEG(EEG, CFG);
@@ -93,21 +93,19 @@ for subi=1:numel(subject_folders)
         close(fig)
         
         % remove selected components
-        EEG = pop_subcomp(EEG, find(EEG.reject.gcompreject), 0, 0);
-        
-        keyboard
+        EEG_with_rejected_comp = pop_subcomp(EEG, find(EEG.reject.gcompreject), 0, 0);
         
         % visualize data using the eeglab function eegplot
         CFG.plot_ICA_components = 0;
         CFG.eeg_plot_spacing = 25;
         CFG.eeglab_plot_fullscreen = 1;
-        fig = eeglab_plot_EEG(EEG, CFG);
+        fig = eeglab_plot_EEG(EEG_with_rejected_comp, CFG);
         plot_name = [CFG.eeglab_set_name, '_02after_IC_rejection'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', plot_name '_plot','.png'])
         close(fig)
         
         % save the eeglab dataset
-        output_set_name = [CFG.eeglab_set_name, '_reject_IC', '.set'];
+        output_set_name = [CFG.eeglab_set_name, '_IC_marked_for_rejection', '.set'];
         EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
         eeg_checkset(EEG);
         
