@@ -18,6 +18,7 @@ if ~exist(CFG.output_plots_folder, 'dir')
 end
 
 %% Loop through folders
+global EEG
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
@@ -61,11 +62,13 @@ for subi=1:1%1:numel(subject_folders)
         plot_name = [CFG.eeglab_set_name, '_01before_IC_rejection'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', plot_name '_plot','.png'])
         close(fig)
-        
+
         % Create CFG.num_components_to_plot figures with IC properties
         % (topoplot, power spectrum and ERP image)
         CFG.num_components_to_plot = round(0.5*size(EEG.icaact,1));
         pop_prop(EEG, 0, 1:CFG.num_components_to_plot, 1,{'freqrange' [1 30]});
+        
+        keyboard
         
         % Plot time-series of each IC
         CFG.plot_ICA_components = 1;
@@ -76,7 +79,7 @@ for subi=1:1%1:numel(subject_folders)
         % get handles of all figures and save them
         figHandles = findall(groot, 'Type', 'figure');
         num_figs = numel(figHandles);
-        for figi = num_figs:-1:2
+        for figi = 2:num_figs
             cur_fig = figHandles(figi);
             cur_fig_name = cur_fig.Name(14:end);
             saveas(cur_fig,[CFG.output_plots_folder_cur, '\', cur_set_name, '_', cur_fig_name,'.png'])
