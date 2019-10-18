@@ -1,12 +1,12 @@
-%% reref_and_filter function works with 04_ERP_esports_data_eeglab_init folder:
-% - Interpolate bad electrodes
+%% intrp_reref_and_filter function works with 04_ERP_esports_data_eeglab_init folder:
+% - Interpolate bad channels
 % - Rereference data (CAR)
 % - Filter data
 
-function [CFG, EEG] = reref_and_filter(CFG)
+function [CFG, EEG] = intrp_reref_and_filter(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_3_reref_and_filter\data';
-CFG.output_plots_folder_name = 'stage_3_reref_and_filter\plots';
+CFG.output_data_folder_name = 'stage_3_intrp_reref_and_filter\data';
+CFG.output_plots_folder_name = 'stage_3_intrp_reref_and_filter\plots';
 
 CFG.output_data_folder = [CFG.output_folder_path, '\', CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -80,8 +80,8 @@ for subi=1:numel(subject_folders)
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
-        % Filter data with a basic FIR filter from 1 to 40 Hz
-        EEG_filt = pop_eegfiltnew(EEG_CAR,1,40);
+        % Filter data with a basic FIR filter from 1 to 30 Hz
+        EEG_filt = pop_eegfiltnew(EEG_CAR,1,30);
         EEG_filt = eeg_checkset(EEG_filt);
         % visualize data using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG_filt, CFG);
@@ -94,7 +94,7 @@ for subi=1:numel(subject_folders)
         assert(EEG_filt.rank_manually_computed == rank(EEG_filt.data(:,:)),'Rank computed manually is not equal to rank computed with a matlab function rank()')
         
         % save the eeglab dataset
-        output_set_name = [eeglab_set_name, '_after_preICA', '.set'];
+        output_set_name = [eeglab_set_name, '_intrp_reref_filtered', '.set'];
         EEG = pop_saveset(EEG_filt, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
         EEG = eeg_checkset(EEG);
         

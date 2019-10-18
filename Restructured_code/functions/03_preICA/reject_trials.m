@@ -23,7 +23,7 @@ end
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-for subi=11:11%numel(subject_folders)
+for subi=1:3%numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -57,13 +57,15 @@ for subi=11:11%numel(subject_folders)
         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
         EEG = eeg_checkset(EEG);
         
-        % Split data into epochs and remove baseline
+        % Split data into epochs
         epoch_boundary_s = CFG.exp_param(exp_id).epoch_boundary_s;
         baseline_ms = CFG.exp_param(exp_id).baseline_ms;
         EEG = pop_epoch(EEG, {}, epoch_boundary_s, 'newname', [CFG.eeglab_set_name, '_epochs'], 'epochinfo', 'yes');
         EEG = eeg_checkset(EEG);
-        EEG = pop_rmbase(EEG, baseline_ms);
-        EEG = eeg_checkset(EEG);
+        % Remove baseline
+        %EEG = pop_rmbase(EEG, baseline_ms);
+        %EEG = eeg_checkset(EEG);
+        
         % visualize data using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG, CFG);
         cur_set_name = [CFG.eeglab_set_name, '_01before_rejection'];
