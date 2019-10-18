@@ -32,7 +32,7 @@ end
 % https://sccn.ucsd.edu/wiki/Makoto%27s_preprocessing_pipeline#Run_ICA_.2806.2F26.2F2018_updated.29
 % (If you extract data epochs before running ICA, make sure that the baseline is long enough (at least 500 ms) or that you do not remove the baseline from your data epochs. 
 % See the following article for more information: Groppe, D.M., Makeig, S., & Kutas, M. (2009) Identifying reliable independent components via split-half comparisons. NeuroImage, 45 pp.1199-1211
-reject_trials_flag = 1;
+reject_trials_flag = 0;
 if reject_trials_flag
     % run reject_trials as a separate script
     reject_trials(CFG);
