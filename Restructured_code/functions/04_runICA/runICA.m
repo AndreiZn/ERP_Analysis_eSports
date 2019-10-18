@@ -52,21 +52,23 @@ for subi=1:1%numel(subject_folders)
         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
         EEG = eeg_checkset(EEG);
         
+        % check the rank of the data matrix
+        assert(EEG.rank_manually_computed == rank(reshape(EEG.data, EEG.nbchan, [])),'Rank computed manually is not equal to rank computed with a matlab function rank()')
+        
+        % run ICA (getrank(tmpdata) function corrected to return rank of
+        % the matrix and not the total number of channels - for details read "Adjust data rank for ICA" at https://sccn.ucsd.edu/wiki/Makoto%27s_preprocessing_pipeline#Run_ICA_.2806.2F26.2F2018_updated.29 
         EEG = pop_runica(EEG,'extended',1,'interupt','on');
+        
+        % check that the rank of the data matrix is equal to the number of
+        % ICA components
+        assert(EEG.rank_manually_computed == size(EEG.icaact,1)),'Rank of the data matrix is not equal to the number of ICA components')
+        
         % visualize all components using the eeglab function eegplot
         CFG.plot_ICA_components = 1;
-        CFG.num_components_to_plot = CFG.total_num_data_channels;
+        CFG.num_components_to_plot = size(EEG.icaact,1);
         CFG.eeg_plot_spacing = 15;
         fig = eeglab_plot_EEG(EEG, CFG);
         cur_set_name = [CFG.eeglab_set_name, '_all_ICA_components'];
-        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
-        close(fig)
-        % visualize main components using the eeglab function eegplot
-        CFG.plot_ICA_components = 1;
-        CFG.num_components_to_plot = 10;
-        CFG.eeg_plot_spacing = 15;
-        fig = eeglab_plot_EEG(EEG, CFG);
-        cur_set_name = [CFG.eeglab_set_name, '_main_ICA_components'];
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
 
@@ -77,5 +79,4 @@ for subi=1:1%numel(subject_folders)
         
     end
 end
-
 

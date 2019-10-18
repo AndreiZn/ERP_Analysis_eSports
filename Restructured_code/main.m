@@ -40,12 +40,12 @@ end
 
 %% Run ICA (run ICA, save weight, save bad components)
 % run ICA
-runICA_flag = 0;
+runICA_flag = 1;
 if runICA_flag
     CFG = runICA(CFG);
 end
 
-reject_IC_flag = 1;
+reject_IC_flag = 0;
 if reject_IC_flag
     % run reject_IC as a separate script
     reject_IC();
