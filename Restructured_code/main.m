@@ -19,7 +19,7 @@ if convert_mat_to_eeglab_flag
 end
 
 % rereference + filter data
-rereference_and_filter_flag = 0;
+rereference_and_filter_flag = 1;
 if rereference_and_filter_flag
     [CFG, EEG] = reref_and_filter(CFG);
 end

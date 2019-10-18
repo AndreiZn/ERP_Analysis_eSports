@@ -89,6 +89,7 @@ for subi=1:numel(subject_folders)
         saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_plot','.png'])
         close(fig)
         
+        EEG.rank_manually_computed = EEG;
         % save the eeglab dataset
         output_set_name = [eeglab_set_name, '_after_preICA', '.set'];
         EEG = pop_saveset(EEG_filt, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
