@@ -21,7 +21,7 @@ end
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-for subi=1:1%numel(subject_folders)
+for subi=2:numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -61,7 +61,7 @@ for subi=1:1%numel(subject_folders)
         
         % check that the rank of the data matrix is equal to the number of
         % ICA components
-        assert(EEG.rank_manually_computed == size(EEG.icaact,1)),'Rank of the data matrix is not equal to the number of ICA components')
+        assert(EEG.rank_manually_computed == size(EEG.icaact,1),'Rank of the data matrix is not equal to the number of ICA components')
         
         % visualize all components using the eeglab function eegplot
         CFG.plot_ICA_components = 1;
