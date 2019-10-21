@@ -69,13 +69,17 @@ for subi=1:numel(subject_folders)
         assert(EEG.rank_manually_computed == rank(reshape(EEG.data, EEG.nbchan, [])),'Rank computed manually is not equal to rank computed with a matlab function rank()')
         
         % combine epochs into one epoch
-        EEG = pop_epoch2continuous(EEG);
+        EEG = epoch2continuous(EEG);
         EEG = eeg_checkset(EEG);
         
-        % load Eventlist, split data into epochs and remove baseline in the ERPLAB plugin
+        % load eventlist, split data into epochs and remove baseline in the ERPLAB plugin
         CFG.epoch_boundary_ms = 1000*CFG.exp_param(exp_id).epoch_boundary_s;
-        CFG.elist_path = [CFG.erplab_files_folder, '\', exp_id];
+        elist_filename = ['elist_', exp_id, '_short.txt'];
+        CFG.elist_path = [CFG.erplab_files_folder, '\', exp_id, '\', elist_filename];
         [CFG, EEG] = load_eventlist_and_epoch(CFG, EEG);
+        
+        % compute ERPs
+        [ERP] = compute_ERP(EEG);
        
     end
 end
