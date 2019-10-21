@@ -35,6 +35,11 @@ value_2_2_5.epoch_boundary_s = [-0.2 0.7]; value_2_2_5.baseline_ms = [-200 0];
 valueSet = {value_1_1_1,value_1_1_2,value_1_2_2,value_2_2_2,value_2_2_4,value_2_2_5};
 CFG.exp_param = containers.Map(keySet,valueSet);
 
+%% Folder for ERPLAB experiments' decription files
+folder_name = 'ERPLAB_exp_description_files';
+temp = dir(fullfile(CFG.root_folder, '**', folder_name, '.'));
+CFG.erplab_files_folder = temp.folder;
+
 %% Define (or select manually) code, data and output folders
 cell_root_folder = split(CFG.root_folder, "\");
 root_folder_name = cell_root_folder{end};

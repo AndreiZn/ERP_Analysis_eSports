@@ -1,15 +1,4 @@
-%% Remove bad components
 
-%% Remove bad trials
-
-%% Combine epochs into one epoch
-EEG = pop_epoch2continuous(EEG);
-%% Load Eventlist and split data into epochs
-output_suffix = 'be';
-elist_name = ['elist_', cur_exp_id, '_short.txt'];
-elist_path = [ERPLAB_scripts_folder, 'Exp_', cur_exp_id, '\', elist_name];
-[EEG] = Event_list_and_epochs(EEG, epoch_boundary, elist_path, set_name, output_suffix, output_folder_cur);
-EEG = eeg_checkset( EEG );
 
 %% Compute ERPs
 [ERP] = Compute_averaged_ERP(EEG, set_name, output_folder_cur);
