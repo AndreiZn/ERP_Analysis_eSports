@@ -38,7 +38,7 @@ for subi=1:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=2:2:numel(files)       
+    for filei=4:2:numel(files)       
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -80,7 +80,22 @@ for subi=1:numel(subject_folders)
         
         % compute ERPs
         [ERP] = compute_ERP(EEG);
-       
+        
+        % plot ERPs
+        if CFG.plot_ERP_flag
+            CFG.ERP_bins = CFG.exp_param(exp_id).ERP_bins;
+            [CFG, ERP] = plot_ERPs(CFG, ERP);
+        end
+        
+        % Add:
+        % - save erp_sets and erp_plots
+        % - plot difference between target and non-target responses
+        % - plot ERP_image for each bin 
+%         if plot_ERP_Im_flag
+%             for channel_idx = 1:EEG.nbchan
+%                 Plot_ERP_Image(EEG, target_bin, set_name, output_folder_cur, channel_idx)
+%             end
+%         end
     end
 end
 

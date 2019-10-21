@@ -26,12 +26,12 @@ CFG.electrode_location_file = fullfile(electrode_location_file_struct.folder, el
 
 %% Experiment specific variables
 keySet = {'1_1_1','1_1_2','1_2_2','2_2_2','2_2_4','2_2_5'};
-value_1_1_1.epoch_boundary_s = [-0.2 0.7]; value_1_1_1.baseline_ms = [-200 0];
-value_1_1_2.epoch_boundary_s = [-0.2 0.45]; value_1_1_2.baseline_ms = [-200 0];
-value_1_2_2.epoch_boundary_s = [-0.2 0.7]; value_1_2_2.baseline_ms = [-200 0];
-value_2_2_2.epoch_boundary_s = [-0.2 0.7]; value_2_2_2.baseline_ms = [-200 0];
-value_2_2_4.epoch_boundary_s = [-0.2 0.7]; value_2_2_4.baseline_ms = [-200 0];
-value_2_2_5.epoch_boundary_s = [-0.2 0.7]; value_2_2_5.baseline_ms = [-200 0];
+value_1_1_1.epoch_boundary_s = [-0.2 0.7]; value_1_1_1.baseline_ms = [-200 0]; value_1_1_1.ERP_bins = [1];
+value_1_1_2.epoch_boundary_s = [-0.2 0.45]; value_1_1_2.baseline_ms = [-200 0]; value_1_1_2.ERP_bins = [1 2];
+value_1_2_2.epoch_boundary_s = [-0.2 0.7]; value_1_2_2.baseline_ms = [-200 0]; value_1_2_2.ERP_bins = [1 2];
+value_2_2_2.epoch_boundary_s = [-0.2 0.7]; value_2_2_2.baseline_ms = [-200 0]; value_2_2_2.ERP_bins = [1 2];
+value_2_2_4.epoch_boundary_s = [-0.2 0.7]; value_2_2_4.baseline_ms = [-200 0]; value_2_2_4.ERP_bins = [1 2];
+value_2_2_5.epoch_boundary_s = [-0.2 0.7]; value_2_2_5.baseline_ms = [-200 0]; value_2_2_5.ERP_bins = [1 2];
 valueSet = {value_1_1_1,value_1_1_2,value_1_2_2,value_2_2_2,value_2_2_4,value_2_2_5};
 CFG.exp_param = containers.Map(keySet,valueSet);
 

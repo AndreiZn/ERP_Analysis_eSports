@@ -40,7 +40,7 @@ end
 
 %% Run ICA (run ICA, save weights, mark bad components)
 % run ICA
-runICA_flag = 1;
+runICA_flag = 0;
 if runICA_flag
     CFG = runICA(CFG);
 end
@@ -56,7 +56,8 @@ end
 %% Level-1 analysis (within subject study)
 get_ERP_flag = 1;
 if get_ERP_flag
-    CFG = get_ERP(CFG);
+    CFG.plot_ERP_flag = 1;
+    CFG = get_ERP(CFG); 
 end
 
 %% Level-2 analysis (group study)

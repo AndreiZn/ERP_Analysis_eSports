@@ -9,7 +9,8 @@ EEG = pop_overwritevent(EEG, 'codelabel');
 EEG = eeg_checkset(EEG);
 
 % Split into epochs and remove baseline
-EEG = pop_epochbin(EEG, CFG.epoch_boundary_ms,  'pre');
+correction_coefficient = 0.99; % the coefficient is used to compress the epoch limits such that each epoch doesn't intersect with the boundary events
+EEG = pop_epochbin(EEG, correction_coefficient*CFG.epoch_boundary_ms,  'pre');
 EEG = eeg_checkset(EEG);
 
 %EEG = pop_saveset( EEG, 'filename',output_set_name,'filepath',output_folder_cur);
