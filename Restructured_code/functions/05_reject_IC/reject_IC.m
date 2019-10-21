@@ -1,4 +1,4 @@
-%% reject_IC works with 07_ERP_esports_data_after_ICA folder:
+%% reject_IC works with 05_ERP_esports_data_after_ICA folder:
 % - Visualize ICs (topoplot, power spectrum, ERP image)
 % - Mark ICs not related to brain activity and reject marked ICs
 

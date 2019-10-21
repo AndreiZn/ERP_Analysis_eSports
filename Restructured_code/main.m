@@ -53,10 +53,11 @@ if reject_IC_flag
     reject_IC();
 end
 
-% convert datasets to continuous EEG
-
-% save resulting datasets (folder 08_...)
 %% Level-1 analysis (within subject study)
+get_ERP_flag = 1;
+if get_ERP_flag
+    CFG = get_ERP(CFG);
+end
 
 %% Level-2 analysis (group study)
 

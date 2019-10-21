@@ -1,4 +1,4 @@
-%% reject_trials function works with 05_ERP_esports_data_reref_and_filter folder:
+%% reject_trials function works with 03_ERP_esports_data_reref_and_filter folder:
 % - Split data into epochs
 % - Reject bad trials
 

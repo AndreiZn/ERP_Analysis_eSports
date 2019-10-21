@@ -1,4 +1,4 @@
-%% convert_data function works with 03_ERP_data_cut data folder:
+%% convert_data function works with 01_ERP_data_cut data folder:
 % - Import data in matlab format, convert it to the eeglab format, fill in dataset info,
 % add channel locations and save resulting datasets to 04_ERP_esports_data_eeglab_init data folder
 

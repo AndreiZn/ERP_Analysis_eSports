@@ -1,4 +1,4 @@
-%% intrp_reref_and_filter function works with 04_ERP_esports_data_eeglab_init folder:
+%% intrp_reref_and_filter function works with 02_ERP_esports_data_eeglab_init folder:
 % - Interpolate bad channels
 % - Rereference data (CAR)
 % - Filter data

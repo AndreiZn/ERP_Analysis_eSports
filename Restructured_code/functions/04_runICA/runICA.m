@@ -1,4 +1,4 @@
-%% runICA function works with 06_ERP_esports_data_reject_trials folder:
+%% runICA function works with 04_ERP_esports_data_reject_trials folder:
 % - Run ICA
 % - Plot ICA components
 

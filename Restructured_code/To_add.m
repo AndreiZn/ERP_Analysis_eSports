@@ -3,7 +3,7 @@
 %% Remove bad trials
 
 %% Combine epochs into one epoch
-
+EEG = pop_epoch2continuous(EEG);
 %% Load Eventlist and split data into epochs
 output_suffix = 'be';
 elist_name = ['elist_', cur_exp_id, '_short.txt'];
@@ -34,5 +34,16 @@ EEG = pop_epochbin( EEG , epoch_boundary,  'pre'); % GUI: 25-Apr-2019 01:43:10
 EEG = eeg_checkset( EEG );
 output_set_name = [set_name, '_', output_suffix, '.set'];
 EEG = pop_saveset( EEG, 'filename',output_set_name,'filepath',output_folder_cur);
+
+end
+
+function [ERP] = Compute_averaged_ERP(EEG, set_name, output_folder_cur)
+
+ERP = pop_averager( EEG , 'Criterion', 'good', 'ExcludeBoundary', 'on', 'SEM', 'on' );
+
+set_name = [set_name, '_ERPset'];
+output_set_name = [set_name, '.erp'];
+ERP = pop_savemyerp(ERP, 'erpname', set_name, 'filename', output_set_name, 'filepath',...
+    output_folder_cur);
 
 end
