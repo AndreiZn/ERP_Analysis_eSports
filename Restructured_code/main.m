@@ -38,20 +38,20 @@ if reject_trials_flag
     reject_trials(CFG);
 end
 
-%% Run ICA (run ICA, save weight, save bad components)
+%% Run ICA (run ICA, save weights, mark bad components)
 % run ICA
 runICA_flag = 1;
 if runICA_flag
     CFG = runICA(CFG);
 end
 
+% look through independent components and reject bad ones (look up the
+% tutorial for examples)
 reject_IC_flag = 0;
 if reject_IC_flag
     % run reject_IC as a separate script
     reject_IC();
 end
-
-% delete bad components/trials (review the lecture)
 
 % convert datasets to continuous EEG
 

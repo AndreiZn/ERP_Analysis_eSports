@@ -1,6 +1,5 @@
 %% reject_trials function works with 05_ERP_esports_data_reref_and_filter folder:
 % - Split data into epochs
-% - Remove baseline
 % - Reject bad trials
 
 % reject_trials(CFG)

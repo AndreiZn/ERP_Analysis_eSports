@@ -90,7 +90,7 @@ for subi=1:numel(subject_folders)
         close(figHandles(1))
         % plot again but with marked components highlighted with red color
         fig = eeglab_plot_EEG(EEG, CFG);
-        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_reject_IC','.png'])
+        saveas(fig,[CFG.output_plots_folder_cur, '\', cur_set_name '_components_to_reject','.png'])
         close(fig)
         
         % remove selected components
