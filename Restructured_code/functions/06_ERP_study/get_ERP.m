@@ -27,7 +27,7 @@ end
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-for subi=1:numel(subject_folders)
+for subi=4:numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -38,7 +38,7 @@ for subi=1:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=2:2:numel(files)       
+    for filei=8:2:numel(files)       
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -58,16 +58,18 @@ for subi=1:numel(subject_folders)
         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
         EEG = eeg_checkset(EEG);
         
-        % remove marked ICs
-        num_components_to_remove = numel(find(EEG.reject.gcompreject));
-        EEG = pop_subcomp(EEG, find(EEG.reject.gcompreject), 0, 0);
-        
-        % recompute rank of the data matrix manually
-        EEG.rank_manually_computed = EEG.rank_manually_computed - num_components_to_remove;
-        
-        % check the rank of the data matrix
-        assert(EEG.rank_manually_computed == rank(reshape(EEG.data, EEG.nbchan, [])),'Rank computed manually is not equal to rank computed with a matlab function rank()')
-        
+        if CFG.remove_IC_components
+            % remove marked ICs
+            num_components_to_remove = numel(find(EEG.reject.gcompreject));
+            EEG = pop_subcomp(EEG, find(EEG.reject.gcompreject), 0, 0);
+            
+            % recompute rank of the data matrix manually
+            EEG.rank_manually_computed = EEG.rank_manually_computed - num_components_to_remove;
+            
+            % check rank of the data matrix
+            assert(EEG.rank_manually_computed == rank(reshape(EEG.data, EEG.nbchan, [])),'Rank computed manually is not equal to rank computed with a matlab function rank()')
+        end
+
         % combine epochs into one epoch
         EEG = epoch2continuous(EEG);
         EEG = eeg_checkset(EEG);
