@@ -82,15 +82,36 @@ for subi=4:numel(subject_folders)
         
         % compute ERPs
         [ERP] = compute_ERP(EEG);
+        ERP = pop_savemyerp(ERP, 'erpname', CFG.eeglab_set_name, 'filename', [CFG.eeglab_set_name, '.erp'], 'filepath', CFG.output_data_folder_cur);
         
         % plot ERPs
         if CFG.plot_ERP_flag
             CFG.ERP_bins = CFG.exp_param(exp_id).ERP_bins;
-            [CFG, ERP] = plot_ERPs(CFG, ERP);
+            CFG.amplitude_limit = [-15, 15];
+            [CFG, ERP, fig] = plot_ERPs(CFG, ERP);
+            plot_name = [CFG.eeglab_set_name, '_ERP_waveforms'];
+            saveas(fig,[CFG.output_plots_folder_cur, '\', plot_name '_plot','.png'])
+            close(fig)
         end
         
+        % plot ERP scalplot
+        if CFG.plot_ERP_scalplot_flag
+            CFG.ERP_bins = CFG.exp_param(exp_id).ERP_bins;
+            CFG.amplitude_limit = [-15, 15];
+            latencies_to_plot = [100, 200, 300, 400, 450, 500, 600];
+            for lati = 1:numel(latencies_to_plot)
+                CFG.scalplot_latency = latencies_to_plot(lati);
+                [CFG, ERP, fig] = plot_ERPs(CFG, ERP);
+                plot_name = [CFG.eeglab_set_name, '_ERP_scalplot'];
+                saveas(fig,[CFG.output_plots_folder_cur, '\', plot_name,'.png'])
+                close(fig)
+            end
+        end
+        
+        
+        
+        
         % Add:
-        % - save erp_sets and erp_plots
         % - plot difference between target and non-target responses
         % - plot ERP_image for each bin 
 %         if plot_ERP_Im_flag

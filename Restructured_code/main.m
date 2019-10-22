@@ -58,6 +58,7 @@ get_ERP_flag = 1;
 if get_ERP_flag
     CFG.remove_IC_components = 1;
     CFG.plot_ERP_flag = 1;
+    CFG.plot_ERP_scalplot_flag = 1;
     CFG = get_ERP(CFG); 
 end
 
