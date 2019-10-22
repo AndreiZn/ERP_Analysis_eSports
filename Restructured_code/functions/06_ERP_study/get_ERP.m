@@ -101,24 +101,18 @@ for subi=4:numel(subject_folders)
             latencies_to_plot = [100, 200, 300, 400, 450, 500, 600];
             for lati = 1:numel(latencies_to_plot)
                 CFG.scalplot_latency = latencies_to_plot(lati);
-                [CFG, ERP, fig] = plot_ERPs(CFG, ERP);
-                plot_name = [CFG.eeglab_set_name, '_ERP_scalplot'];
+                [CFG, ERP, fig] = plot_ERP_scalplot(CFG, ERP);
+                plot_name = [CFG.eeglab_set_name, '_ERP_scalplot_latency_', num2str(CFG.scalplot_latency)];
                 saveas(fig,[CFG.output_plots_folder_cur, '\', plot_name,'.png'])
                 close(fig)
             end
         end
         
-        
-        
-        
+
         % Add:
+        % - save both EEG and ERP
         % - plot difference between target and non-target responses
         % - plot ERP_image for each bin 
-%         if plot_ERP_Im_flag
-%             for channel_idx = 1:EEG.nbchan
-%                 Plot_ERP_Image(EEG, target_bin, set_name, output_folder_cur, channel_idx)
-%             end
-%         end
     end
 end
 

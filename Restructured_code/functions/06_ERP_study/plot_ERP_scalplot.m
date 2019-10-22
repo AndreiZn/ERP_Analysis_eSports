@@ -1,4 +1,4 @@
-function [CFG, ERP, fig] = plot_ERPs(CFG, ERP)
+function [CFG, ERP, fig] = plot_ERP_scalplot(CFG, ERP)
 
 latency = CFG.scalplot_latency;
 amplitude_limit = CFG.amplitude_limit;
