@@ -134,12 +134,13 @@ for subi=4:numel(subject_folders)
             end
         end
         
+        % save CFG, EEG and ERP structures to a mat file
+        save([CFG.output_data_folder_cur, '\' CFG.eeglab_set_name '_ERP.mat'],'CFG','EEG','ERP')
         
         % Add:
-        % - save both EEG and ERP
         % - plot difference between target and non-target responses
-        % - save data into folders subject/experiment
-        % - save same data into folders experiment/subjects
+        % - save plots into folders subject/experiment
+        % - save the same plots into folders experiment/subjects
     end
 end
 
