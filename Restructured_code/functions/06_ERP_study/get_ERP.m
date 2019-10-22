@@ -38,7 +38,7 @@ for subi=4:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=8:2:numel(files)       
+    for filei=2:2:numel(files)       
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -69,7 +69,33 @@ for subi=4:numel(subject_folders)
             % check rank of the data matrix
             assert(EEG.rank_manually_computed == rank(reshape(EEG.data, EEG.nbchan, [])),'Rank computed manually is not equal to rank computed with a matlab function rank()')
         end
-
+        
+        % remove baseline
+        baseline_ms = CFG.exp_param(exp_id).baseline_ms;
+        EEG = pop_rmbase(EEG, baseline_ms);
+        EEG = eeg_checkset(EEG);
+        
+        % plot ERP image using the eeglab function
+        if CFG.plot_ERP_image_flag
+            CFG.channel_lbl_to_plot = 'Pz';
+            CFG.channel_idx_to_plot = find(contains({EEG.chanlocs.labels},CFG.channel_lbl_to_plot));
+            CFG.exp_id_cur = exp_id; % current exp_id
+            CFG.amplitude_limit = [-15, 15];
+            CFG.vertical_smoothing_parameter = 5; % trial-wise vertical smoothing
+            
+            % call the plotting fuction
+            [fig_handles] = plot_ERP_image(CFG, EEG);
+            
+            num_figs = numel(fig_handles);
+            for figi = 1:num_figs
+                cur_fig = fig_handles(figi);
+                image_suffix = get(cur_fig, 'Name');
+                cur_fig_name = [CFG.eeglab_set_name, '_ERP_image_', image_suffix, '_ch', CFG.channel_lbl_to_plot];
+                saveas(cur_fig,[CFG.output_plots_folder_cur, '\', cur_fig_name,'.png'])
+                close(cur_fig)
+            end
+        end
+        
         % combine epochs into one epoch
         EEG = epoch2continuous(EEG);
         EEG = eeg_checkset(EEG);
@@ -82,7 +108,7 @@ for subi=4:numel(subject_folders)
         
         % compute ERPs
         [ERP] = compute_ERP(EEG);
-        ERP = pop_savemyerp(ERP, 'erpname', CFG.eeglab_set_name, 'filename', [CFG.eeglab_set_name, '.erp'], 'filepath', CFG.output_data_folder_cur);
+        %ERP = pop_savemyerp(ERP, 'erpname', CFG.eeglab_set_name, 'filename', [CFG.eeglab_set_name, '.erp'], 'filepath', CFG.output_data_folder_cur);
         
         % plot ERPs
         if CFG.plot_ERP_flag
@@ -108,11 +134,12 @@ for subi=4:numel(subject_folders)
             end
         end
         
-
+        
         % Add:
         % - save both EEG and ERP
         % - plot difference between target and non-target responses
-        % - plot ERP_image for each bin 
+        % - save data into folders subject/experiment
+        % - save same data into folders experiment/subjects
     end
 end
 

@@ -58,10 +58,11 @@ for subi=1:numel(subject_folders)
         
         % Split data into epochs
         epoch_boundary_s = CFG.exp_param(exp_id).epoch_boundary_s;
-        baseline_ms = CFG.exp_param(exp_id).baseline_ms;
         EEG = pop_epoch(EEG, {}, epoch_boundary_s, 'newname', [CFG.eeglab_set_name, '_epochs'], 'epochinfo', 'yes');
         EEG = eeg_checkset(EEG);
+        
         % Remove baseline
+        %baseline_ms = CFG.exp_param(exp_id).baseline_ms;
         %EEG = pop_rmbase(EEG, baseline_ms);
         %EEG = eeg_checkset(EEG);
         
