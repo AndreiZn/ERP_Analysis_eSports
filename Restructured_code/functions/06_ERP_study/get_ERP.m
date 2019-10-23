@@ -160,6 +160,7 @@ for subi=1:numel(subject_folders)
             CFG.ERP_bins = CFG.exp_param(exp_id).ERP_bins;
             CFG.amplitude_limit = [-15, 15];
             latencies_to_plot = [100, 200, 300, 400, 450, 500, 600];
+            latencies_to_plot = latencies_to_plot(find(latencies_to_plot < ERP.xmax));
             for lati = 1:numel(latencies_to_plot)
                 CFG.scalplot_latency = latencies_to_plot(lati);
                 [CFG, ERP, fig] = plot_ERP_scalplot(CFG, ERP);

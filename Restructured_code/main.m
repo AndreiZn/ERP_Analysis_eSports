@@ -53,6 +53,8 @@ if reject_IC_flag
     reject_IC();
 end
 
+% Add auto IC rejection 
+% Compare auto rejection and manual rejection (plot if different)
 %% Level-1 analysis (within subject study)
 get_ERP_flag = 1;
 if get_ERP_flag
