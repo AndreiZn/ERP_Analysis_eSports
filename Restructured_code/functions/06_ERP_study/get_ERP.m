@@ -42,7 +42,7 @@ end
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-for subi=1:numel(subject_folders)
+for subi=1:numel(subject_folders) %[5,8,11]%
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -53,7 +53,7 @@ for subi=1:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=2:2:numel(files)       
+    for filei=8:2:8%numel(files)   %[4,6]%    
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -103,7 +103,7 @@ for subi=1:numel(subject_folders)
             CFG.channel_lbl_to_plot = 'Pz';
             CFG.channel_idx_to_plot = find(contains({EEG.chanlocs.labels},CFG.channel_lbl_to_plot));
             CFG.exp_id_cur = exp_id; % current exp_id
-            CFG.amplitude_limit = [-15, 15];
+            CFG.amplitude_limit = CFG.exp_param(exp_id).amplitude_limit;
             CFG.vertical_smoothing_parameter = 5; % trial-wise vertical smoothing
             
             % call the plotting fuction
@@ -141,8 +141,10 @@ for subi=1:numel(subject_folders)
         
         % plot ERPs
         if CFG.plot_ERP_flag
+            % plot without standard error of the mean
             CFG.ERP_bins = CFG.exp_param(exp_id).ERP_bins;
-            CFG.amplitude_limit = [-15, 15];
+            CFG.amplitude_limit = CFG.exp_param(exp_id).amplitude_limit;
+            CFG.SEM = 'off';
             [CFG, ERP, fig] = plot_ERPs(CFG, ERP);
             plot_name = [CFG.eeglab_set_name, '_ERP_waveforms'];
             saveas(fig,[CFG.output_plots_folder_cur_1, '\', plot_name '_plot','.png'])
@@ -153,14 +155,29 @@ for subi=1:numel(subject_folders)
             end
             saveas(fig,[output_folder_3, '\', plot_name '_plot','.png'])
             close(fig)
+            
+            % plot with a standard error of the mean
+            CFG.ERP_bins = CFG.exp_param(exp_id).ERP_bins;
+            CFG.amplitude_limit = CFG.exp_param(exp_id).amplitude_limit;
+            CFG.SEM = 'on';
+            [CFG, ERP, fig] = plot_ERPs(CFG, ERP);
+            plot_name = [CFG.eeglab_set_name, '_ERP_waveforms_with_SEM'];
+            saveas(fig,[CFG.output_plots_folder_cur_1, '\', plot_name '_plot','.png'])
+            saveas(fig,[CFG.output_plots_folder_cur_2, '\', plot_name '_plot','.png'])
+            output_folder_3 = [CFG.output_plots_folder_cur_3, '\', 'ERP_waveforms_with_SEM'];
+            if ~exist(output_folder_3, 'dir')
+                mkdir(output_folder_3)
+            end
+            saveas(fig,[output_folder_3, '\', plot_name '_plot','.png'])
+            close(fig)
         end
         
         % plot ERP scalplot
         if CFG.plot_ERP_scalplot_flag
             CFG.ERP_bins = CFG.exp_param(exp_id).ERP_bins;
-            CFG.amplitude_limit = [-15, 15];
+            CFG.amplitude_limit = CFG.exp_param(exp_id).amplitude_limit;
             latencies_to_plot = [100, 200, 300, 400, 450, 500, 600];
-            latencies_to_plot = latencies_to_plot(find(latencies_to_plot < ERP.xmax));
+            latencies_to_plot = latencies_to_plot(logical(latencies_to_plot < 1000*ERP.xmax));
             for lati = 1:numel(latencies_to_plot)
                 CFG.scalplot_latency = latencies_to_plot(lati);
                 [CFG, ERP, fig] = plot_ERP_scalplot(CFG, ERP);
