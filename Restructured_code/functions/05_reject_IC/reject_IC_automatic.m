@@ -18,7 +18,7 @@ if ~exist(CFG.output_plots_folder, 'dir')
 end
 
 %% Loop through folders
-%global EEG
+global EEG
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
@@ -33,7 +33,7 @@ for subi=1:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=2:2:numel(files)       
+    for filei=8:2:numel(files)       
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -64,8 +64,33 @@ for subi=1:numel(subject_folders)
         close(fig)
 
         
-        SASICA(EEG);
-        keyboard
+        %SASICA(EEG);
+        [EEG, config] = eeg_SASICA(EEG,'MARA_enable',0,'FASTER_enable',1,'FASTER_blinkchanname','Fp1','ADJUST_enable',1,...
+                       'chancorr_enable',0,'chancorr_channames','No channel','chancorr_corthresh','auto 4',...
+                       'EOGcorr_enable',0,'EOGcorr_Heogchannames','No channel','EOGcorr_corthreshH','auto 4',...
+                       'EOGcorr_Veogchannames','No channel','EOGcorr_corthreshV','auto 4','resvar_enable',0,...
+                       'resvar_thresh',15,'SNR_enable',1,'SNR_snrcut',1.5,'SNR_snrBL',[-Inf 0] ,'SNR_snrPOI',[0 Inf],...
+                       'trialfoc_enable',1,'trialfoc_focaltrialout','auto','focalcomp_enable',1,'focalcomp_focalICAout',2.5,...
+                       'autocorr_enable',1,'autocorr_autocorrint',20,'autocorr_dropautocorr',0.5,'opts_noplot',0,'opts_nocompute',0,'opts_FontSize',14);
+%         SASICA(EEG,'MARA_enable',0,'FASTER_enable',1,'FASTER_blinkchanname','Fp1','ADJUST_enable',1,...
+%                        'chancorr_enable',0,'chancorr_channames','No channel','chancorr_corthresh','auto 4',...
+%                        'EOGcorr_enable',0,'EOGcorr_Heogchannames','No channel','EOGcorr_corthreshH','auto 4',...
+%                        'EOGcorr_Veogchannames','No channel','EOGcorr_corthreshV','auto 4','resvar_enable',0,...
+%                        'resvar_thresh',15,'SNR_enable',1,'SNR_snrcut',1.5,'SNR_snrBL',[-Inf 0] ,'SNR_snrPOI',[0 Inf],...
+%                        'trialfoc_enable',1,'trialfoc_focaltrialout','auto','focalcomp_enable',1,'focalcomp_focalICAout',2.5,...
+%                        'autocorr_enable',1,'autocorr_autocorrint',20,'autocorr_dropautocorr',0.5,'opts_noplot',0,'opts_nocompute',0,'opts_FontSize',14);
+
+        figHandles = findall(groot, 'Type', 'figure');
+        set(figHandles(1), 'Position', [100 100 550 200])
+        
+        num_figs = numel(figHandles);
+        for figi = [1,3,2]
+            cur_fig = figHandles(figi);
+            cur_fig_name = ['fig_', num2str(figi)];
+            saveas(cur_fig,[CFG.output_plots_folder_cur, '\', cur_set_name, '_', cur_fig_name,'.png'])
+            close(cur_fig)
+        end
+            
         
         % remove selected components
         EEG_with_rejected_comp = pop_subcomp(EEG, find(EEG.reject.gcompreject), 0, 0);
