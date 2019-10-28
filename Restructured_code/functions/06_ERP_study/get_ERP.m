@@ -53,7 +53,7 @@ for subi=1:numel(subject_folders) %[5,8,11]%
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=8:2:8%numel(files)   %[4,6]%    
+    for filei=2:2:numel(files)   %[4,6]%    
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
