@@ -28,7 +28,7 @@ if ~exist(CFG.output_plots_folder, 'dir')
 end
 
 %% Loop through folders
-%global EEG
+global EEG
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
@@ -43,7 +43,7 @@ for subi=1:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=2:2:numel(files)
+    for filei=numel(files)%2:2:numel(files)
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -101,6 +101,13 @@ for subi=1:numel(subject_folders)
         % selected/rejected components with pop_selectcomps
         % otherwise, just close plotted figures
         if CFG.review_IC_manually
+            n_data_points = EEG.trials * size(EEG.data, 2);
+            ICA_quality_parameter = 20*EEG.nbchan^2;
+            if n_data_points < ICA_quality_parameter
+                warndlg(sprintf('Number of data points might have been insufficient for the ICA algorithm (%.1f%% of necessary data points)', 100*n_data_points/ICA_quality_parameter),'Warning');
+            else
+                sprintf('Number of data points was sufficient for the ICA algorithm (%.1f%% of necessary data points)', 100*n_data_points/ICA_quality_parameter)
+            end
             keyboard;
             pop_selectcomps(EEG, 1:size(EEG.icaact,1));
             cur_fig = gcf;
