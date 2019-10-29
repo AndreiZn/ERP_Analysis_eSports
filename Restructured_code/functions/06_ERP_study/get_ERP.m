@@ -42,7 +42,7 @@ end
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-for subi=1:numel(subject_folders) %[5,8,11]%
+for subi=1:numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -53,7 +53,7 @@ for subi=1:numel(subject_folders) %[5,8,11]%
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=2:2:numel(files)   %[4,6]%    
+    for filei=2:2:numel(files)
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);

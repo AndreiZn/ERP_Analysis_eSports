@@ -61,6 +61,8 @@ if reject_IC_semi_automatic_flag
     reject_IC_semi_automatic();
 end
 
+% add artifact removal
+
 %% Level-1 analysis (within subject study)
 get_ERP_flag = 1;
 if get_ERP_flag
