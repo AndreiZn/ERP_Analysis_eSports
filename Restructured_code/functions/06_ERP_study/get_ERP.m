@@ -156,20 +156,20 @@ for subi=1:numel(subject_folders) %[5,8,11]%
             saveas(fig,[output_folder_3, '\', plot_name '_plot','.png'])
             close(fig)
             
-            % plot with a standard error of the mean
-            CFG.ERP_bins = CFG.exp_param(exp_id).ERP_bins;
-            CFG.amplitude_limit = CFG.exp_param(exp_id).amplitude_limit;
-            CFG.SEM = 'on';
-            [CFG, ERP, fig] = plot_ERPs(CFG, ERP);
-            plot_name = [CFG.eeglab_set_name, '_ERP_waveforms_with_SEM'];
-            saveas(fig,[CFG.output_plots_folder_cur_1, '\', plot_name '_plot','.png'])
-            saveas(fig,[CFG.output_plots_folder_cur_2, '\', plot_name '_plot','.png'])
-            output_folder_3 = [CFG.output_plots_folder_cur_3, '\', 'ERP_waveforms_with_SEM'];
-            if ~exist(output_folder_3, 'dir')
-                mkdir(output_folder_3)
-            end
-            saveas(fig,[output_folder_3, '\', plot_name '_plot','.png'])
-            close(fig)
+%             % plot with a standard error of the mean
+%             CFG.ERP_bins = CFG.exp_param(exp_id).ERP_bins;
+%             CFG.amplitude_limit = CFG.exp_param(exp_id).amplitude_limit;
+%             CFG.SEM = 'on';
+%             [CFG, ERP, fig] = plot_ERPs(CFG, ERP);
+%             plot_name = [CFG.eeglab_set_name, '_ERP_waveforms_with_SEM'];
+%             saveas(fig,[CFG.output_plots_folder_cur_1, '\', plot_name '_plot','.png'])
+%             saveas(fig,[CFG.output_plots_folder_cur_2, '\', plot_name '_plot','.png'])
+%             output_folder_3 = [CFG.output_plots_folder_cur_3, '\', 'ERP_waveforms_with_SEM'];
+%             if ~exist(output_folder_3, 'dir')
+%                 mkdir(output_folder_3)
+%             end
+%             saveas(fig,[output_folder_3, '\', plot_name '_plot','.png'])
+%             close(fig)
         end
         
         % plot ERP scalplot

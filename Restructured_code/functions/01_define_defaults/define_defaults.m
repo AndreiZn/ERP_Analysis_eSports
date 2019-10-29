@@ -39,7 +39,7 @@ value_1_1_2.snr_cut = 1.2; value_1_1_2.autocorr_cut = 0.4;
 
 value_1_2_2.epoch_boundary_s = [-0.2 0.7]; value_1_2_2.baseline_ms = [-200 0]; value_1_2_2.ERP_bins = [1 2];
 value_1_2_2.event_type = {{'1'}; {'2'}}; value_1_2_2.event_name = {'bin1_target', 'bin2_non-target'};
-value_1_2_2.amplitude_limit = [-15, 15];
+value_1_2_2.amplitude_limit = [-5, 5];
 value_1_2_2.snr_cut = 1.5; value_1_2_2.autocorr_cut = 0.5;
 
 value_2_2_2.epoch_boundary_s = [-0.2 0.7]; value_2_2_2.baseline_ms = [-200 0]; value_2_2_2.ERP_bins = [1 2];

@@ -43,7 +43,7 @@ for subi=1:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=numel(files)%2:2:numel(files)
+    for filei=2:2:numel(files)
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -81,7 +81,7 @@ for subi=1:numel(subject_folders)
             'EOGcorr_enable',0,'EOGcorr_Heogchannames','No channel','EOGcorr_corthreshH','auto 4',...
             'EOGcorr_Veogchannames','No channel','EOGcorr_corthreshV','auto 4','resvar_enable',0,...
             'resvar_thresh',15,'SNR_enable',1,'SNR_snrcut',snr_cut,'SNR_snrBL',[-Inf 0] ,'SNR_snrPOI',[0 Inf],...
-            'trialfoc_enable',1,'trialfoc_focaltrialout','auto','focalcomp_enable',1,'focalcomp_focalICAout',2.5,...
+            'trialfoc_enable',1,'trialfoc_focaltrialout','auto','focalcomp_enable',1,'focalcomp_focalICAout',3,...
             'autocorr_enable',1,'autocorr_autocorrint',20,'autocorr_dropautocorr',autocorr_cut,'opts_noplot',0,'opts_nocompute',0,'opts_FontSize',14);
         
         % change the size of one of the plots
