@@ -53,7 +53,7 @@ for subi=1:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=2:2:numel(files)
+    for filei=4:2:numel(files)
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -169,6 +169,34 @@ for subi=1:numel(subject_folders)
 %             end
 %             saveas(fig,[output_folder_3, '\', plot_name '_plot','.png'])
 %             close(fig)
+        end
+        
+%         figure; pop_plottopo(EEG, 1:EEG.nbchan, '', 0, 'ydir',1);
+%         plot_name = [CFG.eeglab_set_name, '_ERP_scalpmap'];
+%         output_folder_3 = [CFG.output_plots_folder_cur_3, '\', 'ERP_scalpmap'];
+%         if ~exist(output_folder_3, 'dir')
+%             mkdir(output_folder_3)
+%         end
+%         saveas(gcf,[output_folder_3, '\', plot_name ,'.png'])
+%         close(gcf)
+        
+        ERP_difference = pop_binoperator(ERP, {'b3 = b1 - b2'});
+        % plot ERP difference
+        if CFG.plot_ERP_difference_flag
+            % plot without standard error of the mean
+            CFG.ERP_bins = [1 2 3];
+            CFG.amplitude_limit = CFG.exp_param(exp_id).amplitude_limit;
+            CFG.SEM = 'off';
+            [CFG, ERP, fig] = plot_ERPs(CFG, ERP_difference);
+            plot_name = [CFG.eeglab_set_name, '_ERP_waveforms_difference'];
+            saveas(fig,[CFG.output_plots_folder_cur_1, '\', plot_name '_plot','.png'])
+            saveas(fig,[CFG.output_plots_folder_cur_2, '\', plot_name '_plot','.png'])
+            output_folder_3 = [CFG.output_plots_folder_cur_3, '\', 'ERP_waveforms_difference'];
+            if ~exist(output_folder_3, 'dir')
+                mkdir(output_folder_3)
+            end
+            saveas(fig,[output_folder_3, '\', plot_name '_plot','.png'])
+            close(fig)
         end
         
         % plot ERP scalplot
