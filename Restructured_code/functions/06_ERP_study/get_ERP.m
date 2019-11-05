@@ -137,7 +137,6 @@ for subi=1:numel(subject_folders)
         
         % compute ERPs
         [ERP] = compute_ERP(EEG);
-        %ERP = pop_savemyerp(ERP, 'erpname', CFG.eeglab_set_name, 'filename', [CFG.eeglab_set_name, '.erp'], 'filepath', CFG.output_data_folder_cur);
         
         % plot ERPs
         if CFG.plot_ERP_flag
@@ -195,6 +194,7 @@ for subi=1:numel(subject_folders)
         
         % save CFG, EEG and ERP structures to a mat file
         save([CFG.output_data_folder_cur, '\' CFG.eeglab_set_name '_ERP.mat'],'CFG','EEG','ERP')
+        pop_savemyerp(ERP, 'erpname', CFG.eeglab_set_name, 'filename', [CFG.eeglab_set_name, '_ERP', '.erp'], 'filepath', CFG.output_data_folder_cur);
         
         % Add:
         % - plot difference between target and non-target responses
