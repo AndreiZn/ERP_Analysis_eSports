@@ -76,3 +76,7 @@ end
 
 %% Level-2 analysis (group study)
 
+group_analysis_of_ERP_flag = 1;
+if group_analysis_of_ERP_flag
+    CFG = group_analysis_of_ERP(CFG);
+end
