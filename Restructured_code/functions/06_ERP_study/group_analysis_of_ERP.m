@@ -40,50 +40,79 @@ for subi=1:numel(subject_folders)
         exp_id = file_struct.name(9:13);
         CFG.eeglab_set_name = ['sub', sub_ID, '_', exp_id];
         
-%         % create output folders
-%         CFG.output_data_folder_cur = [CFG.output_data_folder, '\', subj_folder.name];
-%         if ~exist(CFG.output_data_folder_cur, 'dir')
-%             mkdir(CFG.output_data_folder_cur)
-%         end
-%         CFG.output_plots_folder_cur = [CFG.output_plots_folder, '\', subj_folder.name];
-%         if ~exist(CFG.output_plots_folder_cur, 'dir')
-%             mkdir(CFG.output_plots_folder_cur)
-%         end
-
-%         % Load dataset
-          ERP = pop_loaderp( 'filename', file_struct.name, 'filepath',file_struct.folder);
-          
-          % Calculate the difference between the first and the second bins
-          ERP = pop_binoperator(ERP, {'b3 = b1 - b2'});
-          
-          if str2double(sub_ID) < 2000
-              % pro-players group
-              ERP.pro = 1;
-              ERP.exp_id = exp_id;
-          else
-              % non-pro-players group
-              ERP.pro = 0;
-              ERP.exp_id = exp_id;
-          end
-          
-          % save all ERPs in the ERP_combined struct
-          ERP_combined = [ERP_combined; ERP];
-          
-%         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
-%         EEG = eeg_checkset(EEG);
+        %         % create output folders
+        %         CFG.output_data_folder_cur = [CFG.output_data_folder, '\', subj_folder.name];
+        %         if ~exist(CFG.output_data_folder_cur, 'dir')
+        %             mkdir(CFG.output_data_folder_cur)
+        %         end
+        %         CFG.output_plots_folder_cur = [CFG.output_plots_folder, '\', subj_folder.name];
+        %         if ~exist(CFG.output_plots_folder_cur, 'dir')
+        %             mkdir(CFG.output_plots_folder_cur)
+        %         end
+        
+        %         % Load dataset
+        ERP = pop_loaderp( 'filename', file_struct.name, 'filepath',file_struct.folder);
+        
+        % Calculate the difference between the first and the second bins
+        ERP = pop_binoperator(ERP, {'b3 = b1 - b2'});
+        
+        if str2double(sub_ID) < 2000
+            % pro-players group
+            ERP.pro = 1;
+            ERP.exp_id = exp_id;
+        else
+            % non-pro-players group
+            ERP.pro = 0;
+            ERP.exp_id = exp_id;
+        end
+        
+        % save all ERPs in the ERP_combined struct
+        ERP_combined = [ERP_combined; ERP];
+        
+        %         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
+        %         EEG = eeg_checkset(EEG);
         
     end
 end
 
-% CFG.channel_lbl_to_plot = 'Pz';
-% CFG.channel_idx_to_plot = find(contains({ERP.chanlocs.labels},CFG.channel_lbl_to_plot));
-% num_datasets = numel(ERP_combined);
-% 
-% exp_IDs = {'1_2_2'; '2_2_2'; '2_2_4'; '2_2_5'};
-% 
-% for exp_idx = 1:numel(exp_IDs)
-%     exp_id_cur = exp_IDs(exp_idx);
-%     ERP_idx = find(contains({ERP_combined.exp_id},exp_id_cur));
-%     for 
-%     end
-% end
+CFG.channel_lbl_to_plot = 'Pz';
+CFG.channel_idx_to_plot = find(contains({ERP.chanlocs.labels},CFG.channel_lbl_to_plot));
+CFG.bin_to_plot = 3; % difference between responses to target and non-target stimuli
+
+%exp_IDs = {'1_2_2'; '2_2_2'; '2_2_4'; '2_2_5'};
+exp_IDs = {'2_2_2'; '2_2_4'; '2_2_5'};
+
+for exp_idx = 1:numel(exp_IDs)
+    exp_id_cur = exp_IDs(exp_idx);
+    ERP_idx = find(contains({ERP_combined.exp_id},exp_id_cur));
+    
+    figure('units','normalized','outerposition',[0 0 1 1])
+    times = ERP_combined(ERP_idx(1)).times;
+    delta_y = 5;
+    ytick_value = zeros(numel(ERP_idx),1);
+    ytick_label = cell(numel(ERP_idx),1);
+    
+    for dst_i = 1:numel(ERP_idx)
+        dst_idx = ERP_idx(dst_i);
+        ERP_cur = ERP_combined(dst_idx);
+        ERP_data = ERP_cur.bindata(CFG.channel_idx_to_plot, :, CFG.bin_to_plot);
+        const_delta = delta_y*(numel(ERP_idx)-dst_i+1);
+        data_to_plot = ERP_data + const_delta;
+        baseline = linspace(const_delta, const_delta, numel(times));
+        
+        ytick_value(dst_i) = mean(data_to_plot);
+        ytick_label{dst_i} = ERP_cur.subject;
+        plot(times, data_to_plot, '-b')
+        hold on
+        plot(times, baseline, '--k')
+    end
+    
+    title(['ERP data plot, channel: ', CFG.channel_lbl_to_plot], 'Interpreter', 'None')
+    xlabel('Time, ms')
+    ylabel('Amplitude, mcV')
+    ylim = [0, delta_y*(1+numel(ERP_idx))];
+    set(gca, 'ylim', ylim, 'Ytick', ytick_value(end:-1:1), 'YTickLabel', ytick_label(end:-1:1))
+end
+
+
+
