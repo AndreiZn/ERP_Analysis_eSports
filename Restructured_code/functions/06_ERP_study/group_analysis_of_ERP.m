@@ -13,7 +13,7 @@ end
 
 % folder for plots (plots will be grouped by sub_id in this folder)
 CFG.output_plots_folder = [CFG.output_folder_path, '\', CFG.output_plots_folder_name];
-if ~exist(CFG.output_aplots_folder, 'dir')
+if ~exist(CFG.output_plots_folder, 'dir')
     mkdir(CFG.output_plots_folder)
 end
 
@@ -21,8 +21,7 @@ end
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-ERP_pro = [];
-ERP_npro = [];
+ERP_combined = [];
 
 for subi=1:numel(subject_folders)
     % read subject folder
@@ -35,7 +34,7 @@ for subi=1:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=2:2:numel(files)
+    for filei=1:2:numel(files)
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -52,11 +51,39 @@ for subi=1:numel(subject_folders)
 %         end
 
 %         % Load dataset
-ERP = pop_loaderp( 'filename', 'sub0023_2_2_2_ERP.erp', 'filepath',...
- 'E:\ERP_esports\ERP_esports_output\stage_7_get_ERP\data\sub0023_20190412\' );
+          ERP = pop_loaderp( 'filename', file_struct.name, 'filepath',file_struct.folder);
+          
+          % Calculate the difference between the first and the second bins
+          ERP = pop_binoperator(ERP, {'b3 = b1 - b2'});
+          
+          if str2double(sub_ID) < 2000
+              % pro-players group
+              ERP.pro = 1;
+              ERP.exp_id = exp_id;
+          else
+              % non-pro-players group
+              ERP.pro = 0;
+              ERP.exp_id = exp_id;
+          end
+          
+          % save all ERPs in the ERP_combined struct
+          ERP_combined = [ERP_combined; ERP];
+          
 %         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
 %         EEG = eeg_checkset(EEG);
         
     end
 end
 
+% CFG.channel_lbl_to_plot = 'Pz';
+% CFG.channel_idx_to_plot = find(contains({ERP.chanlocs.labels},CFG.channel_lbl_to_plot));
+% num_datasets = numel(ERP_combined);
+% 
+% exp_IDs = {'1_2_2'; '2_2_2'; '2_2_4'; '2_2_5'};
+% 
+% for exp_idx = 1:numel(exp_IDs)
+%     exp_id_cur = exp_IDs(exp_idx);
+%     ERP_idx = find(contains({ERP_combined.exp_id},exp_id_cur));
+%     for 
+%     end
+% end
