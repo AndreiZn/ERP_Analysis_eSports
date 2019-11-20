@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Data xmlns="xsd" xmlns:ns="http://www.w3.org/2001/XMLSchema-instance" ns:schemaLocation="xsd C:\_SVN\ECoGmeToo\trunk\sources\ParadigmTools\src\main\Paradigm\ParadigmSchema.xsd">
+  <Paradigm BaseFolder="media/" TaskOrder="Deterministic">
+    <Task ns:type="SingleTask" ID="ST_PreParadigm" DurationSeconds="35">
+      <Stimulus ns:type="TextStimulus" Caption="+" />
+    </Task>
+    <Task ns:type="MultiTask" ID="MT_Sequence_general" TaskOrder="RandomWithoutReplacement" SampleSize="200">
+	
+			<Task ns:type="MultiTask" ID="MT_Sequence" TaskOrder="Deterministic" SampleSize="2">
+
+				<Task ns:type="MultiTask" ID="CSGO_model_pics" TaskOrder="RandomWithoutReplacement" SampleSize="1">
+				
+					<Task ns:type="SingleTask" ID="model_10201" DurationSeconds="0.4" Group="8">
+						<Stimulus ns:type="PictureStimulus" FileName="10201.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10203" DurationSeconds="0.4" Group="8">
+						<Stimulus ns:type="PictureStimulus" FileName="10203.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10205" DurationSeconds="0.4" Group="8">
+						<Stimulus ns:type="PictureStimulus" FileName="10205.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10207" DurationSeconds="0.4" Group="8">
+						<Stimulus ns:type="PictureStimulus" FileName="10207.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10209" DurationSeconds="0.4" Group="8">
+						<Stimulus ns:type="PictureStimulus" FileName="10209.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10211" DurationSeconds="0.4" Group="8">
+						<Stimulus ns:type="PictureStimulus" FileName="10211.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10213" DurationSeconds="0.4" Group="8">
+						<Stimulus ns:type="PictureStimulus" FileName="10213.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_11201" DurationSeconds="0.4" Group="9">
+						<Stimulus ns:type="PictureStimulus" FileName="11201.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11203" DurationSeconds="0.4" Group="9">
+						<Stimulus ns:type="PictureStimulus" FileName="11203.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11205" DurationSeconds="0.4" Group="9">
+						<Stimulus ns:type="PictureStimulus" FileName="11205.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11207" DurationSeconds="0.4" Group="9">
+						<Stimulus ns:type="PictureStimulus" FileName="11207.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11209" DurationSeconds="0.4" Group="9">
+						<Stimulus ns:type="PictureStimulus" FileName="11209.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11211" DurationSeconds="0.4" Group="9">
+						<Stimulus ns:type="PictureStimulus" FileName="11211.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11213" DurationSeconds="0.4" Group="9">
+						<Stimulus ns:type="PictureStimulus" FileName="11213.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_12201" DurationSeconds="0.4" Group="10">
+						<Stimulus ns:type="PictureStimulus" FileName="12201.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12203" DurationSeconds="0.4" Group="10">
+						<Stimulus ns:type="PictureStimulus" FileName="12203.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12205" DurationSeconds="0.4" Group="10">
+						<Stimulus ns:type="PictureStimulus" FileName="12205.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12207" DurationSeconds="0.4" Group="10">
+						<Stimulus ns:type="PictureStimulus" FileName="12207.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12209" DurationSeconds="0.4" Group="10">
+						<Stimulus ns:type="PictureStimulus" FileName="12209.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12211" DurationSeconds="0.4" Group="10">
+						<Stimulus ns:type="PictureStimulus" FileName="12211.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12213" DurationSeconds="0.4" Group="10">
+						<Stimulus ns:type="PictureStimulus" FileName="12213.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_13201" DurationSeconds="0.4" Group="11">
+						<Stimulus ns:type="PictureStimulus" FileName="13201.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13203" DurationSeconds="0.4" Group="11">
+						<Stimulus ns:type="PictureStimulus" FileName="13203.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13205" DurationSeconds="0.4" Group="11">
+						<Stimulus ns:type="PictureStimulus" FileName="13205.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13207" DurationSeconds="0.4" Group="11">
+						<Stimulus ns:type="PictureStimulus" FileName="13207.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13209" DurationSeconds="0.4" Group="11">
+						<Stimulus ns:type="PictureStimulus" FileName="13209.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13211" DurationSeconds="0.4" Group="11">
+						<Stimulus ns:type="PictureStimulus" FileName="13211.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13213" DurationSeconds="0.4" Group="11">
+						<Stimulus ns:type="PictureStimulus" FileName="13213.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_14201" DurationSeconds="0.4" Group="12">
+						<Stimulus ns:type="PictureStimulus" FileName="14201.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14203" DurationSeconds="0.4" Group="12">
+						<Stimulus ns:type="PictureStimulus" FileName="14203.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14205" DurationSeconds="0.4" Group="12">
+						<Stimulus ns:type="PictureStimulus" FileName="14205.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14207" DurationSeconds="0.4" Group="12">
+						<Stimulus ns:type="PictureStimulus" FileName="14207.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14209" DurationSeconds="0.4" Group="12">
+						<Stimulus ns:type="PictureStimulus" FileName="14209.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14211" DurationSeconds="0.4" Group="12">
+						<Stimulus ns:type="PictureStimulus" FileName="14211.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14213" DurationSeconds="0.4" Group="12">
+						<Stimulus ns:type="PictureStimulus" FileName="14213.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_15201" DurationSeconds="0.4" Group="13">
+						<Stimulus ns:type="PictureStimulus" FileName="15201.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15203" DurationSeconds="0.4" Group="13">
+						<Stimulus ns:type="PictureStimulus" FileName="15203.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15205" DurationSeconds="0.4" Group="13">
+						<Stimulus ns:type="PictureStimulus" FileName="15205.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15207" DurationSeconds="0.4" Group="13">
+						<Stimulus ns:type="PictureStimulus" FileName="15207.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15209" DurationSeconds="0.4" Group="13">
+						<Stimulus ns:type="PictureStimulus" FileName="15209.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15211" DurationSeconds="0.4" Group="13">
+						<Stimulus ns:type="PictureStimulus" FileName="15211.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15213" DurationSeconds="0.4" Group="13">
+						<Stimulus ns:type="PictureStimulus" FileName="15213.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_16201" DurationSeconds="0.4" Group="14">
+						<Stimulus ns:type="PictureStimulus" FileName="16201.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16203" DurationSeconds="0.4" Group="14">
+						<Stimulus ns:type="PictureStimulus" FileName="16203.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16205" DurationSeconds="0.4" Group="14">
+						<Stimulus ns:type="PictureStimulus" FileName="16205.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16207" DurationSeconds="0.4" Group="14">
+						<Stimulus ns:type="PictureStimulus" FileName="16207.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16209" DurationSeconds="0.4" Group="14">
+						<Stimulus ns:type="PictureStimulus" FileName="16209.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16211" DurationSeconds="0.4" Group="14">
+						<Stimulus ns:type="PictureStimulus" FileName="16211.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16213" DurationSeconds="0.4" Group="14">
+						<Stimulus ns:type="PictureStimulus" FileName="16213.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+				</Task>
+				<Task ns:type="MultiTask" ID="Spacer" TaskOrder="RandomWithReplacement" SampleSize="1">	
+					<Task ns:type="SingleTask" ID="ST_TargetSpacer1" DurationSeconds="0.5" Group="0"/>
+				</Task>	
+			</Task>	
+			
+			<Task ns:type="MultiTask" ID="MT_Sequence2" TaskOrder="Deterministic" SampleSize="2" Multiplicity="4">
+				<Task ns:type="MultiTask" ID="CSGO_nomodel_pics" TaskOrder="RandomWithoutReplacement" SampleSize="1">
+				
+					<Task ns:type="SingleTask" ID="model_10202" DurationSeconds="0.4" Group="1">
+						<Stimulus ns:type="PictureStimulus" FileName="10202.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10204" DurationSeconds="0.4" Group="1">
+						<Stimulus ns:type="PictureStimulus" FileName="10204.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10206" DurationSeconds="0.4" Group="1">
+						<Stimulus ns:type="PictureStimulus" FileName="10206.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10208" DurationSeconds="0.4" Group="1">
+						<Stimulus ns:type="PictureStimulus" FileName="10208.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10210" DurationSeconds="0.4" Group="1">
+						<Stimulus ns:type="PictureStimulus" FileName="10210.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10212" DurationSeconds="0.4" Group="1">
+						<Stimulus ns:type="PictureStimulus" FileName="10212.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_10214" DurationSeconds="0.4" Group="1">
+						<Stimulus ns:type="PictureStimulus" FileName="10214.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_11202" DurationSeconds="0.4" Group="2">
+						<Stimulus ns:type="PictureStimulus" FileName="11202.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11204" DurationSeconds="0.4" Group="2">
+						<Stimulus ns:type="PictureStimulus" FileName="11204.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11206" DurationSeconds="0.4" Group="2">
+						<Stimulus ns:type="PictureStimulus" FileName="11206.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11208" DurationSeconds="0.4" Group="2">
+						<Stimulus ns:type="PictureStimulus" FileName="11208.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11210" DurationSeconds="0.4" Group="2">
+						<Stimulus ns:type="PictureStimulus" FileName="11210.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11212" DurationSeconds="0.4" Group="2">
+						<Stimulus ns:type="PictureStimulus" FileName="11212.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_11214" DurationSeconds="0.4" Group="2">
+						<Stimulus ns:type="PictureStimulus" FileName="11214.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_12202" DurationSeconds="0.4" Group="3">
+						<Stimulus ns:type="PictureStimulus" FileName="12202.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12204" DurationSeconds="0.4" Group="3">
+						<Stimulus ns:type="PictureStimulus" FileName="12204.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12206" DurationSeconds="0.4" Group="3">
+						<Stimulus ns:type="PictureStimulus" FileName="12206.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12208" DurationSeconds="0.4" Group="3">
+						<Stimulus ns:type="PictureStimulus" FileName="12208.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12210" DurationSeconds="0.4" Group="3">
+						<Stimulus ns:type="PictureStimulus" FileName="12210.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12212" DurationSeconds="0.4" Group="3">
+						<Stimulus ns:type="PictureStimulus" FileName="12212.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_12214" DurationSeconds="0.4" Group="3">
+						<Stimulus ns:type="PictureStimulus" FileName="12214.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_13202" DurationSeconds="0.4" Group="4">
+						<Stimulus ns:type="PictureStimulus" FileName="13202.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13204" DurationSeconds="0.4" Group="4">
+						<Stimulus ns:type="PictureStimulus" FileName="13204.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13206" DurationSeconds="0.4" Group="4">
+						<Stimulus ns:type="PictureStimulus" FileName="13206.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13208" DurationSeconds="0.4" Group="4">
+						<Stimulus ns:type="PictureStimulus" FileName="13208.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13210" DurationSeconds="0.4" Group="4">
+						<Stimulus ns:type="PictureStimulus" FileName="13210.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13212" DurationSeconds="0.4" Group="4">
+						<Stimulus ns:type="PictureStimulus" FileName="13212.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_13214" DurationSeconds="0.4" Group="4">
+						<Stimulus ns:type="PictureStimulus" FileName="13214.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_14202" DurationSeconds="0.4" Group="5">
+						<Stimulus ns:type="PictureStimulus" FileName="14202.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14204" DurationSeconds="0.4" Group="5">
+						<Stimulus ns:type="PictureStimulus" FileName="14204.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14206" DurationSeconds="0.4" Group="5">
+						<Stimulus ns:type="PictureStimulus" FileName="14206.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14208" DurationSeconds="0.4" Group="5">
+						<Stimulus ns:type="PictureStimulus" FileName="14208.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14210" DurationSeconds="0.4" Group="5">
+						<Stimulus ns:type="PictureStimulus" FileName="14210.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14212" DurationSeconds="0.4" Group="5">
+						<Stimulus ns:type="PictureStimulus" FileName="14212.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_14214" DurationSeconds="0.4" Group="5">
+						<Stimulus ns:type="PictureStimulus" FileName="14214.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+				
+					<Task ns:type="SingleTask" ID="model_15202" DurationSeconds="0.4" Group="6">
+						<Stimulus ns:type="PictureStimulus" FileName="15202.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15204" DurationSeconds="0.4" Group="6">
+						<Stimulus ns:type="PictureStimulus" FileName="15204.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15206" DurationSeconds="0.4" Group="6">
+						<Stimulus ns:type="PictureStimulus" FileName="15206.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15208" DurationSeconds="0.4" Group="6">
+						<Stimulus ns:type="PictureStimulus" FileName="15208.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15210" DurationSeconds="0.4" Group="6">
+						<Stimulus ns:type="PictureStimulus" FileName="15210.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15212" DurationSeconds="0.4" Group="6">
+						<Stimulus ns:type="PictureStimulus" FileName="15212.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_15214" DurationSeconds="0.4" Group="6">
+						<Stimulus ns:type="PictureStimulus" FileName="15214.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+					<Task ns:type="SingleTask" ID="model_16202" DurationSeconds="0.4" Group="7">
+						<Stimulus ns:type="PictureStimulus" FileName="16202.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16204" DurationSeconds="0.4" Group="7">
+						<Stimulus ns:type="PictureStimulus" FileName="16204.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16206" DurationSeconds="0.4" Group="7">
+						<Stimulus ns:type="PictureStimulus" FileName="16206.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16208" DurationSeconds="0.4" Group="7">
+						<Stimulus ns:type="PictureStimulus" FileName="16208.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16210" DurationSeconds="0.4" Group="7">
+						<Stimulus ns:type="PictureStimulus" FileName="16210.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16212" DurationSeconds="0.4" Group="7">
+						<Stimulus ns:type="PictureStimulus" FileName="16212.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					<Task ns:type="SingleTask" ID="model_16214" DurationSeconds="0.4" Group="7">
+						<Stimulus ns:type="PictureStimulus" FileName="16214.png" HorizontalAlignment="Center" VerticalAlignment="Center" Scaling="Manual" ManualScalingPercent="100" />
+					</Task>
+					
+				</Task>
+				<Task ns:type="MultiTask" ID="Spacer2" TaskOrder="RandomWithReplacement" SampleSize="1">	
+					<Task ns:type="SingleTask" ID="ST_TargetSpacer2" DurationSeconds="0.5" Group="0"/>
+				</Task>	
+			</Task>
+			
+    </Task>
+    <Task ns:type="SingleTask" ID="ST_PostParadigm" DurationSeconds="5">
+      <Stimulus ns:type="TextStimulus" Caption="Thank You!" />
+    </Task>
+  </Paradigm>
+</Data>

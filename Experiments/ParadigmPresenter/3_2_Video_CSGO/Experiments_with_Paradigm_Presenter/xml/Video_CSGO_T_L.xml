@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Data xmlns="xsd" xmlns:ns="http://www.w3.org/2001/XMLSchema-instance" ns:schemaLocation="xsd C:\_SVN\ECoGmeToo\trunk\sources\ParadigmTools\src\main\Paradigm\ParadigmSchema.xsd">
+  <Paradigm BaseFolder="media/" TaskOrder="Deterministic">
+    <Task ns:type="SingleTask" ID="ST_PreParadigm" DurationSeconds="3">
+      <Stimulus ns:type="TextStimulus" Caption="+" />
+    </Task>
+	
+	<Task ns:type="MultiTask" ID="MT_Sequence_general" TaskOrder="Deterministic" SampleSize="16">
+		
+		<Task ns:type="MultiTask" ID="MT_Sequence" TaskOrder="Deterministic" SampleSize="2">
+
+			<Task ns:type="MultiTask" ID="CSGO_model_vids" TaskOrder="RandomWithoutReplacement" SampleSize="1">
+				
+				<Task ns:type="SingleTask" ID="ST_Video_142001_1" DurationSeconds="2.0" Group="1">
+					<Stimulus ns:type="VideoStimulus" FileName="142001_1.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_142101_2" DurationSeconds="3.0" Group="7">
+					<Stimulus ns:type="VideoStimulus" FileName="142101_2.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_152001_4" DurationSeconds="5.0" Group="4">
+					<Stimulus ns:type="VideoStimulus" FileName="152001_4.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_122001_5" DurationSeconds="6.0" Group="5">
+					<Stimulus ns:type="VideoStimulus" FileName="122001_5.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+			
+			</Task>
+			
+			<Task ns:type="SingleTask" ID="ST_TargetSpacer1" DurationSeconds="1.0" Group="0"/>
+			
+		</Task>	
+	
+	</Task>	
+	
+    <Task ns:type="SingleTask" ID="ST_PostParadigm" DurationSeconds="5">
+      <Stimulus ns:type="TextStimulus" Caption="Thank You!" />
+    </Task>
+  </Paradigm>
+</Data>

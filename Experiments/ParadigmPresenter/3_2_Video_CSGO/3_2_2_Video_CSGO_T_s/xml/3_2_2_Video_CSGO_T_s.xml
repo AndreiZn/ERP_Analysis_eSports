@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Data xmlns="xsd" xmlns:ns="http://www.w3.org/2001/XMLSchema-instance" ns:schemaLocation="xsd C:\_SVN\ECoGmeToo\trunk\sources\ParadigmTools\src\main\Paradigm\ParadigmSchema.xsd">
+  <Paradigm BaseFolder="media/" TaskOrder="Deterministic">
+    <Task ns:type="SingleTask" ID="ST_PreParadigm" DurationSeconds="25">
+      <Stimulus ns:type="TextStimulus" Caption="+" />
+    </Task>
+	
+	<Task ns:type="MultiTask" ID="MT_Sequence_general" TaskOrder="Deterministic" SampleSize="28">
+		
+		<Task ns:type="MultiTask" ID="MT_Sequence" TaskOrder="Deterministic" SampleSize="2">
+
+			<Task ns:type="MultiTask" ID="CSGO_model_vids" TaskOrder="RandomWithoutReplacement" SampleSize="1">
+				
+				
+				<Task ns:type="SingleTask" ID="ST_Video_100001_1" DurationSeconds="2.3" Group="1">
+					<Stimulus ns:type="VideoStimulus" FileName="100001_1.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_100101_2" DurationSeconds="4.0" Group="7">
+					<Stimulus ns:type="VideoStimulus" FileName="100101_2.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_110001_2" DurationSeconds="3.0" Group="2">
+					<Stimulus ns:type="VideoStimulus" FileName="110001_2.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_110101_5" DurationSeconds="6.0" Group="10">
+					<Stimulus ns:type="VideoStimulus" FileName="110101_5.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_120001_1" DurationSeconds="2.0" Group="1">
+					<Stimulus ns:type="VideoStimulus" FileName="120001_1.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_120101_2" DurationSeconds="3.0" Group="7">
+					<Stimulus ns:type="VideoStimulus" FileName="120101_2.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_130001_1" DurationSeconds="2.0" Group="1">
+					<Stimulus ns:type="VideoStimulus" FileName="130001_1.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_130101_2" DurationSeconds="3.0" Group="7">
+					<Stimulus ns:type="VideoStimulus" FileName="130101_2.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_140001_4" DurationSeconds="5.0" Group="4">
+					<Stimulus ns:type="VideoStimulus" FileName="140001_4.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_140101_1" DurationSeconds="2.0" Group="6">
+					<Stimulus ns:type="VideoStimulus" FileName="140101_1.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_150001_3" DurationSeconds="4.0" Group="3">
+					<Stimulus ns:type="VideoStimulus" FileName="150001_3.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_150101_2" DurationSeconds="3.0" Group="7">
+					<Stimulus ns:type="VideoStimulus" FileName="150101_2.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_160001_2" DurationSeconds="3.0" Group="2">
+					<Stimulus ns:type="VideoStimulus" FileName="160001_2.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+				
+				<Task ns:type="SingleTask" ID="ST_Video_160101_5" DurationSeconds="6.0" Group="10">
+					<Stimulus ns:type="VideoStimulus" FileName="160101_5.avi" HorizontalAlignment="Left" VerticalAlignment="Top" Scaling="Manual" ManualScalingPercent="100" VolumePercent="100"/>
+				</Task>
+			
+			</Task>
+			
+			<Task ns:type="SingleTask" ID="ST_TargetSpacer1" DurationSeconds="1.0" Group="0"/>
+			
+		</Task>	
+	
+	</Task>	
+	
+    <Task ns:type="SingleTask" ID="ST_PostParadigm" DurationSeconds="5">
+      <Stimulus ns:type="TextStimulus" Caption="Thank You!" />
+    </Task>
+  </Paradigm>
+</Data>
