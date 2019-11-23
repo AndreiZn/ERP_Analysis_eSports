@@ -55,7 +55,7 @@ end
 
 % run SASICA plugin to reject independent components automatically (or
 % semi-automatically)
-reject_IC_semi_automatic_flag = 0;
+reject_IC_semi_automatic_flag = 1;
 if reject_IC_semi_automatic_flag
     % run reject_IC_semi_automatic as a separate script
     reject_IC_semi_automatic();
@@ -67,11 +67,15 @@ end
 get_ERP_flag = 1;
 if get_ERP_flag
     CFG.remove_IC_components = 1;
+    
     CFG.plot_ERP_image_flag = 1;
-    CFG.plot_ERP_flag = 0;
+    
+    CFG.plot_ERP_flag = 1;
     CFG.plot_ERP_difference_flag = 1;
-    CFG.plot_ERP_scalplot_flag = 1;
-    CFG.plot_ERP_difference_scalplot_flag = 1;
+    
+    CFG.plot_ERP_scalplot_flag = 0;
+    CFG.plot_ERP_difference_scalplot_flag = 0;
+    
     CFG = get_ERP(CFG); 
 end
 

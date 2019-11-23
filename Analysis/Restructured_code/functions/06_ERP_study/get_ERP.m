@@ -157,7 +157,7 @@ for subi=1:numel(subject_folders)
         end
  
         % plot ERP difference
-        if CFG.plot_ERP_difference_flag
+        if CFG.plot_ERP_difference_flag && ERP.nbin > 1
             ERP_difference = pop_binoperator(ERP, {'b3 = b1 - b2'});
             if CFG.plot_ERP_difference_flag
                 % plot without standard error of the mean
@@ -196,7 +196,7 @@ for subi=1:numel(subject_folders)
         end
         
         % plot ERP_difference scalplot
-        if CFG.plot_ERP_difference_scalplot_flag
+        if CFG.plot_ERP_difference_scalplot_flag && ERP.nbin > 1
             ERP_difference = pop_binoperator(ERP, {'b3 = b1 - b2'});
             CFG.ERP_bins = 3;
             CFG.amplitude_limit = CFG.exp_param(exp_id).amplitude_limit;
