@@ -16,6 +16,9 @@ end
 if ~isfield(CFG, 'eeglab_plot_fullscreen')
     CFG.eeglab_plot_fullscreen = 1;
 end
+if ~isfield(CFG, 'eeg_plot_spacing')
+    CFG.eeg_plot_spacing = 50;
+end
 
 if CFG.plot_ICA_components
     IC_all = 1:CFG.num_components_to_plot;

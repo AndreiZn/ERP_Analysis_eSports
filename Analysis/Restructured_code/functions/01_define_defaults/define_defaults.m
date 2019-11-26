@@ -22,6 +22,9 @@ CFG.ch_labels = {EEG.chanlocs.labels};
 
 %% Electrode location file
 electrode_location_file_struct = dir(fullfile(CFG.root_folder, '**', 'gGAMMAcap32ch_10-20.locs'));
+if numel(electrode_location_file_struct)
+    electrode_location_file_struct = electrode_location_file_struct(1);
+end
 CFG.electrode_location_file = fullfile(electrode_location_file_struct.folder, electrode_location_file_struct.name);
 
 %% Experiment specific variables
@@ -68,11 +71,11 @@ CFG.erplab_files_folder = temp.folder;
 %% Define (or select manually) code, data and output folders
 cell_root_folder = split(CFG.root_folder, "\");
 root_folder_name = cell_root_folder{end};
-code_folder_name = [root_folder_name, '_code'];
-data_folder_name = [root_folder_name, '_data'];
-output_folder_name = [root_folder_name, '_output'];
+%code_folder_name = [root_folder_name(3:end), '_code'];
+data_folder_name = ['2_', root_folder_name(3:end), '_data'];
+output_folder_name = ['3_', root_folder_name(3:end), '_output'];
 
-code_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, code_folder_name}, '\');
+%code_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, code_folder_name}, '\');
 data_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, data_folder_name}, '\');
 output_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, output_folder_name}, '\');
 
@@ -80,7 +83,7 @@ answer = questdlg('Use default locations of code, data and output folders?', 'Lo
     'Yes', 'No', 'Yes');
 switch answer
     case 'Yes'
-        CFG.code_folder_path = code_folder_path;
+        %CFG.code_folder_path = code_folder_path;
         CFG.data_folder_path = data_folder_path;
         CFG.output_folder_path = output_folder_path;
     case 'No'

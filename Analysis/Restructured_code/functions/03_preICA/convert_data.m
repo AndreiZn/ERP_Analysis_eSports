@@ -12,7 +12,7 @@ if ~exist(CFG.output_data_folder, 'dir')
     mkdir(CFG.output_data_folder)
 end
 
-CFG.output_plots_folder = [CFG.output_folder_path, '\', CFG.output_plots_folder_name];'
+CFG.output_plots_folder = [CFG.output_folder_path, '\', CFG.output_plots_folder_name];
 if ~exist(CFG.output_plots_folder, 'dir')
     mkdir(CFG.output_plots_folder)
 end
@@ -62,7 +62,7 @@ for subi=1:numel(subject_folders)
         
         % visualize data using the eeglab function eegplot (compare
         % obtained plots with stage_1 plots as a sanity check)
-        fig = eeglab_plot_EEG(EEG);
+        fig = eeglab_plot_EEG(EEG,CFG);
         saveas(fig,[CFG.output_plots_folder_cur, '\', eeglab_set_name '_plot','.png'])
         close(fig)
         
