@@ -28,7 +28,7 @@ for subi=1:numel(subject_folders)
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
     files = dir(folderpath);
-    dirflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.namde},'.');
+    dirflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.name},'.');
     files = files(dirflag);
     
     % read sub_ID
@@ -40,17 +40,7 @@ for subi=1:numel(subject_folders)
         exp_id = file_struct.name(9:13);
         CFG.eeglab_set_name = ['sub', sub_ID, '_', exp_id];
         
-        %         % create output folders
-        %         CFG.output_data_folder_cur = [CFG.output_data_folder, '\', subj_folder.name];
-        %         if ~exist(CFG.output_data_folder_cur, 'dir')
-        %             mkdir(CFG.output_data_folder_cur)
-        %         end
-        %         CFG.output_plots_folder_cur = [CFG.output_plots_folder, '\', subj_folder.name];
-        %         if ~exist(CFG.output_plots_folder_cur, 'dir')
-        %             mkdir(CFG.output_plots_folder_cur)
-        %         end
-        
-        %         % Load dataset
+        % Load dataset
         ERP = pop_loaderp( 'filename', file_struct.name, 'filepath',file_struct.folder);
         
         % Calculate the difference between the first and the second bins
@@ -74,6 +64,20 @@ for subi=1:numel(subject_folders)
         
     end
 end
+
+
+
+exp_IDs = unique({ERP_combined.exp_id});
+
+for exp_idx = 1:numel(exp_IDs)
+    exp_id_cur = exp_IDs(exp_idx);
+    ERP_idx = find(contains({ERP_combined.exp_id},exp_id_cur));
+
+
+
+
+
+
 
 ch_ids = [28,31,32];
 for ch_idx = ch_ids

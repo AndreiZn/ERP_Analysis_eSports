@@ -84,6 +84,6 @@ end
 group_analysis_of_ERP_flag = 1;
 if group_analysis_of_ERP_flag
     CFG.plot_diff_only = 0;
-    CFG.normalize_ERP = 1;
+    CFG.normalize_ERP = 0;
     CFG = group_analysis_of_ERP(CFG);
 end
