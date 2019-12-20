@@ -19,7 +19,7 @@ if convert_mat_to_eeglab_flag
 end
 
 % interpolate + rereference (CAR) + filter data
-interpolate_rereference_and_filter_flag = 0;
+interpolate_rereference_and_filter_flag = 1;
 if interpolate_rereference_and_filter_flag
     [CFG, EEG] = intrp_reref_and_filter(CFG);
 end
@@ -68,10 +68,10 @@ get_ERP_flag = 1;
 if get_ERP_flag
     CFG.remove_IC_components = 1;
     
-    CFG.plot_ERP_image_flag = 1;
+    CFG.plot_ERP_image_flag = 0;
     
     CFG.plot_ERP_flag = 1;
-    CFG.plot_ERP_difference_flag = 1;
+    CFG.plot_ERP_difference_flag = 0;
     
     CFG.plot_ERP_scalplot_flag = 0;
     CFG.plot_ERP_difference_scalplot_flag = 0;

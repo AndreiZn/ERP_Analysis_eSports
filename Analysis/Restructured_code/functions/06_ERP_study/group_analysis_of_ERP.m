@@ -66,15 +66,15 @@ for subi=1:numel(subject_folders)
 end
 
 
-
-exp_IDs = unique({ERP_combined.exp_id});
-
-for exp_idx = 1:numel(exp_IDs)
-    exp_id_cur = exp_IDs(exp_idx);
-    ERP_idx = find(contains({ERP_combined.exp_id},exp_id_cur));
-
-
-
+% 
+% exp_IDs = unique({ERP_combined.exp_id});
+% 
+% for exp_idx = 1:numel(exp_IDs)
+%     exp_id_cur = exp_IDs(exp_idx);
+%     ERP_idx = find(contains({ERP_combined.exp_id},exp_id_cur));
+% 
+% 
+% 
 
 
 

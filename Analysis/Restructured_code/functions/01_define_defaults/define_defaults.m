@@ -28,7 +28,7 @@ end
 CFG.electrode_location_file = fullfile(electrode_location_file_struct.folder, electrode_location_file_struct.name);
 
 %% Experiment specific variables
-keySet = {'1_1_1','1_1_2','1_2_2','2_2_2','2_2_4','2_2_5'};
+keySet = {'1_1_1','1_1_2','1_2_2','2_2_2','2_2_4','2_2_5'}; %,'32_5L','32_5R'
 
 value_1_1_1.epoch_boundary_s = [-0.2 0.7]; value_1_1_1.baseline_ms = [-200 0]; value_1_1_1.ERP_bins = [1];
 value_1_1_1.event_type = {'chan36'}; value_1_1_1.event_name = {'bin1_target'};
