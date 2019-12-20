@@ -11,6 +11,12 @@ if cut_data_flag
     CFG = cut_data(CFG);
 end
 
+%% Shift groupid by observed latency
+shift_groupid_flag = 0;
+if shift_groupid_flag
+    CFG = shift_groupid(CFG);
+end
+
 %% PreICA (import, rereference, filter, etc.)
 % convert matlab *.mat files to eeglab datasets *.set 
 convert_mat_to_eeglab_flag = 0;
@@ -19,7 +25,7 @@ if convert_mat_to_eeglab_flag
 end
 
 % interpolate + rereference (CAR) + filter data
-interpolate_rereference_and_filter_flag = 1;
+interpolate_rereference_and_filter_flag = 0;
 if interpolate_rereference_and_filter_flag
     [CFG, EEG] = intrp_reref_and_filter(CFG);
 end

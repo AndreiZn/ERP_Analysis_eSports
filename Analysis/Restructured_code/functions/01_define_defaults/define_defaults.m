@@ -11,6 +11,7 @@ CFG.trigger_channel = 34;
 CFG.target_channel = 35;
 CFG.groupid_channel = 36;
 gray_clr = gray; CFG.gray_clr = gray_clr(round(2*size(gray_clr,1)/3),:);
+CFG.groupid_latency_ms = 500; % latency of recorded groupdid
 
 %% Select a root folder (it implies that the root folder will contain the code, data and output folders
 CFG.root_folder = uigetdir('./','Select a root folder...');
