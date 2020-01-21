@@ -70,7 +70,7 @@ end
 % add artifact removal
 
 %% Level-1 analysis (within subject study)
-get_ERP_flag = 1;
+get_ERP_flag = 0;
 if get_ERP_flag
     CFG.remove_IC_components = 1;
     
@@ -89,6 +89,7 @@ end
 
 group_analysis_of_ERP_flag = 1;
 if group_analysis_of_ERP_flag
+    CFG.plot_ERPs = 0;
     CFG.plot_diff_only = 0;
     CFG.normalize_ERP = 0;
     CFG = group_analysis_of_ERP(CFG);

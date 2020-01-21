@@ -17,7 +17,7 @@ if ~exist(CFG.output_plots_folder, 'dir')
     mkdir(CFG.output_plots_folder)
 end
 
-%% Loop through folders
+%% Loop through folders and form the combined ERP structure (ERP_combined) that includes ERPs obtaines for all subjects in all experiments
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
@@ -59,25 +59,21 @@ for subi=1:numel(subject_folders)
         % save all ERPs in the ERP_combined struct
         ERP_combined = [ERP_combined; ERP];
         
-        %         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
-        %         EEG = eeg_checkset(EEG);
-        
     end
 end
 
 
-% 
-% exp_IDs = unique({ERP_combined.exp_id});
-% 
-% for exp_idx = 1:numel(exp_IDs)
-%     exp_id_cur = exp_IDs(exp_idx);
-%     ERP_idx = find(contains({ERP_combined.exp_id},exp_id_cur));
-% 
-% 
-% 
+%% Compare ERPs between groups in various experiments
 
 
+%sub_id = %{'Sanchez';'Johnson';'Li';'Diaz';'Brown'};
+Age = [38;43;38;40;49];
+Smoker = logical([1;0;1;0;1]);
+Height = [71;69;64;67;64];
+Weight = [176;163;131;133;119];
+BloodPressure = [124 93; 109 77; 125 83; 117 75; 122 80];
 
+%ERP_features = table(LastName,Age,Smoker,Height,Weight,BloodPressure);
 
 ch_ids = [28,31,32];
 for ch_idx = ch_ids
@@ -97,6 +93,7 @@ for ch_idx = ch_ids
     %exp_IDs = {'2_2_2'; '2_2_4'; '2_2_5'};
     
     for exp_idx = 1:numel(exp_IDs)
+        
         exp_id_cur = exp_IDs(exp_idx);
         ERP_idx = find(contains({ERP_combined.exp_id},exp_id_cur));
         
@@ -105,60 +102,76 @@ for ch_idx = ch_ids
             mkdir(CFG.output_plots_folder_cur)
         end
         
-        figure('units','normalized','outerposition',[0 0 0.3 1])
-        times = ERP_combined(ERP_idx(1)).times;
-        
-        if CFG.normalize_ERP
-            delta_y = 4;
-        else
-            if CFG.plot_diff_only
-                delta_y = 10;
-            else
-                delta_y = 40;
-            end
-        end
-        
-        ytick_value = zeros(numel(ERP_idx),1);
-        ytick_label = cell(numel(ERP_idx),1);
         
         for dst_i = 1:numel(ERP_idx)
-            dst_idx = ERP_idx(dst_i);
-            ERP_cur = ERP_combined(dst_idx);
-            
-            for bin_idx = 1:numel(CFG.bin_to_plot)
-                bin_to_plot = CFG.bin_to_plot(bin_idx);
-                ERP_data = ERP_cur.bindata(CFG.channel_idx_to_plot, :, bin_to_plot);
-                const_delta = delta_y*(numel(ERP_idx)-dst_i+1);
-                if CFG.normalize_ERP
-                    max_amp = max(max(abs(ERP_cur.bindata(CFG.channel_idx_to_plot, :, CFG.bin_to_plot))));
-                    ERP_data = ERP_data/max_amp;
-                end
-                data_to_plot = ERP_data + const_delta;
-                baseline = linspace(const_delta, const_delta, numel(times));
-                
-                ytick_value(dst_i) = mean(baseline);
-                ytick_label{dst_i} = ERP_cur.subject;
-                line_style = line_styles{bin_idx};
-                plot(times, data_to_plot, line_style)
-                hold on
-            end
-            
-            plot(times, baseline, '--k')
+                dst_idx = ERP_idx(dst_i);
+                ERP_cur = ERP_combined(dst_idx);
+                sub_id = ERP_cur.subject;
+                bins = [1,2];
+                bin_data = ERP_cur.bindata(ch_idx, :, bins);
+                [max_amp, max_amp_idx] = max(max(bin_data,[],3));
+                max_amp_latency = ERP_cur.times(max_amp_idx);
+
         end
         
-        title(['ERP data plot, channel: ', CFG.channel_lbl_to_plot], 'Interpreter', 'None')
-        xlabel('Time, ms')
-        ylabel('Amplitude, mcV')
-        ylim = [0, delta_y*(1+numel(ERP_idx))];
-        plot([0, 0], [0, max(ylim)], '--k')
-        time_400_ms_idx = dsearchn(times', 400);
-        plot([times(time_400_ms_idx), times(time_400_ms_idx)], [0, max(ylim)], '--k')
-        set(gca, 'ylim', ylim, 'Ytick', ytick_value(end:-1:1), 'YTickLabel', ytick_label(end:-1:1))
         
-        plot_name = ['ERP_channel_', CFG.channel_lbl_to_plot];
-        saveas(gcf,[CFG.output_plots_folder_cur, '\', plot_name,'.png'])
-        close(gcf)
-  
+        %%% Visuzlize ERPs %%%
+        if CFG.plot_ERPs
+            
+            figure('units','normalized','outerposition',[0 0 0.3 1])
+            times = ERP_combined(ERP_idx(1)).times;
+            
+            if CFG.normalize_ERP
+                delta_y = 4;
+            else
+                if CFG.plot_diff_only
+                    delta_y = 10;
+                else
+                    delta_y = 40;
+                end
+            end
+            
+            ytick_value = zeros(numel(ERP_idx),1);
+            ytick_label = cell(numel(ERP_idx),1);
+            
+            for dst_i = 1:numel(ERP_idx)
+                dst_idx = ERP_idx(dst_i);
+                ERP_cur = ERP_combined(dst_idx);
+                
+                for bin_idx = 1:numel(CFG.bin_to_plot)
+                    bin_to_plot = CFG.bin_to_plot(bin_idx);
+                    ERP_data = ERP_cur.bindata(CFG.channel_idx_to_plot, :, bin_to_plot);
+                    const_delta = delta_y*(numel(ERP_idx)-dst_i+1);
+                    if CFG.normalize_ERP
+                        max_amp = max(max(abs(ERP_cur.bindata(CFG.channel_idx_to_plot, :, CFG.bin_to_plot))));
+                        ERP_data = ERP_data/max_amp;
+                    end
+                    data_to_plot = ERP_data + const_delta;
+                    baseline = linspace(const_delta, const_delta, numel(times));
+                    
+                    ytick_value(dst_i) = mean(baseline);
+                    ytick_label{dst_i} = ERP_cur.subject;
+                    line_style = line_styles{bin_idx};
+                    plot(times, data_to_plot, line_style)
+                    hold on
+                end
+                
+                plot(times, baseline, '--k')
+            end
+            
+            title(['ERP data plot, channel: ', CFG.channel_lbl_to_plot], 'Interpreter', 'None')
+            xlabel('Time, ms')
+            ylabel('Amplitude, mcV')
+            ylim = [0, delta_y*(1+numel(ERP_idx))];
+            plot([0, 0], [0, max(ylim)], '--k')
+            time_400_ms_idx = dsearchn(times', 400);
+            plot([times(time_400_ms_idx), times(time_400_ms_idx)], [0, max(ylim)], '--k')
+            set(gca, 'ylim', ylim, 'Ytick', ytick_value(end:-1:1), 'YTickLabel', ytick_label(end:-1:1))
+            
+            plot_name = ['ERP_channel_', CFG.channel_lbl_to_plot];
+            saveas(gcf,[CFG.output_plots_folder_cur, '\', plot_name,'.png'])
+            close(gcf)
+        end
     end
 end
 
