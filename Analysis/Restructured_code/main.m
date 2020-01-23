@@ -3,7 +3,6 @@
 
 %% Define default variables
 CFG = define_defaults();
-
 %% Visually inspect data (mark datasets clearly not appropriate for
 % analysis, cut beginning and end of datafiles, mark clearly bad channels)
 cut_data_flag = 0;

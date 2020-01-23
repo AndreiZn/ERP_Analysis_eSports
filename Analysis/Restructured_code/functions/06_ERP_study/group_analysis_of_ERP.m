@@ -3,24 +3,24 @@
 
 function CFG = group_analysis_of_ERP(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_8_group_analysis_of_ERP\data';
-CFG.output_plots_folder_name = 'stage_8_group_analysis_of_ERP\plots';
+CFG.output_data_folder_name = ['stage_8_group_analysis_of_ERP', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_8_group_analysis_of_ERP', filesep, 'plots'];
 
-CFG.output_data_folder = [CFG.output_folder_path, '\', CFG.output_data_folder_name];
+CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
     mkdir(CFG.output_data_folder)
 end
 
 % folder for plots (plots will be grouped by sub_id in this folder)
-CFG.output_plots_folder = [CFG.output_folder_path, '\', CFG.output_plots_folder_name];
+CFG.output_plots_folder = [CFG.output_folder_path, filesep, CFG.output_plots_folder_name];
 if ~exist(CFG.output_plots_folder, 'dir')
     mkdir(CFG.output_plots_folder)
 end
 
 %% Loop through folders and form the combined ERP structure (ERP_combined) that includes ERPs obtaines for all subjects in all experiments
 subject_folders = dir(CFG.data_folder_path);
+% write function to count the number of folders that start with a dot 
 subject_folders = subject_folders(3:end);
-
 ERP_combined = [];
 
 for subi=1:numel(subject_folders)
@@ -97,7 +97,7 @@ for ch_idx = ch_ids
         exp_id_cur = exp_IDs(exp_idx);
         ERP_idx = find(contains({ERP_combined.exp_id},exp_id_cur));
         
-        CFG.output_plots_folder_cur = [CFG.output_plots_folder, '\', exp_id_cur{:}];
+        CFG.output_plots_folder_cur = [CFG.output_plots_folder, filesep, exp_id_cur{:}];
         if ~exist(CFG.output_plots_folder_cur, 'dir')
             mkdir(CFG.output_plots_folder_cur)
         end
@@ -169,7 +169,7 @@ for ch_idx = ch_ids
             set(gca, 'ylim', ylim, 'Ytick', ytick_value(end:-1:1), 'YTickLabel', ytick_label(end:-1:1))
             
             plot_name = ['ERP_channel_', CFG.channel_lbl_to_plot];
-            saveas(gcf,[CFG.output_plots_folder_cur, '\', plot_name,'.png'])
+            saveas(gcf,[CFG.output_plots_folder_cur, filesep, plot_name,'.png'])
             close(gcf)
         end
     end

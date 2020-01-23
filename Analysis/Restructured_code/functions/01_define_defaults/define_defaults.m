@@ -70,15 +70,15 @@ temp = dir(fullfile(CFG.root_folder, '**', folder_name, '.'));
 CFG.erplab_files_folder = temp.folder;
 
 %% Define (or select manually) code, data and output folders
-cell_root_folder = split(CFG.root_folder, "\");
+cell_root_folder = split(CFG.root_folder, filesep);
 root_folder_name = cell_root_folder{end};
 %code_folder_name = [root_folder_name(3:end), '_code'];
 data_folder_name = ['2_', root_folder_name(3:end), '_data'];
 output_folder_name = ['3_', root_folder_name(3:end), '_output'];
 
-%code_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, code_folder_name}, '\');
-data_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, data_folder_name}, '\');
-output_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, output_folder_name}, '\');
+%code_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, code_folder_name}, filesep);
+data_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, data_folder_name}, filesep);
+output_folder_path = strjoin({cell_root_folder{1:end-1}, root_folder_name, output_folder_name}, filesep);
 
 answer = questdlg('Use default locations of code, data and output folders?', 'Location of other folders', ...
     'Yes', 'No', 'Yes');
