@@ -19,7 +19,6 @@ end
 
 %% Loop through folders and form the combined ERP structure (ERP_combined) that includes ERPs obtaines for all subjects in all experiments
 subject_folders = dir(CFG.data_folder_path);
-% write function to count the number of folders that start with a dot 
 subject_folders = subject_folders(3:end);
 ERP_combined = [];
 
@@ -28,7 +27,7 @@ for subi=1:numel(subject_folders)
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
     files = dir(folderpath);
-    dirflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.name},'.');
+    dirflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.name},'.') & ~strcmp({files.name},'.DS_Store');
     files = files(dirflag);
     
     % read sub_ID
@@ -108,10 +107,14 @@ for ch_idx = ch_ids
                 ERP_cur = ERP_combined(dst_idx);
                 sub_id = ERP_cur.subject;
                 bins = [1,2];
-                bin_data = ERP_cur.bindata(ch_idx, :, bins);
-                [max_amp, max_amp_idx] = max(max(bin_data,[],3));
-                max_amp_latency = ERP_cur.times(max_amp_idx);
-
+                for bin_idx = 1:numel(bins)
+                    bin = bins(bin_idx);
+                    bin_data = squeeze(ERP_cur.bindata(ch_idx, :, bin));
+                    [max_amp, max_amp_idx] = max(bin_data,[],2);
+                    max_amp_latency = ERP_cur.times(max_amp_idx);
+                end
+                
+                
         end
         
         
