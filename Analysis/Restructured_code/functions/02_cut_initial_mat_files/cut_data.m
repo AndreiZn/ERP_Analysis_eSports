@@ -60,6 +60,11 @@ for subi=1:numel(subject_folders)
         close(cur_fig)
         
         % save cut_data and bad_chs
-        save([CFG.output_data_folder_cur, filesep, file_struct.name], 'y_cut', 'bad_ch_idx', 'bad_ch_lbl')
+        if strcmp(file_struct.name(end-3:end), '.mat')
+            file_name = file_struct.name(1:end-4);
+        else
+            file_name = file_struct.name;
+        end
+        save([CFG.output_data_folder_cur, filesep, file_name], 'y_cut', 'bad_ch_idx', 'bad_ch_lbl')
     end
 end

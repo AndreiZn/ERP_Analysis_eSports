@@ -62,22 +62,27 @@ for subi=1:numel(subject_folders)
         new_eeg = [eeg(:,new_idx), zeros(numel(EEG_channels),shift_ts)];
         y(EEG_channels, :) = new_eeg;
         
-        cur_fig = figure();
-        plot(groupid);
-        hold on
-        plot(y(CFG.groupid_channel, :))
-        plot(eeg(CFG.time_channel,:))
-        plot(y(CFG.time_channel, :))
-        legend('init groupid', 'shifted groupid', 'init time ch', 'shifted time ch')
-        % save plot
-        saveas(cur_fig, [CFG.output_plots_folder_cur, filesep, 'Plot_', file_struct.name(1:end-3), 'png'])
-        close(cur_fig);
+%         cur_fig = figure();
+%         plot(groupid);
+%         hold on
+%         plot(y(CFG.groupid_channel, :))
+%         plot(eeg(CFG.time_channel,:))
+%         plot(y(CFG.time_channel, :))
+%         legend('init groupid', 'shifted groupid', 'init time ch', 'shifted time ch')
+%         % save plot
+%         saveas(cur_fig, [CFG.output_plots_folder_cur, filesep, 'Plot_', file_struct.name(1:end-3), 'png'])
+%         close(cur_fig);
         
         % to keep processing pipeline consistent, it's easier to save y as
         % y_cut for the next script
         y_cut = y;
         
         % save cut_data and bad_chs
-        save([CFG.output_data_folder_cur, filesep, file_struct.name, '_shifted_data'], 'y_cut', 'bad_ch_idx', 'bad_ch_lbl')
+        if strcmp(file_struct.name(end-3:end), '.mat')
+            file_name = file_struct.name(1:end-4);
+        else
+            file_name = file_struct.name;
+        end
+        save([CFG.output_data_folder_cur, filesep, file_name, '_shifted_data'], 'y_cut', 'bad_ch_idx', 'bad_ch_lbl')
     end
 end
