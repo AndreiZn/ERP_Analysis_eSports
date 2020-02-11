@@ -3,8 +3,8 @@
 function CFG = shift_groupid(CFG)
 
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_1_shift\data';
-CFG.output_plots_folder_name = 'stage_1_shift\plots';
+CFG.output_data_folder_name = ['stage_1_shift', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_1_shift', filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -45,21 +45,32 @@ for subi=1:numel(subject_folders)
             mkdir(CFG.output_plots_folder_cur)
         end
         
-        % read groupid and get the required shift
+        % shidt groupid
         groupid = y(CFG.groupid_channel, :);
-        shift_ts = CFG.sample_rate * CFG.groupid_latency_ms/1000;
+        shift_ts = round(CFG.sample_rate * CFG.groupid_latency_ms/1000);
         % form new indices
-        new_idx = shift_ts+1:size(groupid,2);
+        total_num_samples = size(groupid,2);
+        new_idx = shift_ts+1:total_num_samples;
         new_groupid = [groupid(1,new_idx), zeros(1,shift_ts)];
         y(CFG.groupid_channel, :) = new_groupid;
+        
+        % shift EEG data
+        EEG_channels = [CFG.time_channel, CFG.EEG_channels];
+        eeg = y(EEG_channels, :);
+        shift_ts = round(CFG.sample_rate * CFG.base_station_latency_ms/1000);
+        new_idx = shift_ts+1:total_num_samples;
+        new_eeg = [eeg(:,new_idx), zeros(numel(EEG_channels),shift_ts)];
+        y(EEG_channels, :) = new_eeg;
         
         cur_fig = figure();
         plot(groupid);
         hold on
         plot(y(CFG.groupid_channel, :))
-        legend('old groupid', 'new groupid')
+        plot(eeg(CFG.time_channel,:))
+        plot(y(CFG.time_channel, :))
+        legend('init groupid', 'shifted groupid', 'init time ch', 'shifted time ch')
         % save plot
-        saveas(cur_fig, [CFG.output_plots_folder_cur, '\Plot_', file_struct.name(1:end-3), 'png'])
+        saveas(cur_fig, [CFG.output_plots_folder_cur, filesep, 'Plot_', file_struct.name(1:end-3), 'png'])
         close(cur_fig);
         
         % to keep processing pipeline consistent, it's easier to save y as
@@ -67,6 +78,6 @@ for subi=1:numel(subject_folders)
         y_cut = y;
         
         % save cut_data and bad_chs
-        save([CFG.output_data_folder_cur, filesep, file_struct.name, '_shifted_groupid'], 'y_cut', 'bad_ch_idx', 'bad_ch_lbl')
+        save([CFG.output_data_folder_cur, filesep, file_struct.name, '_shifted_data'], 'y_cut', 'bad_ch_idx', 'bad_ch_lbl')
     end
 end

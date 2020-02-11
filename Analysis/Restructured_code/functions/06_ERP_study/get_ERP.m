@@ -10,10 +10,10 @@
 
 function CFG = get_ERP(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_7_get_ERP\data';
-CFG.output_plots_folder_name_1 = 'stage_7_get_ERP\01_plots_per_subid';
-CFG.output_plots_folder_name_2 = 'stage_7_get_ERP\02_plots_per_expid';
-CFG.output_plots_folder_name_3 = 'stage_7_get_ERP\03_plots_per_expid_per_imtype';
+CFG.output_data_folder_name = ['stage_7_get_ERP', filesep, 'data'];
+CFG.output_plots_folder_name_1 = ['stage_7_get_ERP', filesep, '01_plots_per_subid'];
+CFG.output_plots_folder_name_2 = ['stage_7_get_ERP', filesep, '02_plots_per_expid'];
+CFG.output_plots_folder_name_3 = ['stage_7_get_ERP', filesep, '03_plots_per_expid_per_imtype'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')

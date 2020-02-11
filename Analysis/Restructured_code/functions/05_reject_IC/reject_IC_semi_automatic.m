@@ -14,8 +14,8 @@ switch answer
 end
 
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_6_reject_IC_semi_automatic\data';
-CFG.output_plots_folder_name = 'stage_6_reject_IC_semi_automatic\plots';
+CFG.output_data_folder_name = ['stage_6_reject_IC_semi_automatic', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_6_reject_IC_semi_automatic', filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')

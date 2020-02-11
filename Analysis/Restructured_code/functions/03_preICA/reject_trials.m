@@ -5,8 +5,8 @@
 % reject_trials(CFG)
 CFG = define_defaults();
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_4_reject_trials\data';
-CFG.output_plots_folder_name = 'stage_4_reject_trials\plots';
+CFG.output_data_folder_name = ['stage_4_reject_trials', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_4_reject_trials' filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')

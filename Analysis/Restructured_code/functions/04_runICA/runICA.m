@@ -4,8 +4,8 @@
 
 function CFG = runICA(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_5_runICA\data';
-CFG.output_plots_folder_name = 'stage_5_runICA\plots';
+CFG.output_data_folder_name = ['stage_5_runICA', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_5_runICA', filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')

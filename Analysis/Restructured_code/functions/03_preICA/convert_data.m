@@ -4,8 +4,8 @@
 
 function [CFG, EEG] = convert_data(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_2_convert_to_eeglab\data';
-CFG.output_plots_folder_name = 'stage_2_convert_to_eeglab\plots';
+CFG.output_data_folder_name = ['stage_2_convert_to_eeglab', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_2_convert_to_eeglab' filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')

@@ -3,6 +3,7 @@
 
 %% Define default variables
 CFG = define_defaults();
+
 %% Visually inspect data (mark datasets clearly not appropriate for
 % analysis, cut beginning and end of datafiles, mark clearly bad channels)
 cut_data_flag = 0;
@@ -18,7 +19,7 @@ end
 
 %% PreICA (import, rereference, filter, etc.)
 % convert matlab *.mat files to eeglab datasets *.set 
-convert_mat_to_eeglab_flag = 0;
+convert_mat_to_eeglab_flag = 1;
 if convert_mat_to_eeglab_flag
     [CFG, EEG] = convert_data(CFG);
 end
