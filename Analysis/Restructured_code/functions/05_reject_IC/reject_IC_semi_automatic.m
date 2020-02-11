@@ -17,12 +17,12 @@ end
 CFG.output_data_folder_name = 'stage_6_reject_IC_semi_automatic\data';
 CFG.output_plots_folder_name = 'stage_6_reject_IC_semi_automatic\plots';
 
-CFG.output_data_folder = [CFG.output_folder_path, '\', CFG.output_data_folder_name];
+CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
     mkdir(CFG.output_data_folder)
 end
 
-CFG.output_plots_folder = [CFG.output_folder_path, '\', CFG.output_plots_folder_name];
+CFG.output_plots_folder = [CFG.output_folder_path, filesep, CFG.output_plots_folder_name];
 if ~exist(CFG.output_plots_folder, 'dir')
     mkdir(CFG.output_plots_folder)
 end
@@ -37,7 +37,7 @@ for subi=1:numel(subject_folders)
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
     files = dir(folderpath);
-    dirflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.name},'.');
+    dirflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.name},'.') & ~strcmp({files.name},'.DS_Store');
     files = files(dirflag);
     
     % read sub_ID
@@ -50,11 +50,11 @@ for subi=1:numel(subject_folders)
         CFG.eeglab_set_name = ['sub', sub_ID, '_', exp_id];
         
         % create output folders
-        CFG.output_data_folder_cur = [CFG.output_data_folder, '\', subj_folder.name];
+        CFG.output_data_folder_cur = [CFG.output_data_folder, filesep, subj_folder.name];
         if ~exist(CFG.output_data_folder_cur, 'dir')
             mkdir(CFG.output_data_folder_cur)
         end
-        CFG.output_plots_folder_cur = [CFG.output_plots_folder, '\', subj_folder.name];
+        CFG.output_plots_folder_cur = [CFG.output_plots_folder, filesep, subj_folder.name];
         if ~exist(CFG.output_plots_folder_cur, 'dir')
             mkdir(CFG.output_plots_folder_cur)
         end
@@ -70,7 +70,7 @@ for subi=1:numel(subject_folders)
         CFG.eeglab_plot_fullscreen = 1;
         fig = eeglab_plot_EEG(EEG, CFG);
         plot_name = [CFG.eeglab_set_name, '_01before_IC_rejection'];
-        saveas(fig,[CFG.output_plots_folder_cur, '\', plot_name '_plot','.png'])
+        saveas(fig,[CFG.output_plots_folder_cur, filesep, plot_name '_plot','.png'])
         close(fig)
         
         % Run SASICA plugin
@@ -94,7 +94,7 @@ for subi=1:numel(subject_folders)
             cur_fig = figHandles(figi);
             cur_fig_name = ['fig_', num2str(figi)];
             set(cur_fig, 'PaperPositionMode', 'auto')
-            saveas(cur_fig,[CFG.output_plots_folder_cur, '\', cur_set_name, '_', cur_fig_name,'.png'])
+            saveas(cur_fig,[CFG.output_plots_folder_cur, filesep, cur_set_name, '_', cur_fig_name,'.png'])
         end
         
         % if reviewed manually, pause the script, then visualize
@@ -112,7 +112,7 @@ for subi=1:numel(subject_folders)
             pop_selectcomps(EEG, 1:size(EEG.icaact,1));
             cur_fig = gcf;
             cur_fig_name = 'fig_2_IC_selected_manually';
-            saveas(cur_fig,[CFG.output_plots_folder_cur, '\', cur_set_name, '_', cur_fig_name,'.png'])
+            saveas(cur_fig,[CFG.output_plots_folder_cur, filesep, cur_set_name, '_', cur_fig_name,'.png'])
             close(cur_fig)
         else
             for figi = [1,3,2]
@@ -132,7 +132,7 @@ for subi=1:numel(subject_folders)
             CFG.eeglab_plot_fullscreen = 1;
             fig = eeglab_plot_EEG(EEG_with_rejected_comp, CFG);
             plot_name = [CFG.eeglab_set_name, '_02after_IC_rejection'];
-            saveas(fig,[CFG.output_plots_folder_cur, '\', plot_name '_plot','.png'])
+            saveas(fig,[CFG.output_plots_folder_cur, filesep, plot_name '_plot','.png'])
             close(fig)
         else
             warndlg(sprintf('All Independent Components for dataset %s were rejected', CFG.eeglab_set_name),'Warning');

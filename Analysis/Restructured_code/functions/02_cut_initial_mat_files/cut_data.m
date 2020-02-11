@@ -7,12 +7,12 @@ function CFG = cut_data(CFG)
 CFG.output_data_folder_name = 'stage_1_cut\data';
 CFG.output_plots_folder_name = 'stage_1_cut\plots';
 
-CFG.output_data_folder = [CFG.output_folder_path, '\', CFG.output_data_folder_name];
+CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
     mkdir(CFG.output_data_folder)
 end
 
-CFG.output_plots_folder = [CFG.output_folder_path, '\', CFG.output_plots_folder_name];
+CFG.output_plots_folder = [CFG.output_folder_path, filesep, CFG.output_plots_folder_name];
 if ~exist(CFG.output_plots_folder, 'dir')
     mkdir(CFG.output_plots_folder)
 end
@@ -26,7 +26,7 @@ for subi=1:numel(subject_folders)
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
     files = dir(folderpath);
-    dirflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.name},'.');
+    dirflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.name},'.') & ~strcmp({files.name},'.DS_Store');
     files = files(dirflag);
     for filei=1:numel(files)
         % read file
@@ -35,11 +35,11 @@ for subi=1:numel(subject_folders)
         y = load(filepath); y = y.y;
         
         % create output folders
-        CFG.output_data_folder_cur = [CFG.output_data_folder, '\', subj_folder.name];
+        CFG.output_data_folder_cur = [CFG.output_data_folder, filesep, subj_folder.name];
         if ~exist(CFG.output_data_folder_cur, 'dir')
             mkdir(CFG.output_data_folder_cur)
         end 
-        CFG.output_plots_folder_cur = [CFG.output_plots_folder, '\', subj_folder.name];
+        CFG.output_plots_folder_cur = [CFG.output_plots_folder, filesep, subj_folder.name];
         if ~exist(CFG.output_plots_folder_cur, 'dir')
             mkdir(CFG.output_plots_folder_cur)
         end
@@ -60,6 +60,6 @@ for subi=1:numel(subject_folders)
         close(cur_fig)
         
         % save cut_data and bad_chs
-        save([CFG.output_data_folder_cur, '\', file_struct.name], 'y_cut', 'bad_ch_idx', 'bad_ch_lbl')
+        save([CFG.output_data_folder_cur, filesep, file_struct.name], 'y_cut', 'bad_ch_idx', 'bad_ch_lbl')
     end
 end
