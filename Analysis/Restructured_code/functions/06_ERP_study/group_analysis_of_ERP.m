@@ -65,6 +65,15 @@ end
 
 %% Compare ERPs between groups in various experiments
 
+% channels and datasets to analyze
+CFG.exp_IDs = {'1_2_2'; '2_2_2'; '2_2_4'; '2_2_5'};
+CFG.ch_idx = [28,31,32];
+% bins
+CFG.bins = [1,2];
 ERP_features = calculate_ERP_features(CFG, ERP_combined);
 
+if CFG.plot_ERPs
+    visualize_ERPs(CFG,ERP_combined)
+end
 
+analyze_ERP_features(CFG, ERP_features);
