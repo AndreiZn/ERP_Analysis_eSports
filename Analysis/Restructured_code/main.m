@@ -19,7 +19,7 @@ end
 
 %% PreICA (import, rereference, filter, etc.)
 % convert matlab *.mat files to eeglab datasets *.set 
-convert_mat_to_eeglab_flag = 1;
+convert_mat_to_eeglab_flag = 0;
 if convert_mat_to_eeglab_flag
     [CFG, EEG] = convert_data(CFG);
 end
@@ -61,7 +61,7 @@ end
 
 % run SASICA plugin to reject independent components automatically (or
 % semi-automatically)
-reject_IC_semi_automatic_flag = 1;
+reject_IC_semi_automatic_flag = 0;
 if reject_IC_semi_automatic_flag
     % run reject_IC_semi_automatic as a separate script
     reject_IC_semi_automatic();
@@ -70,9 +70,11 @@ end
 % add artifact removal
 
 %% Level-1 analysis (within subject study)
-get_ERP_flag = 0;
+get_ERP_flag = 1;
 if get_ERP_flag
-    CFG.remove_IC_components = 1;
+    
+    CFG.remove_baseline = 0;
+    CFG.remove_IC_components = 0;
     
     CFG.plot_ERP_image_flag = 0;
     

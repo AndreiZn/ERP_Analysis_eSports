@@ -42,7 +42,7 @@ end
 subject_folders = dir(CFG.data_folder_path);
 subject_folders = subject_folders(3:end);
 
-for subi=1:numel(subject_folders)
+for subi=1:3%numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -93,10 +93,12 @@ for subi=1:numel(subject_folders)
             assert(EEG.rank_manually_computed == rank(reshape(EEG.data, EEG.nbchan, [])),'Rank computed manually is not equal to rank computed with a matlab function rank()')
         end
         
-        % remove baseline
-        baseline_ms = CFG.exp_param(exp_id).baseline_ms;
-        EEG = pop_rmbase(EEG, baseline_ms);
-        EEG = eeg_checkset(EEG);
+        if CFG.remove_baseline
+            % remove baseline
+            baseline_ms = CFG.exp_param(exp_id).baseline_ms;
+            EEG = pop_rmbase(EEG, baseline_ms);
+            EEG = eeg_checkset(EEG);
+        end
         
         % plot ERP image using the eeglab function
         if CFG.plot_ERP_image_flag

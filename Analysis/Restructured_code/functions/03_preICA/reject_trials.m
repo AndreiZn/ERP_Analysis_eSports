@@ -4,6 +4,15 @@
 
 % reject_trials(CFG)
 CFG = define_defaults();
+
+answer = questdlg('Do you want to reject trials?', 'Trial rejection', ...
+    'Yes', 'No', 'Yes');
+switch answer
+    case 'Yes'
+        CFG.reject_trials_flag = 1;
+    case 'No'
+        CFG.reject_trials_flag = 0;
+end
 %% Define function-specific variables
 CFG.output_data_folder_name = ['stage_4_reject_trials', filesep, 'data'];
 CFG.output_plots_folder_name = ['stage_4_reject_trials' filesep, 'plots'];
@@ -65,22 +74,32 @@ for subi=1:numel(subject_folders)
         %baseline_ms = CFG.exp_param(exp_id).baseline_ms;
         %EEG = pop_rmbase(EEG, baseline_ms);
         %EEG = eeg_checkset(EEG);
-        
-        % visualize data using the eeglab function eegplot
-        fig = eeglab_plot_EEG(EEG, CFG);
-        cur_set_name = [CFG.eeglab_set_name, '_01before_rejection'];
-        saveas(fig,[CFG.output_plots_folder_cur, filesep, cur_set_name '_plot','.png'])
-        close(fig)
-        
-        cmd = ['if ~isempty(TMPREJ); ' ...
-                    '[tmprej tmprejE] = eegplot2trial(TMPREJ, EEG.pnts, EEG.trials); ' ...
-                    '[EEG ~] = pop_rejepoch(EEG, tmprej, 0); ' ...
-                    'EEG.manually_rej_trials = tmprej; ', ...
-               'end; ' ....
-               'callback_reject_button_pressed(CFG, EEG);'
-              ];
-        eegplot(EEG.data,'eloc_file',EEG.chanlocs,'command',cmd);
-        keyboard
+        if CFG.reject_trials_flag
+            
+            % visualize data using the eeglab function eegplot
+            fig = eeglab_plot_EEG(EEG, CFG);
+            cur_set_name = [CFG.eeglab_set_name, '_01before_rejection'];
+            saveas(fig,[CFG.output_plots_folder_cur, filesep, cur_set_name '_plot','.png'])
+            close(fig)
+            
+            cmd = ['if ~isempty(TMPREJ); ' ...
+                '[tmprej tmprejE] = eegplot2trial(TMPREJ, EEG.pnts, EEG.trials); ' ...
+                '[EEG ~] = pop_rejepoch(EEG, tmprej, 0); ' ...
+                'EEG.manually_rej_trials = tmprej; ', ...
+                'end; ' ....
+                'callback_reject_button_pressed(CFG, EEG);'
+                ];
+            eegplot(EEG.data,'eloc_file',EEG.chanlocs,'command',cmd);
+            keyboard
+            
+        else
+            
+            % save the eeglab dataset
+            output_set_name = [CFG.eeglab_set_name, '_after_trial_rejection', '.set'];
+            EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
+            eeg_checkset(EEG);
+            
+        end
     end
 end
 
