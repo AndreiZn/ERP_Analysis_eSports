@@ -4,8 +4,8 @@
 function CFG = cut_data(CFG)
 
 %% Define function-specific variables
-CFG.output_data_folder_name = 'stage_1_cut\data';
-CFG.output_plots_folder_name = 'stage_1_cut\plots';
+CFG.output_data_folder_name = ['stage_1_cut', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_1_cut', filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -50,13 +50,13 @@ for subi=1:numel(subject_folders)
         CFG.end_cut_at_idx = 3000; % where to cut original data at the end by default
         [~, cur_fig, y_cut, CFG] = plot_and_cut_data(y, CFG, file_name);
         % save plot
-        saveas(cur_fig, [CFG.output_plots_folder_cur, '\Plot_', file_struct.name(1:end-3), 'png'])
+        saveas(cur_fig, [CFG.output_plots_folder_cur, filesep, 'Plot_', file_struct.name(1:end-3), 'png'])
         close(cur_fig);
         
         % plot data to mark bad channels
         [cur_fig, bad_ch_idx, bad_ch_lbl] = mark_bad_channels(y, CFG, file_name);
         % save plot
-        saveas(cur_fig, [CFG.output_plots_folder_cur, '\Plot_Bad_chs_', file_name, '.png'])
+        saveas(cur_fig, [CFG.output_plots_folder_cur, filesep, 'Plot_Bad_chs_', file_name, '.png'])
         close(cur_fig)
         
         % save cut_data and bad_chs

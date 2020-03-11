@@ -1,5 +1,7 @@
 function [G, TP, ARD, DI] = convert_to_ts(gid, acc, ard, di, tap_ch_type, CFG)
 
+CFG.estim_points = 10;
+
 %% groupid processing
 first_gid = find(gid >= 1,1);
 gid(1:first_gid-1) = 0;

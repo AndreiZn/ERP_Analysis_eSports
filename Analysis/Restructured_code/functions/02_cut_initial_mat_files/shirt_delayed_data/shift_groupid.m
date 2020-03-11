@@ -56,7 +56,7 @@ for subi=1:numel(subject_folders)
         arduino_ch = CFG.ard_channel;
         
         % get the total event length (image appearance + inner interval) and the length of image appearance
-        image_app_s = CFG.exp_param(exp_id).epoch_boundary_s(2) - CFG.exp_param(exp_id).epoch_boundary_s(1);
+        image_app_s = CFG.exp_param(exp_id).event_length;
         total_event_s = image_app_s + CFG.exp_param(exp_id).target_spacer_s;
         CFG.event_length_s = total_event_s;
         CFG.image_appearance_time_s = image_app_s;
@@ -131,46 +131,60 @@ for subi=1:numel(subject_folders)
         
         % visualize delay over time
         if CFG.visualize_delay_over_time_flag
-            figure();
-            plot_data = 1000*(DI - arduino)/eeg_sample_rate;
+%             figure();
+%             plot_data = 1000*(DI - arduino)/eeg_sample_rate;
+%             h = plot(plot_data);
+%             xlabel('Event #')
+%             ylabel('Delay, ms')
+%             legend(h, {'DI delay'});
+%             ylim([0, 1.1*max(plot_data)])
+%             set(gca, 'fontsize', 14)
+%             
+%             
+%             figure();
+%             plot_data = 1000*(groupid - arduino)/eeg_sample_rate;
+%             h = plot(plot_data);
+%             xlabel('Event #')
+%             ylabel('Delay, ms')
+%             legend(h, {'GroupID delay'});
+%             ylim([0, 1.1*max(plot_data)])
+%             set(gca, 'fontsize', 14)
+            
+            delay_fig = figure();
+            plot_data = 1000*(groupid - DI)/eeg_sample_rate;
             h = plot(plot_data);
             xlabel('Event #')
             ylabel('Delay, ms')
-            legend(h, {'DI delay'});
-            ylim([0, 1.1*max(plot_data)])
-            set(gca, 'fontsize', 14)
-            
-            
-            figure();
-            plot_data = 1000*(groupid - arduino)/eeg_sample_rate;
-            h = plot(plot_data);
-            xlabel('Event #')
-            ylabel('Delay, ms')
-            legend(h, {'GroupID delay'});
+            legend(h, {'GroupID relative to DI delay'});
             ylim([0, 1.1*max(plot_data)])
             set(gca, 'fontsize', 14)
         end
         
+        
+        shift_ts = median(groupid - DI);
+        sprintf('GroupID delay relative to the Digital Input is %.2f seconds', shift_ts/eeg_sample_rate)
         keyboard
         
+        saveas(delay_fig, [CFG.output_plots_folder_cur, filesep, 'GID_delay_', file_name, '.png'])
+        close(delay_fig)
         
         
-        % shidt groupid
+        % shift groupid
         groupid = y(CFG.groupid_channel, :);
-        shift_ts = round(CFG.sample_rate * CFG.groupid_latency_ms/1000);
+%         shift_ts = round(CFG.sample_rate * CFG.groupid_latency_ms/1000);
         % form new indices
         total_num_samples = size(groupid,2);
         new_idx = shift_ts+1:total_num_samples;
         new_groupid = [groupid(1,new_idx), zeros(1,shift_ts)];
         y(CFG.groupid_channel, :) = new_groupid;
         
-        % shift EEG data
-        EEG_channels = [CFG.time_channel, CFG.EEG_channels];
-        eeg = y(EEG_channels, :);
-        shift_ts = round(CFG.sample_rate * CFG.base_station_latency_ms/1000);
-        new_idx = shift_ts+1:total_num_samples;
-        new_eeg = [eeg(:,new_idx), zeros(numel(EEG_channels),shift_ts)];
-        y(EEG_channels, :) = new_eeg;
+%         % shift EEG data
+%         EEG_channels = [CFG.time_channel, CFG.EEG_channels];
+%         eeg = y(EEG_channels, :);
+%         shift_ts = round(CFG.sample_rate * CFG.base_station_latency_ms/1000);
+%         new_idx = shift_ts+1:total_num_samples;
+%         new_eeg = [eeg(:,new_idx), zeros(numel(EEG_channels),shift_ts)];
+%         y(EEG_channels, :) = new_eeg;
         
 %         cur_fig = figure();
 %         plot(groupid);

@@ -12,10 +12,10 @@ if cut_data_flag
 end
 
 %% Shift groupid by observed latency
-shift_groupid_flag = 0;
+shift_groupid_flag = 1;
 if shift_groupid_flag
-    CFG.visualize_init_data_flag = 1;
-    CFG.visualize_trig_data_flag = 1;
+    CFG.visualize_init_data_flag = 0;
+    CFG.visualize_trig_data_flag = 0;
     CFG.visualize_delay_over_time_flag = 1;
     CFG = shift_groupid(CFG);
 end
