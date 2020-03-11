@@ -76,4 +76,4 @@ if CFG.plot_ERPs
     visualize_ERPs(CFG,ERP_combined)
 end
 
-analyze_ERP_features(CFG, ERP_features);
+analyze_ERP_features(CFG, ERP_features, ERP_combined);

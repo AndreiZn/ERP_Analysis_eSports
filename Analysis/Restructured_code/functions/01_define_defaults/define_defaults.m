@@ -10,6 +10,8 @@ CFG.total_num_data_channels = numel(CFG.EEG_channels);
 CFG.trigger_channel = 34;
 CFG.target_channel = 35;
 CFG.groupid_channel = 36;
+CFG.DI_channel = 37;
+CFG.ard_channel = 38;
 gray_clr = gray; CFG.gray_clr = gray_clr(round(2*size(gray_clr,1)/3),:);
 CFG.groupid_latency_ms = 736; % ms, latency of recorded groupdid
 CFG.base_station_latency_ms = 222; % ms, latency of the base station of g.Nautilus
@@ -36,31 +38,37 @@ value_1_1_1.epoch_boundary_s = [-0.2 0.7]; value_1_1_1.baseline_ms = [-200 0]; v
 value_1_1_1.event_type = {'chan36'}; value_1_1_1.event_name = {'bin1_target'};
 value_1_1_1.amplitude_limit = [-7.5, 7.5];
 value_1_1_1.snr_cut = 1.2; value_1_1_1.autocorr_cut = 0.4;
+value_1_1_1.target_spacer_s = 0;
 
 value_1_1_2.epoch_boundary_s = [-0.2 0.45]; value_1_1_2.baseline_ms = [-200 0]; value_1_1_2.ERP_bins = [1 2];
 value_1_1_2.event_type = {{'1'}; {'2'}}; value_1_1_2.event_name = {'bin1_target', 'bin2_non-target'};
 value_1_1_2.amplitude_limit = [-7.5, 7.5];
 value_1_1_2.snr_cut = 1.2; value_1_1_2.autocorr_cut = 0.4;
+value_1_1_2.target_spacer_s = 0.25;
 
 value_1_2_2.epoch_boundary_s = [-0.2 0.7]; value_1_2_2.baseline_ms = [-200 0]; value_1_2_2.ERP_bins = [1 2];
 value_1_2_2.event_type = {{'1'}; {'2'}}; value_1_2_2.event_name = {'bin1_target', 'bin2_non-target'};
 value_1_2_2.amplitude_limit = [-5, 5];
 value_1_2_2.snr_cut = 1.5; value_1_2_2.autocorr_cut = 0.5;
+value_1_2_2.target_spacer_s = 0.5;
 
 value_2_2_2.epoch_boundary_s = [-0.2 0.7]; value_2_2_2.baseline_ms = [-200 0]; value_2_2_2.ERP_bins = [1 2];
 value_2_2_2.event_type = {{'8','9','10','11','12','13','14'}; {'1','2','3','4','5','6','7'}}; value_2_2_2.event_name = {'bin1_target', 'bin2_non-target'};
 value_2_2_2.amplitude_limit = [-15, 15];
 value_2_2_2.snr_cut = 1.5; value_2_2_2.autocorr_cut = 0.5;
+value_2_2_2.target_spacer_s = 0.5;
 
 value_2_2_4.epoch_boundary_s = [-0.2 0.7]; value_2_2_4.baseline_ms = [-200 0]; value_2_2_4.ERP_bins = [1 2];
 value_2_2_4.event_type = {{'8','9','10','11','12','13','14'}, {'1','2','3','4','5','6','7'}}; value_2_2_4.event_name = {'bin1_target', 'bin2_non-target'};
 value_2_2_4.amplitude_limit = [-15, 15];
 value_2_2_4.snr_cut = 1.5; value_2_2_4.autocorr_cut = 0.5;
+value_2_2_4.target_spacer_s = 0.5;
 
 value_2_2_5.epoch_boundary_s = [-0.2 0.7]; value_2_2_5.baseline_ms = [-200 0]; value_2_2_5.ERP_bins = [1 2];
 value_2_2_5.event_type = {{'1','2','3','4','5'}, {'6','7','8','9','10'}}; value_2_2_5.event_name = {'bin1_target', 'bin2_non-target'};
 value_2_2_5.amplitude_limit = [-15, 15];
 value_2_2_5.snr_cut = 1.5; value_2_2_5.autocorr_cut = 0.5;
+value_2_2_5.target_spacer_s = 0.5;
 
 valueSet = {value_1_1_1,value_1_1_2,value_1_2_2,value_2_2_2,value_2_2_4,value_2_2_5};
 CFG.exp_param = containers.Map(keySet,valueSet);

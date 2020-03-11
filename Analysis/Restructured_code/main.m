@@ -14,6 +14,9 @@ end
 %% Shift groupid by observed latency
 shift_groupid_flag = 0;
 if shift_groupid_flag
+    CFG.visualize_init_data_flag = 1;
+    CFG.visualize_trig_data_flag = 1;
+    CFG.visualize_delay_over_time_flag = 1;
     CFG = shift_groupid(CFG);
 end
 
@@ -88,7 +91,6 @@ if get_ERP_flag
 end
 
 %% Level-2 analysis (group study)
-
 group_analysis_of_ERP_flag = 1;
 if group_analysis_of_ERP_flag
     CFG.plot_ERPs = 0;

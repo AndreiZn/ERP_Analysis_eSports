@@ -22,7 +22,10 @@ t_ch_lbl = cell(num_t_lines,1);
 t_bin = zeros(num_t_lines,1);
 t_max_amp = zeros(num_t_lines,1);
 t_max_amp_latency = zeros(num_t_lines,1);
-
+t_max_min_diff = zeros(num_t_lines,1);
+t_max_mean_diff = zeros(num_t_lines,1);
+t_tp_g_mean = zeros(num_t_lines,1); % time-points where ERPs are greater than mean
+t_tp_g_thr = zeros(num_t_lines,1); % time-points where ERPs are greater than threshold
 t_idx = 1;
 
 
@@ -43,6 +46,11 @@ for exp_idx = 1:num_exps
                 bin_data = squeeze(ERP_cur.bindata(ch_idx, :, bin));
                 [max_amp, max_amp_idx] = max(bin_data,[],2);
                 max_amp_latency = ERP_cur.times(max_amp_idx);
+                [min_amp, ~] = min(bin_data,[],2);
+                mean_amp = mean(bin_data);
+                tp_g_mean = sum(bin_data > mean_amp);
+                thr = min_amp + 0.75 * (max_amp - min_amp);
+                tp_g_thr = sum(bin_data > thr);
                 
                 % record calculated values
                 t_exp_id(t_idx,1) = exp_id_cur;
@@ -53,10 +61,15 @@ for exp_idx = 1:num_exps
                 t_bin(t_idx,1) = bin;
                 t_max_amp(t_idx,1) = max_amp;
                 t_max_amp_latency(t_idx,1) = max_amp_latency;
+                t_max_min_diff(t_idx,1) = max_amp - min_amp;
+                t_max_mean_diff(t_idx,1) = max_amp - mean_amp;
+                t_tp_g_mean(t_idx,1) = tp_g_mean;
+                t_tp_g_thr(t_idx,1) = tp_g_thr;
                 t_idx = t_idx + 1;
             end
         end
     end
 end
 
-ERP_feat = table(t_exp_id,t_sub_group,t_sub_id,t_ch_idx,t_ch_lbl,t_bin,t_max_amp,t_max_amp_latency);
+ERP_feat = table(t_exp_id,t_sub_group,t_sub_id,t_ch_idx,t_ch_lbl,t_bin,t_max_amp,t_max_amp_latency,t_max_min_diff,t_max_mean_diff,...
+                 t_tp_g_mean,t_tp_g_thr);
