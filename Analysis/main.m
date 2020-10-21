@@ -34,7 +34,7 @@ if convert_mat_to_eeglab_flag
 end
 
 % interpolate + rereference (CAR) + filter data
-interpolate_rereference_and_filter_flag = 0;
+interpolate_rereference_and_filter_flag = 1;
 if interpolate_rereference_and_filter_flag
     [CFG, EEG] = intrp_reref_and_filter(CFG);
 end
@@ -55,7 +55,7 @@ end
 
 %% Run ICA (run ICA, save weights, mark bad components)
 % run ICA
-runICA_flag = 0;
+runICA_flag = 1;
 if runICA_flag
     CFG = runICA(CFG);
 end

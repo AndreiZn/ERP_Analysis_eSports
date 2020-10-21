@@ -4,8 +4,8 @@
 
 function CFG = runICA(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = ['stage_5_runICA', filesep, 'data'];
-CFG.output_plots_folder_name = ['stage_5_runICA', filesep, 'plots'];
+CFG.output_data_folder_name = ['stage_6_runICA', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_6_runICA', filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -35,7 +35,7 @@ for subi=1:numel(subject_folders)
     for filei=2:2:numel(files)       
         % read file
         file_struct = files(filei);
-        exp_id = file_struct.name(9:13);
+        exp_id = file_struct.name(9:10);
         CFG.eeglab_set_name = ['sub', sub_ID, '_', exp_id];
         
         % create output folders
@@ -58,6 +58,7 @@ for subi=1:numel(subject_folders)
         % run ICA (getrank(tmpdata) function corrected to return rank of
         % the matrix and not the total number of channels - for details read "Adjust data rank for ICA" at https://sccn.ucsd.edu/wiki/Makoto%27s_preprocessing_pipeline#Run_ICA_.2806.2F26.2F2018_updated.29 
         EEG = pop_runica(EEG,'extended',1,'interupt','on');
+        %EEG = eeg_checkset(EEG);
         
         % check that the rank of the data matrix is equal to the number of
         % ICA components
