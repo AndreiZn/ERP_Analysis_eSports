@@ -4,8 +4,8 @@
 
 function [CFG, EEG] = convert_data(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = ['stage_2_convert_to_eeglab', filesep, 'data'];
-CFG.output_plots_folder_name = ['stage_2_convert_to_eeglab' filesep, 'plots'];
+CFG.output_data_folder_name = ['stage_3_convert_to_eeglab', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_3_convert_to_eeglab' filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -37,11 +37,10 @@ for subi=1:numel(subject_folders)
         file_struct = files(filei);
         filepath = fullfile(file_struct.folder, file_struct.name);
         file = load(filepath);
-        y = file.y_cut; bad_ch_idx = file.bad_ch_idx; bad_ch_lbl = file.bad_ch_lbl;
+        y = file.y; bad_ch_idx = file.bad_ch_idx; bad_ch_lbl = file.bad_ch_lbl;
         %file_name = file_struct.name(1:end-4);
         
         exp_id = file_struct.name(9:10);
-        trial_id = file_struct.name(12:12);
         
         % create output folders
         CFG.output_data_folder_cur = [CFG.output_data_folder, filesep, subj_folder.name];
@@ -54,7 +53,7 @@ for subi=1:numel(subject_folders)
         end
         
         % import data to eeglab
-        eeglab_set_name = ['sub', sub_ID, '_', exp_id, '_', trial_id];
+        eeglab_set_name = ['sub', sub_ID, '_', exp_id];
         [EEG] = import_mat_to_eeglab(CFG, y, eeglab_set_name, sub_ID);
         
         % add info on bad channels to the EEG structure
