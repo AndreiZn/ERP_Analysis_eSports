@@ -14,8 +14,8 @@ switch answer
         CFG.reject_trials_flag = 0;
 end
 %% Define function-specific variables
-CFG.output_data_folder_name = ['stage_4_reject_trials', filesep, 'data'];
-CFG.output_plots_folder_name = ['stage_4_reject_trials' filesep, 'plots'];
+CFG.output_data_folder_name = ['stage_5_reject_trials', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_5_reject_trials' filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -46,7 +46,7 @@ for subi=1:numel(subject_folders)
         
         % read file
         file_struct = files(filei);
-        exp_id = file_struct.name(9:13);
+        exp_id = file_struct.name(9:10);
         CFG.eeglab_set_name = ['sub', sub_ID, '_', exp_id];
         
         % create output folders

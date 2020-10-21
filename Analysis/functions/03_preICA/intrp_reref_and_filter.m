@@ -5,8 +5,8 @@
 
 function [CFG, EEG] = intrp_reref_and_filter(CFG)
 %% Define function-specific variables
-CFG.output_data_folder_name = ['stage_3_intrp_reref_and_filter', filesep, 'data'];
-CFG.output_plots_folder_name = ['stage_3_intrp_reref_and_filter', filesep, 'plots'];
+CFG.output_data_folder_name = ['stage_4_intrp_reref_and_filter', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_4_intrp_reref_and_filter', filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -38,8 +38,8 @@ for subi=1:numel(subject_folders)
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:10);
-        trial_id = file_struct.name(12:12);
-        eeglab_set_name = ['sub', sub_ID, '_', exp_id, '_', trial_id];
+        num_runs = CFG.exp_param(exp_id).runs;
+        eeglab_set_name = ['sub', sub_ID, '_', exp_id];
         
         % create output folders
         CFG.output_data_folder_cur = [CFG.output_data_folder, filesep, subj_folder.name];
@@ -54,6 +54,7 @@ for subi=1:numel(subject_folders)
         CFG.eeg_plot_spacing = 50;
         
         % Load dataset
+        
         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
         EEG = eeg_checkset(EEG);
         % visualize data using the eeglab function eegplot
@@ -64,6 +65,19 @@ for subi=1:numel(subject_folders)
 
         % Interpolate channels marked as bad ones during the visual
         % inspection
+        stable_bad_channels = [];
+        bad_channels = unique(EEG.bad_ch.bad_ch_idx); % channels marked bad during the visual inspection
+        num_bad_channels = numel(bad_channels); % number of bad channels: from 0 to num of EEG channels
+        if num_bad_channels > 0
+            num_marked_bad = zeros(num_bad_channels, 1); % calculate how many times a channel 
+            for ch_idx=1:num_bad_channels
+                num_marked_bad(ch_idx, 1) = sum(EEG.bad_ch.bad_ch_idx == bad_channels(ch_idx));
+                if num_marked_bad(ch_idx, 1) > num_runs/2
+                    stable_bad_channels = [stable_bad_channels, bad_channels(ch_idx)];
+                end
+            end
+        end
+        EEG.bad_ch.bad_ch_idx = stable_bad_channels;
         EEG_interp = pop_interp(EEG, EEG.bad_ch.bad_ch_idx, 'spherical');
         EEG_interp = eeg_checkset(EEG_interp);
         % visualize data using the eeglab function eegplot
