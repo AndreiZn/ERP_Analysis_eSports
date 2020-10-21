@@ -3,15 +3,15 @@ function CFG = define_defaults()
 CFG = [];
 CFG.sample_rate = 250;
 
-CFG.total_num_channels = 36;
-CFG.time_channel = 1;
-CFG.EEG_channels = 2:33;
+CFG.total_num_channels = 8;
+CFG.time_channel = 0;
+CFG.EEG_channels = 1:8;
 CFG.total_num_data_channels = numel(CFG.EEG_channels);
-CFG.trigger_channel = 34;
-CFG.target_channel = 35;
-CFG.groupid_channel = 36;
-CFG.DI_channel = 37;
-CFG.ard_channel = 38;
+CFG.trigger_channel = 0;
+CFG.target_channel = 0;
+CFG.groupid_channel = 0;
+CFG.DI_channel = 0;
+CFG.ard_channel = 0;
 gray_clr = gray; CFG.gray_clr = gray_clr(round(2*size(gray_clr,1)/3),:);
 CFG.groupid_latency_ms = 736; % ms, latency of recorded groupdid
 CFG.base_station_latency_ms = 222; % ms, latency of the base station of g.Nautilus
@@ -25,7 +25,7 @@ EEG = pop_loadset('filename','sample_set.set','filepath',sample_file.folder);
 CFG.ch_labels = {EEG.chanlocs.labels};
 
 %% Electrode location file
-electrode_location_file_struct = dir(fullfile(CFG.root_folder, '**', 'gGAMMAcap32ch_10-20.locs'));
+electrode_location_file_struct = dir(fullfile(CFG.root_folder, '**', 'gUnicorncap8ch_10-20.locs'));
 if numel(electrode_location_file_struct)
     electrode_location_file_struct = electrode_location_file_struct(1);
 end
