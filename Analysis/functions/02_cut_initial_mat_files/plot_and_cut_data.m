@@ -4,7 +4,7 @@ function [file_processed, cur_fig, y_cut, CFG] = plot_and_cut_data(y, CFG, file_
     
     file_processed = 0;
     times = y(CFG.time_channel,:)';
-
+    
     cut_beginning_end = 1;
     mark_bad_chs = 0;
     bad_chs = [];

@@ -64,11 +64,11 @@ ylim = [0, delta_y*(1+CFG.total_num_data_channels)];
 if cut_beginning_end
     plot([times(idx_to_cut_beginning(end)), times(idx_to_cut_beginning(end))], [ylim(1), ylim(2)], '--r', 'linewidth', 3)
     plot([times(idx_to_cut_end(1)), times(idx_to_cut_end(1))], [ylim(1), ylim(2)], '--r', 'linewidth', 3)
-    trigger_ch = y(CFG.trigger_channel,:);
-    first_trigger_idx = find(trigger_ch ~= 0,1, 'first');
-    last_trigger_idx = find(trigger_ch == 1, 1, 'last');
-    plot([times(first_trigger_idx), times(first_trigger_idx)], [ylim(1), ylim(2)], '--g', 'linewidth', 3)
-    plot([times(last_trigger_idx), times(last_trigger_idx)], [ylim(1), ylim(2)], '--g', 'linewidth', 3)
+    %trigger_ch = y(CFG.trigger_channel,:);
+    %first_trigger_idx = find(trigger_ch ~= 0,1, 'first');
+    %last_trigger_idx = find(trigger_ch == 1, 1, 'last');
+    %plot([times(first_trigger_idx), times(first_trigger_idx)], [ylim(1), ylim(2)], '--g', 'linewidth', 3)
+    %plot([times(last_trigger_idx), times(last_trigger_idx)], [ylim(1), ylim(2)], '--g', 'linewidth', 3)
 end
 set(gca, 'ylim', ylim, 'Ytick', ytick_value(end:-1:1), 'YTickLabel', CFG.ch_labels(end:-1:1))
 

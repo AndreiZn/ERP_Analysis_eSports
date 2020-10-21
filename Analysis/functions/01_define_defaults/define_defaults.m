@@ -4,12 +4,12 @@ CFG = [];
 CFG.sample_rate = 250;
 
 CFG.total_num_channels = 8;
-CFG.time_channel = 0;
-CFG.EEG_channels = 1:8;
+CFG.time_channel = 1;
+CFG.EEG_channels = 2:9;
 CFG.total_num_data_channels = numel(CFG.EEG_channels);
 CFG.trigger_channel = 0;
 CFG.target_channel = 0;
-CFG.groupid_channel = 0;
+CFG.groupid_channel = 10;
 CFG.DI_channel = 0;
 CFG.ard_channel = 0;
 gray_clr = gray; CFG.gray_clr = gray_clr(round(2*size(gray_clr,1)/3),:);
