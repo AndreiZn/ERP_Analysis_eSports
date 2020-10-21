@@ -32,51 +32,65 @@ end
 CFG.electrode_location_file = fullfile(electrode_location_file_struct.folder, electrode_location_file_struct.name);
 
 %% Experiment specific variables
-keySet = {'1_1_1','1_1_2','1_2_2','2_2_2','2_2_4','2_2_5'}; %,'32_5L','32_5R'
+keySet = {'01', '02', '03', '04', '05', '06', '07'}; %,'32_5L','32_5R'
 
-value_1_1_1.epoch_boundary_s = [-0.2 0.7]; value_1_1_1.baseline_ms = [-200 0]; value_1_1_1.ERP_bins = [1];
-value_1_1_1.event_type = {'chan36'}; value_1_1_1.event_name = {'bin1_target'};
-value_1_1_1.amplitude_limit = [-7.5, 7.5];
-value_1_1_1.snr_cut = 1.2; value_1_1_1.autocorr_cut = 0.4;
-value_1_1_1.event_length = 0.25;
-value_1_1_1.target_spacer_s = 0;
+value_0_1.epoch_boundary_s = [0 1]; value_0_1.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
+value_0_1.event_type = {'chan10'}; value_0_1.runs = 5;
+%value_0_1.event_name = {'bin1_target'};
+%value_0_1.amplitude_limit = [-7.5, 7.5];
+%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+%value_0_1.event_length = 0.25;
+%value_0_1.target_spacer_s = 0;
 
-value_1_1_2.epoch_boundary_s = [-0.2 0.45]; value_1_1_2.baseline_ms = [-200 0]; value_1_1_2.ERP_bins = [1 2];
-value_1_1_2.event_type = {{'1'}; {'2'}}; value_1_1_2.event_name = {'bin1_target', 'bin2_non-target'};
-value_1_1_2.amplitude_limit = [-7.5, 7.5];
-value_1_1_2.snr_cut = 1.2; value_1_1_2.autocorr_cut = 0.4;
-value_1_1_2.event_length = 0.25;
-value_1_1_2.target_spacer_s = 0.25;
+value_0_2.epoch_boundary_s = [0 1]; value_0_2.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
+value_0_2.event_type = {'chan10'}; value_0_2.runs = 5;
+%value_0_1.event_name = {'bin1_target'};
+%value_0_1.amplitude_limit = [-7.5, 7.5];
+%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+%value_0_1.event_length = 0.25;
+%value_0_1.target_spacer_s = 0;
 
-value_1_2_2.epoch_boundary_s = [-0.2 0.7]; value_1_2_2.baseline_ms = [-200 0]; value_1_2_2.ERP_bins = [1 2];
-value_1_2_2.event_type = {{'1'}; {'2'}}; value_1_2_2.event_name = {'bin1_target', 'bin2_non-target'};
-value_1_2_2.amplitude_limit = [-5, 5];
-value_1_2_2.snr_cut = 1.5; value_1_2_2.autocorr_cut = 0.5;
-value_1_2_2.event_length = 0.25;
-value_1_2_2.target_spacer_s = 0.5;
+value_0_3.epoch_boundary_s = [0 1]; value_0_3.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
+value_0_3.event_type = {'chan10'}; value_0_3.runs = 5; 
+%value_0_1.event_name = {'bin1_target'};
+%value_0_1.amplitude_limit = [-7.5, 7.5];
+%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+%value_0_1.event_length = 0.25;
+%value_0_1.target_spacer_s = 0;
 
-value_2_2_2.epoch_boundary_s = [-0.2 0.7]; value_2_2_2.baseline_ms = [-200 0]; value_2_2_2.ERP_bins = [1 2];
-value_2_2_2.event_type = {{'8','9','10','11','12','13','14'}; {'1','2','3','4','5','6','7'}}; value_2_2_2.event_name = {'bin1_target', 'bin2_non-target'};
-value_2_2_2.amplitude_limit = [-15, 15];
-value_2_2_2.snr_cut = 1.5; value_2_2_2.autocorr_cut = 0.5;
-value_2_2_2.event_length = 0.4;
-value_2_2_2.target_spacer_s = 0.5;
+value_0_4.epoch_boundary_s = [0 1]; value_0_4.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
+value_0_4.event_type = {'chan10'}; value_0_4.runs = 5; 
+%value_0_1.event_name = {'bin1_target'};
+%value_0_1.amplitude_limit = [-7.5, 7.5];
+%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+%value_0_1.event_length = 0.25;
+%value_0_1.target_spacer_s = 0;
 
-value_2_2_4.epoch_boundary_s = [-0.2 0.7]; value_2_2_4.baseline_ms = [-200 0]; value_2_2_4.ERP_bins = [1 2];
-value_2_2_4.event_type = {{'8','9','10','11','12','13','14'}, {'1','2','3','4','5','6','7'}}; value_2_2_4.event_name = {'bin1_target', 'bin2_non-target'};
-value_2_2_4.amplitude_limit = [-15, 15];
-value_2_2_4.snr_cut = 1.5; value_2_2_4.autocorr_cut = 0.5;
-value_2_2_4.event_length = 0.4;
-value_2_2_4.target_spacer_s = 0.5;
+value_0_5.epoch_boundary_s = [0 1]; value_0_5.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
+value_0_5.event_type = {'chan10'}; value_0_5.runs = 2;
+%value_0_1.event_name = {'bin1_target'};
+%value_0_1.amplitude_limit = [-7.5, 7.5];
+%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+%value_0_1.event_length = 0.25;
+%value_0_1.target_spacer_s = 0;
 
-value_2_2_5.epoch_boundary_s = [-0.2 0.7]; value_2_2_5.baseline_ms = [-200 0]; value_2_2_5.ERP_bins = [1 2];
-value_2_2_5.event_type = {{'1','2','3','4','5'}, {'6','7','8','9','10'}}; value_2_2_5.event_name = {'bin1_target', 'bin2_non-target'};
-value_2_2_5.amplitude_limit = [-15, 15];
-value_2_2_5.snr_cut = 1.5; value_2_2_5.autocorr_cut = 0.5;
-value_2_2_5.event_length = 0.4;
-value_2_2_5.target_spacer_s = 0.5;
+value_0_6.epoch_boundary_s = [0 1]; value_0_6.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
+value_0_6.event_type = {'chan10'}; value_0_6.runs = 2;
+%value_0_1.event_name = {'bin1_target'};
+%value_0_1.amplitude_limit = [-7.5, 7.5];
+%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+%value_0_1.event_length = 0.25;
+%value_0_1.target_spacer_s = 0;
 
-valueSet = {value_1_1_1,value_1_1_2,value_1_2_2,value_2_2_2,value_2_2_4,value_2_2_5};
+value_0_7.epoch_boundary_s = [0 1]; value_0_7.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
+value_0_7.event_type = {'chan10'}; value_0_7.runs = 2;
+%value_0_1.event_name = {'bin1_target'};
+%value_0_1.amplitude_limit = [-7.5, 7.5];
+%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+%value_0_1.event_length = 0.25;
+%value_0_1.target_spacer_s = 0;
+
+valueSet = {value_0_1,value_0_2,value_0_3,value_0_4,value_0_5,value_0_6,value_0_7};
 CFG.exp_param = containers.Map(keySet,valueSet);
 
 %% Folder for ERPLAB experiments' decription files

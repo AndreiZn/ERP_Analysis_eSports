@@ -37,8 +37,9 @@ for subi=1:numel(subject_folders)
         
         % read file
         file_struct = files(filei);
-        exp_id = file_struct.name(9:13);
-        eeglab_set_name = ['sub', sub_ID, '_', exp_id];
+        exp_id = file_struct.name(9:10);
+        trial_id = file_struct.name(12:12);
+        eeglab_set_name = ['sub', sub_ID, '_', exp_id, '_', trial_id];
         
         % create output folders
         CFG.output_data_folder_cur = [CFG.output_data_folder, filesep, subj_folder.name];
