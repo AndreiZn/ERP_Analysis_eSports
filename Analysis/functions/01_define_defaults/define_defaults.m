@@ -35,58 +35,58 @@ CFG.electrode_location_file = fullfile(electrode_location_file_struct.folder, el
 keySet = {'01', '02', '03', '04', '05', '06', '07'}; %,'32_5L','32_5R'
 
 value_0_1.epoch_boundary_s = [0 1]; value_0_1.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
-value_0_1.event_type = {'chan10'}; value_0_1.runs = 5;
+value_0_1.event_type = {'chan10'}; value_0_1.runs = 5; value_0_1.exp_len_sec = 58;
 %value_0_1.event_name = {'bin1_target'};
 %value_0_1.amplitude_limit = [-7.5, 7.5];
-%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
 %value_0_1.event_length = 0.25;
 %value_0_1.target_spacer_s = 0;
 
 value_0_2.epoch_boundary_s = [0 1]; value_0_2.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
-value_0_2.event_type = {'chan10'}; value_0_2.runs = 5;
+value_0_2.event_type = {'chan10'}; value_0_2.runs = 5; value_0_2.exp_len_sec = 58;
 %value_0_1.event_name = {'bin1_target'};
 %value_0_1.amplitude_limit = [-7.5, 7.5];
-%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+value_0_2.snr_cut = 1.2; value_0_2.autocorr_cut = 0.4;
 %value_0_1.event_length = 0.25;
 %value_0_1.target_spacer_s = 0;
 
 value_0_3.epoch_boundary_s = [0 1]; value_0_3.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
-value_0_3.event_type = {'chan10'}; value_0_3.runs = 5; 
+value_0_3.event_type = {'chan10'}; value_0_3.runs = 5; value_0_3.exp_len_sec = 58;
 %value_0_1.event_name = {'bin1_target'};
 %value_0_1.amplitude_limit = [-7.5, 7.5];
-%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+value_0_3.snr_cut = 1.2; value_0_3.autocorr_cut = 0.4;
 %value_0_1.event_length = 0.25;
 %value_0_1.target_spacer_s = 0;
 
 value_0_4.epoch_boundary_s = [0 1]; value_0_4.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
-value_0_4.event_type = {'chan10'}; value_0_4.runs = 5; 
+value_0_4.event_type = {'chan10'}; value_0_4.runs = 5; value_0_4.exp_len_sec = 58;
 %value_0_1.event_name = {'bin1_target'};
 %value_0_1.amplitude_limit = [-7.5, 7.5];
-%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+value_0_4.snr_cut = 1.2; value_0_4.autocorr_cut = 0.4;
 %value_0_1.event_length = 0.25;
 %value_0_1.target_spacer_s = 0;
 
 value_0_5.epoch_boundary_s = [0 1]; value_0_5.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
-value_0_5.event_type = {'chan10'}; value_0_5.runs = 2;
+value_0_5.event_type = {'chan10'}; value_0_5.runs = 2; value_0_5.exp_len_sec = 170;
 %value_0_1.event_name = {'bin1_target'};
 %value_0_1.amplitude_limit = [-7.5, 7.5];
-%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+value_0_5.snr_cut = 1.2; value_0_5.autocorr_cut = 0.4;
 %value_0_1.event_length = 0.25;
 %value_0_1.target_spacer_s = 0;
 
 value_0_6.epoch_boundary_s = [0 1]; value_0_6.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
-value_0_6.event_type = {'chan10'}; value_0_6.runs = 2;
+value_0_6.event_type = {'chan10'}; value_0_6.runs = 2; value_0_6.exp_len_sec = 170;
 %value_0_1.event_name = {'bin1_target'};
 %value_0_1.amplitude_limit = [-7.5, 7.5];
-%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+value_0_6.snr_cut = 1.2; value_0_6.autocorr_cut = 0.4;
 %value_0_1.event_length = 0.25;
 %value_0_1.target_spacer_s = 0;
 
 value_0_7.epoch_boundary_s = [0 1]; value_0_7.baseline_ms = [0 0]; %value_0_1.ERP_bins = [1];
-value_0_7.event_type = {'chan10'}; value_0_7.runs = 2;
+value_0_7.event_type = {'chan10'}; value_0_7.runs = 2; value_0_7.exp_len_sec = 170;
 %value_0_1.event_name = {'bin1_target'};
 %value_0_1.amplitude_limit = [-7.5, 7.5];
-%value_0_1.snr_cut = 1.2; value_0_1.autocorr_cut = 0.4;
+value_0_7.snr_cut = 1.2; value_0_7.autocorr_cut = 0.4;
 %value_0_1.event_length = 0.25;
 %value_0_1.target_spacer_s = 0;
 

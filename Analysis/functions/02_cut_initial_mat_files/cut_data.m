@@ -22,14 +22,14 @@ subject_folders = dir(CFG.data_folder_path);
 dirflag = [subject_folders.isdir] & ~strcmp({subject_folders.name},'..') & ~strcmp({subject_folders.name},'.') & ~strcmp({subject_folders.name},'.DS_Store');
 subject_folders = subject_folders(dirflag);
 
-for subi=1:1%numel(subject_folders)
+for subi=1:numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
     files = dir(folderpath);
     dirflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.name},'.') & ~strcmp({files.name},'.DS_Store');
     files = files(dirflag);
-    for filei=1:3%numel(files)
+    for filei=1:numel(files)
         % read file
         file_struct = files(filei);
         filepath = fullfile(file_struct.folder, file_struct.name);
@@ -44,7 +44,9 @@ for subi=1:1%numel(subject_folders)
         else
             y = load(filepath); y = y.y;
         end
-        
+
+        exp_id = file_struct.name(9:10);
+        exp_len_sec = CFG.exp_param(exp_id).exp_len_sec;
         % create output folders
         CFG.output_data_folder_cur = [CFG.output_data_folder, filesep, subj_folder.name];
         if ~exist(CFG.output_data_folder_cur, 'dir')
@@ -57,7 +59,7 @@ for subi=1:1%numel(subject_folders)
         
         % plot data to set bginning and end markers
         file_name = file_struct.name(1:end-4);
-        CFG.beginning_cut_at_idx = size(y,2) - 58*CFG.sample_rate; % where to cut original data at the beginning by default
+        CFG.beginning_cut_at_idx = size(y,2) - exp_len_sec*CFG.sample_rate; % where to cut original data at the beginning by default
         CFG.end_cut_at_idx = 3*CFG.sample_rate; % where to cut original data at the end by default
         [~, cur_fig, y_cut, CFG] = plot_and_cut_data(y, CFG, file_name);
         % save plot

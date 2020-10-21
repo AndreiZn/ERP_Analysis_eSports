@@ -4,8 +4,8 @@
 
 CFG = define_defaults();
 %% Define function-specific variables
-CFG.output_data_folder_name = ['stage_6_reject_IC', filesep, 'data'];
-CFG.output_plots_folder_name = ['stage_6_reject_IC', filesep, 'plots'];
+CFG.output_data_folder_name = ['stage_7_reject_IC', filesep, 'data'];
+CFG.output_plots_folder_name = ['stage_7_reject_IC', filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -98,7 +98,7 @@ for subi=1:numel(subject_folders)
         
         % visualize data using the eeglab function eegplot
         CFG.plot_ICA_components = 0;
-        CFG.eeg_plot_spacing = 25;
+        CFG.eeg_plot_spacing = 100;
         CFG.eeglab_plot_fullscreen = 1;
         fig = eeglab_plot_EEG(EEG_with_rejected_comp, CFG);
         plot_name = [CFG.eeglab_set_name, '_02after_IC_rejection'];

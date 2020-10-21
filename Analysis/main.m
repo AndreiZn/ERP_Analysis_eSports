@@ -6,7 +6,7 @@ CFG = define_defaults();
 
 %% Visually inspect data (mark datasets clearly not appropriate for
 % analysis, cut beginning and end of datafiles, mark clearly bad channels)
-cut_data_flag = 0;
+cut_data_flag = 1;
 if cut_data_flag
     CFG = cut_data(CFG);
 end
@@ -55,7 +55,7 @@ end
 
 %% Run ICA (run ICA, save weights, mark bad components)
 % run ICA
-runICA_flag = 1;
+runICA_flag = 0;
 if runICA_flag
     CFG = runICA(CFG);
 end
