@@ -6,7 +6,7 @@ CFG = define_defaults();
 
 %% Visually inspect data (mark datasets clearly not appropriate for
 % analysis, cut beginning and end of datafiles, mark clearly bad channels)
-cut_data_flag = 1;
+cut_data_flag = 0;
 if cut_data_flag
     CFG = cut_data(CFG);
 end
@@ -34,7 +34,7 @@ if convert_mat_to_eeglab_flag
 end
 
 % interpolate + rereference (CAR) + filter data
-interpolate_rereference_and_filter_flag = 1;
+interpolate_rereference_and_filter_flag = 0;
 if interpolate_rereference_and_filter_flag
     [CFG, EEG] = intrp_reref_and_filter(CFG);
 end
@@ -103,4 +103,10 @@ if group_analysis_of_ERP_flag
     CFG.plot_diff_only = 0;
     CFG.normalize_ERP = 0;
     CFG = group_analysis_of_ERP(CFG);
+end
+
+%% If necessary, combine epoched data into one continuous epoch
+join_epochs_flag = 1;
+if join_epochs_flag 
+    CFG = join_epochs(CFG);
 end
