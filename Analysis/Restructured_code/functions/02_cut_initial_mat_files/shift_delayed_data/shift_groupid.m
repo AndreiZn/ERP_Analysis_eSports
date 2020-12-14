@@ -32,7 +32,8 @@ for subi=1:numel(subject_folders)
         file_struct = files(filei);
         filepath = fullfile(file_struct.folder, file_struct.name);
         file = load(filepath);
-        y = file.y_cut; bad_ch_idx = file.bad_ch_idx; bad_ch_lbl = file.bad_ch_lbl;
+        %y = file.y_cut; bad_ch_idx = file.bad_ch_idx; bad_ch_lbl = file.bad_ch_lbl;
+        y = file.y;
         file_name = file_struct.name(1:end-4);
         
         % get experiment ID
@@ -153,6 +154,7 @@ for subi=1:numel(subject_folders)
             delay_fig = figure();
             plot_data = 1000*(groupid - DI)/eeg_sample_rate;
             h = plot(plot_data);
+            title('GroudID delay relative to DI signal')
             xlabel('Event #')
             ylabel('Delay, ms')
             legend(h, {'GroupID relative to DI delay'});
@@ -165,9 +167,10 @@ for subi=1:numel(subject_folders)
         sprintf('GroupID delay relative to the Digital Input is %.2f seconds', shift_ts/eeg_sample_rate)
         keyboard
         
-        saveas(delay_fig, [CFG.output_plots_folder_cur, filesep, 'GID_delay_', file_name, '.png'])
-        close(delay_fig)
-        
+        if exist('delay_fig', 'var')
+            saveas(delay_fig, [CFG.output_plots_folder_cur, filesep, 'GID_delay_', file_name, '.png'])
+            close(delay_fig)
+        end
         
         % shift groupid
         groupid = y(CFG.groupid_channel, :);
@@ -197,9 +200,6 @@ for subi=1:numel(subject_folders)
 %         saveas(cur_fig, [CFG.output_plots_folder_cur, filesep, 'Plot_', file_struct.name(1:end-3), 'png'])
 %         close(cur_fig);
         
-        % to keep processing pipeline consistent, it's easier to save y as
-        % y_cut for the next script
-        y_cut = y;
         
         % save cut_data and bad_chs
         if strcmp(file_struct.name(end-3:end), '.mat')
@@ -207,6 +207,6 @@ for subi=1:numel(subject_folders)
         else
             file_name = file_struct.name;
         end
-        save([CFG.output_data_folder_cur, filesep, file_name, '_shifted_data'], 'y_cut', 'bad_ch_idx', 'bad_ch_lbl')
+        save([CFG.output_data_folder_cur, filesep, file_name, '_shifted_data'], 'y')
     end
 end

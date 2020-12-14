@@ -50,28 +50,28 @@ value_1_1_2.target_spacer_s = 0.25;
 
 value_1_2_2.epoch_boundary_s = [-0.2 0.7]; value_1_2_2.baseline_ms = [-200 0]; value_1_2_2.ERP_bins = [1 2];
 value_1_2_2.event_type = {{'1'}; {'2'}}; value_1_2_2.event_name = {'bin1_target', 'bin2_non-target'};
-value_1_2_2.amplitude_limit = [-5, 5];
+value_1_2_2.amplitude_limit = [-15, 15];
 value_1_2_2.snr_cut = 1.5; value_1_2_2.autocorr_cut = 0.5;
 value_1_2_2.event_length = 0.25;
 value_1_2_2.target_spacer_s = 0.5;
 
 value_2_2_2.epoch_boundary_s = [-0.2 0.7]; value_2_2_2.baseline_ms = [-200 0]; value_2_2_2.ERP_bins = [1 2];
 value_2_2_2.event_type = {{'8','9','10','11','12','13','14'}; {'1','2','3','4','5','6','7'}}; value_2_2_2.event_name = {'bin1_target', 'bin2_non-target'};
-value_2_2_2.amplitude_limit = [-15, 15];
+value_2_2_2.amplitude_limit = [-20, 20];
 value_2_2_2.snr_cut = 1.5; value_2_2_2.autocorr_cut = 0.5;
 value_2_2_2.event_length = 0.4;
 value_2_2_2.target_spacer_s = 0.5;
 
 value_2_2_4.epoch_boundary_s = [-0.2 0.7]; value_2_2_4.baseline_ms = [-200 0]; value_2_2_4.ERP_bins = [1 2];
 value_2_2_4.event_type = {{'8','9','10','11','12','13','14'}, {'1','2','3','4','5','6','7'}}; value_2_2_4.event_name = {'bin1_target', 'bin2_non-target'};
-value_2_2_4.amplitude_limit = [-15, 15];
+value_2_2_4.amplitude_limit = [-20, 20];
 value_2_2_4.snr_cut = 1.5; value_2_2_4.autocorr_cut = 0.5;
 value_2_2_4.event_length = 0.4;
 value_2_2_4.target_spacer_s = 0.5;
 
 value_2_2_5.epoch_boundary_s = [-0.2 0.7]; value_2_2_5.baseline_ms = [-200 0]; value_2_2_5.ERP_bins = [1 2];
 value_2_2_5.event_type = {{'1','2','3','4','5'}, {'6','7','8','9','10'}}; value_2_2_5.event_name = {'bin1_target', 'bin2_non-target'};
-value_2_2_5.amplitude_limit = [-15, 15];
+value_2_2_5.amplitude_limit = [-20, 20];
 value_2_2_5.snr_cut = 1.5; value_2_2_5.autocorr_cut = 0.5;
 value_2_2_5.event_length = 0.4;
 value_2_2_5.target_spacer_s = 0.5;

@@ -4,20 +4,20 @@
 %% Define default variables
 CFG = define_defaults();
 
-%% Visually inspect data (mark datasets clearly not appropriate for
-% analysis, cut beginning and end of datafiles, mark clearly bad channels)
-cut_data_flag = 0;
-if cut_data_flag
-    CFG = cut_data(CFG);
-end
-
 %% Shift groupid by observed latency
-shift_groupid_flag = 1;
+shift_groupid_flag = 0;
 if shift_groupid_flag
     CFG.visualize_init_data_flag = 0;
     CFG.visualize_trig_data_flag = 0;
     CFG.visualize_delay_over_time_flag = 1;
     CFG = shift_groupid(CFG);
+end
+
+%% Visually inspect data (mark datasets clearly not appropriate for
+% analysis, cut beginning and end of datafiles, mark clearly bad channels)
+cut_data_flag = 0;
+if cut_data_flag
+    CFG = cut_data(CFG);
 end
 
 %% PreICA (import, rereference, filter, etc.)
@@ -64,7 +64,7 @@ end
 
 % run SASICA plugin to reject independent components automatically (or
 % semi-automatically)
-reject_IC_semi_automatic_flag = 0;
+reject_IC_semi_automatic_flag = 1;
 if reject_IC_semi_automatic_flag
     % run reject_IC_semi_automatic as a separate script
     reject_IC_semi_automatic();
@@ -76,18 +76,18 @@ end
 get_ERP_flag = 1;
 if get_ERP_flag
     
-    CFG.remove_baseline = 0;
-    CFG.remove_IC_components = 0;
+    CFG.remove_baseline = 1;
+    CFG.remove_IC_components = 1;
     
-    CFG.plot_ERP_image_flag = 0;
+    CFG.plot_ERP_image_flag = 1;
     
     CFG.plot_ERP_flag = 1;
     CFG.plot_ERP_difference_flag = 0;
     
-    CFG.plot_ERP_scalplot_flag = 0;
-    CFG.plot_ERP_difference_scalplot_flag = 0;
+    CFG.plot_ERP_scalplot_flag = 1;
+    CFG.plot_ERP_difference_scalplot_flag = 1;
     
-    CFG = get_ERP(CFG); 
+    CFG = get_ERP(CFG);
 end
 
 %% Level-2 analysis (group study)

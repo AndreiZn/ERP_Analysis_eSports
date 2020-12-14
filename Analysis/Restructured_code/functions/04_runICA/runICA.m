@@ -3,6 +3,8 @@
 % - Plot ICA components
 
 function CFG = runICA(CFG)
+
+%global EEG
 %% Define function-specific variables
 CFG.output_data_folder_name = ['stage_5_runICA', filesep, 'data'];
 CFG.output_plots_folder_name = ['stage_5_runICA', filesep, 'plots'];
@@ -32,7 +34,7 @@ for subi=1:numel(subject_folders)
     % read sub_ID
     sub_ID = subj_folder.name(4:7);
     
-    for filei=2:2:numel(files)       
+    for filei=2:2:numel(files)
         % read file
         file_struct = files(filei);
         exp_id = file_struct.name(9:13);
@@ -47,7 +49,7 @@ for subi=1:numel(subject_folders)
         if ~exist(CFG.output_plots_folder_cur, 'dir')
             mkdir(CFG.output_plots_folder_cur)
         end
-
+        
         % Load dataset
         EEG = pop_loadset('filename',file_struct.name,'filepath',file_struct.folder);
         EEG = eeg_checkset(EEG);
@@ -56,9 +58,13 @@ for subi=1:numel(subject_folders)
         assert(EEG.rank_manually_computed == rank(reshape(EEG.data, EEG.nbchan, [])),'Rank computed manually is not equal to rank computed with a matlab function rank()')
         
         % run ICA (getrank(tmpdata) function corrected to return rank of
-        % the matrix and not the total number of channels - for details read "Adjust data rank for ICA" at https://sccn.ucsd.edu/wiki/Makoto%27s_preprocessing_pipeline#Run_ICA_.2806.2F26.2F2018_updated.29 
+        % the matrix and not the total number of channels - for details read "Adjust data rank for ICA" at https://sccn.ucsd.edu/wiki/Makoto%27s_preprocessing_pipeline#Run_ICA_.2806.2F26.2F2018_updated.29
         EEG = pop_runica(EEG,'extended',1,'interupt','on');
-        
+        EEG = eeg_checkset(EEG);
+        if isempty(EEG.icaact)
+            EEG.icaact = (EEG.icaweights*EEG.icasphere)*EEG.data(EEG.icachansind,:); % automatically does single or double
+            EEG.icaact    = reshape( EEG.icaact, size(EEG.icaact,1), EEG.pnts, EEG.trials);
+        end
         % check that the rank of the data matrix is equal to the number of
         % ICA components
         assert(EEG.rank_manually_computed == size(EEG.icaact,1),'Rank of the data matrix is not equal to the number of ICA components')
@@ -71,7 +77,7 @@ for subi=1:numel(subject_folders)
         cur_set_name = [CFG.eeglab_set_name, '_all_ICA_components'];
         saveas(fig,[CFG.output_plots_folder_cur, filesep, cur_set_name '_plot','.png'])
         close(fig)
-
+        
         % save the eeglab dataset
         output_set_name = [CFG.eeglab_set_name, '_after_ICA', '.set'];
         EEG = pop_saveset(EEG, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
