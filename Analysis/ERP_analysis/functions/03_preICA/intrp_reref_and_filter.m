@@ -98,5 +98,12 @@ for subi=1:numel(subject_folders)
         EEG = pop_saveset(EEG_filt, 'filename',output_set_name,'filepath',CFG.output_data_folder_cur);
         EEG = eeg_checkset(EEG);
         
+        % Split data into epochs
+        epoch_boundary_s = CFG.exp_param(exp_id).epoch_boundary_s;
+        EEG = pop_epoch(EEG, {}, epoch_boundary_s, 'newname', [CFG.eeglab_set_name, '_epochs'], 'epochinfo', 'yes');
+        EEG = eeg_checkset(EEG);
+        
+        
+        
     end
 end

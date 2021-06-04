@@ -20,7 +20,7 @@ exp_param = containers.Map(exp_names,valueSet);
 
 %%
 
-root_folder = uigetdir();
+% root_folder = uigetdir();
 sub_folders = dir(root_folder);
 dirflag = [sub_folders.isdir] & ~strcmp({sub_folders.name},'..') & ~strcmp({sub_folders.name},'.') & ...
           ~strcmp({sub_folders.name},'.DS_Store') & ~strcmp({sub_folders.name},'.ipynb_checkpoints');
@@ -44,173 +44,27 @@ for folder_idx = 1:numel(sub_folders)
             filepath = [filepath(1:end-3), 'csv'];
         end
         
+        % get experiment name
+        tmp_idx = strfind(file.name, 'CS_');
+        if ~isempty(tmp_idx)
+            exp_name = file.name(tmp_idx:tmp_idx+3);
+        end
+        
+        % split eye-tracking (ET) data by trial
+        if strcmp(file.name(1:3), 'eye') && strcmp(file.name(13:16), exp_name)
+            % print sub id and experiment name
+            disp(['sub: ', num2str(sub_id), ', exp: ', exp_name, 'ET data'])
+            CFG = exp_param(exp_name);
+            ET_trial_data = preprocess_ET_data(filepath, exp_name, CFG);
+        end
+        
         
         keyboard;
     end
 end
 
 %%
-sub_id = 5003;
-exp_name = 'CS_3';
 
-ET_data = readtable(['./raw_data/raw/eye_sub', num2str(sub_id), '_', exp_name, '.txt']);
-% EEG_data = readtable(['sub', num2str(sub_id), '_', exp_name, '_pd_markers.csv']);
-
-EEG_sr = 250; % Hz
-ET_sr = 120; % Hz
-baseline_period = 0.5; % s
-im_pres_period = 0.4; % s
-after_im_period = 0.5; % s
-
-stim_name = ET_data.PresentedMediaName;
-ET_events = [];
-for i = 1:numel(stim_name)
-    stim_name_cur = stim_name{i};
-    startIndex = regexp(stim_name_cur,'\d');
-    
-    if i > 2
-        startIndex_prev1 = regexp(stim_name{i-1},'\d');
-        startIndex_prev2 = regexp(stim_name{i-2},'\d');
-    else
-        startIndex_prev1 = [];
-        startIndex_prev2 = [];
-    end
-    
-    % save event idx
-    if ~isempty(startIndex) && isempty(startIndex_prev1) && isempty(startIndex_prev2)
-        ET_events = [ET_events, i];
-    end
-end
-
-ET_markers = zeros(numel(ET_events), 1);
-for i = 1:numel(ET_events)
-    if mod(str2double(ET_data(ET_events(i), :).PresentedStimulusName{:}), 2) == 0
-        ET_markers(i) = 1;
-    else
-        ET_markers(i) = 2;
-    end
-end
-
-% position of terrorists' heads in each picture
-% target_position = ones(numel(ET_events), 3);
-% target_position(:,1) = 1920/2 * target_position(:,1);
-% target_position(:,2) = 1080/2 * target_position(:,2);
-if strcmp(exp_name, 'CS_3')
-    t = csvread('labeling.csv');
-%     target_position(ET_markers == 2, 1) = t(:,2);
-%     target_position(ET_markers == 2, 2) = t(:,3);
-%     target_position(ET_markers == 2, 3) = t(:,1);
-else 
-    t = [];
-end    
-
-% mapping from EyeMovementType to a numerical category
-keySet = {'','EyesNotFound','Fixation','Saccade','Unclassified'};
-valueSet = [0 1 2 3 4];
-M = containers.Map(keySet,valueSet);
-
-n_feat = 7; % distance to target, eye movement type, pupil diameter (average of left and right), marker
-n_trials = numel(ET_events);
-n_tp = (baseline_period + im_pres_period + after_im_period) * ET_sr;
-
-ET_trial_data = NaN(n_feat, n_trials, n_tp);
-for trial_idx = 1:n_trials
-    event_idx = ET_events(trial_idx);
-    
-    event_period_idx = event_idx - round(baseline_period*ET_sr):event_idx + round((im_pres_period + after_im_period)*ET_sr) - 1;
-    ET_event_data = ET_data(event_period_idx, :);
-    % get features
-    if strcmp(exp_name, 'CS_3')
-        t_idx = find(t(:,1) == str2double(ET_event_data(61,:).PresentedStimulusName{:}));
-    else
-        t_idx = [];
-    end
-    if isempty(t_idx)
-        target_position = [1920/2, 1080/2];
-    else
-        target_position = t(t_idx, 2:3);
-    end
-    
-    % Gaze Point X, Y
-    GPX = ET_event_data.GazePointX;
-    GPX = fillmissing(GPX,'previous');
-    GPX = fillmissing(GPX,'constant', nanmean(GPX));
-    GPY = ET_event_data.GazePointY;
-    GPY = fillmissing(GPY,'previous');
-    GPY = fillmissing(GPY,'constant', nanmean(GPY));
-    
-    % Distance to target
-    GPX_dist_to_targ = ET_event_data.GazePointX - target_position(1);
-    GPX_dist_to_targ = fillmissing(GPX_dist_to_targ,'previous');
-    GPX_dist_to_targ = fillmissing(GPX_dist_to_targ,'constant', nanmean(GPX));
-    GPY_dist_to_targ = ET_event_data.GazePointY - target_position(2);
-    GPY_dist_to_targ = fillmissing(GPY_dist_to_targ,'previous');
-    GPY_dist_to_targ = fillmissing(GPY_dist_to_targ,'constant', nanmean(GPY));
-    assert(sum(isnan(GPX_dist_to_targ(:))) == 0);
-    assert(sum(isnan(GPY_dist_to_targ(:))) == 0);
-    
-    % Distance to the center of the screen
-    cent_position = [1920/2, 1080/2];
-    GPX_dist_to_cent = ET_event_data.GazePointX - cent_position(1);
-    GPX_dist_to_cent = fillmissing(GPX_dist_to_cent,'previous');
-    GPX_dist_to_cent = fillmissing(GPX_dist_to_cent,'constant', nanmean(GPX));
-    GPY_dist_to_cent = ET_event_data.GazePointY - cent_position(2);
-    GPY_dist_to_cent = fillmissing(GPY_dist_to_cent,'previous');
-    GPY_dist_to_cent = fillmissing(GPY_dist_to_cent,'constant', nanmean(GPY));
-    assert(sum(isnan(GPX_dist_to_cent(:))) == 0);
-    assert(sum(isnan(GPY_dist_to_cent(:))) == 0);
-    
-    EMT = NaN(numel(event_period_idx), 1);
-    for j = 1:numel(event_period_idx)
-        EMT(j) = M(ET_event_data(j,:).EyeMovementType{:});
-    end
-    assert(sum(isnan(EMT(:))) == 0);
-    
-    PDL = NaN(numel(event_period_idx), 1);
-    for j = 1:numel(event_period_idx)
-        tmp = ET_event_data(j,:).PupilDiameterLeft{:};
-        if isempty(tmp)
-            PDL(j) = NaN;
-        else
-            PDL(j) = str2double(tmp(1)) + 0.1*str2double(tmp(3)) + 0.01*str2double(tmp(4));
-        end
-    end
-    PDL = fillmissing(PDL,'previous');
-    PDL = fillmissing(PDL,'constant',nanmean(PDL));
-    assert(sum(isnan(PDL(:))) == 0);
-    
-    PDR = NaN(numel(event_period_idx), 1);
-    for j = 1:numel(event_period_idx)
-        tmp = ET_event_data(j,:).PupilDiameterRight{:};
-        if isempty(tmp)
-            PDR(j) = NaN;
-        else
-            PDR(j) = str2double(tmp(1)) + 0.1*str2double(tmp(3)) + 0.01*str2double(tmp(4));
-        end
-    end
-    PDR = fillmissing(PDR,'previous');
-    PDR = fillmissing(PDR,'constant',nanmean(PDR));
-    assert(sum(isnan(PDR(:))) == 0);
-
-    LBL = mod(str2double(ET_data(event_idx, :).PresentedMediaName{:}(1:end-4)), 2) + 1;
-    LBL = LBL*ones(numel(event_period_idx), 1);
-    
-    IM = str2double(ET_event_data(61,:).PresentedStimulusName{:}) * ones(numel(event_period_idx), 1);
-    assert(sum(isnan(IM(:))) == 0);
-    
-    % save features
-    ET_trial_data(1, trial_idx, :) = sqrt(GPX_dist_to_targ.^2 + GPY_dist_to_targ.^2);
-    ET_trial_data(2, trial_idx, :) = EMT;
-    ET_trial_data(3, trial_idx, :) = 0.5*(PDL + PDR);
-    ET_trial_data(4, trial_idx, :) = LBL;
-    ET_trial_data(5, trial_idx, :) = GPX;
-    ET_trial_data(6, trial_idx, :) = GPY;
-    ET_trial_data(7, trial_idx, :) = IM;
-    ET_trial_data(8, trial_idx, :) = sqrt(GPX_dist_to_cent.^2 + GPY_dist_to_cent.^2);
-end
-assert(sum(isnan(ET_trial_data(:))) == 0);
-
-save(['./output/ET_features_sub', num2str(sub_id), '_', exp_name, '.mat'], 'ET_trial_data')
 
 
 %% change the sample rate of EEG data
@@ -294,7 +148,174 @@ for im_idx = 1:2:numel(im_files)
     keyboard;  
 end
 
-%% functions 
+%% auxiliary functions 
+
+% read eye-tracking (ET) data, calculate features for each trial, output ET
+% trial data
+function ET_trial_data = preprocess_ET_data(ET_filepath, exp_name, CFG)
+    
+    after_im_period = CFG.after_im_period;
+    baseline_period = CFG.baseline_period;
+    im_pres_period = CFG.im_pres_period;
+    ET_sr = CFG.ET_sr;
+    
+    ET_data = readtable(ET_filepath);
+    % EEG_data = readtable(['sub', num2str(sub_id), '_', exp_name, '_pd_markers.csv']);
+
+    stim_name = ET_data.PresentedMediaName;
+    ET_events = [];
+    for i = 1:numel(stim_name)
+        stim_name_cur = stim_name{i};
+        if strcmp(stim_name_cur, 'Plus (1).png')
+            stim_name_cur = 'Plus.png';
+        end
+        startIndex = regexp(stim_name_cur,'\d');
+
+        if i > 2
+            startIndex_prev1 = regexp(stim_name{i-1},'\d');
+            startIndex_prev2 = regexp(stim_name{i-2},'\d');
+        else
+            startIndex_prev1 = [];
+            startIndex_prev2 = [];
+        end
+
+        % save event idx
+        if ~isempty(startIndex) && isempty(startIndex_prev1) && isempty(startIndex_prev2)
+            ET_events = [ET_events, i];
+        end
+    end
+
+    ET_markers = zeros(numel(ET_events), 1);
+    for i = 1:numel(ET_events)
+        if mod(str2double(ET_data(ET_events(i), :).PresentedStimulusName{:}), 2) == 0
+            ET_markers(i) = 1;
+        else
+            ET_markers(i) = 2;
+        end
+    end
+
+    % position of terrorists' heads in each picture
+    % target_position = ones(numel(ET_events), 3);
+    % target_position(:,1) = 1920/2 * target_position(:,1);
+    % target_position(:,2) = 1080/2 * target_position(:,2);
+    if strcmp(exp_name, 'CS_3')
+        t = csvread('labeling.csv');
+    %     target_position(ET_markers == 2, 1) = t(:,2);
+    %     target_position(ET_markers == 2, 2) = t(:,3);
+    %     target_position(ET_markers == 2, 3) = t(:,1);
+    else 
+        t = [];
+    end    
+
+    % mapping from EyeMovementType to a numerical category
+    keySet = {'','EyesNotFound','Fixation','Saccade','Unclassified'};
+    valueSet = [0 1 2 3 4];
+    M = containers.Map(keySet,valueSet);
+
+    n_feat = 7; % distance to target, eye movement type, pupil diameter (average of left and right), marker
+    n_trials = numel(ET_events);
+    n_tp = (baseline_period + im_pres_period + after_im_period) * ET_sr;
+
+    ET_trial_data = NaN(n_feat, n_trials, n_tp);
+    for trial_idx = 1:n_trials
+        event_idx = ET_events(trial_idx);
+
+        event_period_idx = event_idx - round(baseline_period*ET_sr):event_idx + round((im_pres_period + after_im_period)*ET_sr) - 1;
+        ET_event_data = ET_data(event_period_idx, :);
+        % get features
+        if strcmp(exp_name, 'CS_3')
+            t_idx = find(t(:,1) == str2double(ET_event_data(61,:).PresentedStimulusName{:}));
+        else
+            t_idx = [];
+        end
+        if isempty(t_idx)
+            target_position = [1920/2, 1080/2];
+        else
+            target_position = t(t_idx, 2:3);
+        end
+
+        % Gaze Point X, Y
+        GPX = ET_event_data.GazePointX;
+        GPX = fillmissing(GPX,'previous');
+        GPX = fillmissing(GPX,'constant', nanmean(GPX));
+        GPY = ET_event_data.GazePointY;
+        GPY = fillmissing(GPY,'previous');
+        GPY = fillmissing(GPY,'constant', nanmean(GPY));
+
+        % Distance to target
+        GPX_dist_to_targ = ET_event_data.GazePointX - target_position(1);
+        GPX_dist_to_targ = fillmissing(GPX_dist_to_targ,'previous');
+        GPX_dist_to_targ = fillmissing(GPX_dist_to_targ,'constant', nanmean(GPX));
+        GPY_dist_to_targ = ET_event_data.GazePointY - target_position(2);
+        GPY_dist_to_targ = fillmissing(GPY_dist_to_targ,'previous');
+        GPY_dist_to_targ = fillmissing(GPY_dist_to_targ,'constant', nanmean(GPY));
+        assert(sum(isnan(GPX_dist_to_targ(:))) == 0);
+        assert(sum(isnan(GPY_dist_to_targ(:))) == 0);
+
+        % Distance to the center of the screen
+        cent_position = [1920/2, 1080/2];
+        GPX_dist_to_cent = ET_event_data.GazePointX - cent_position(1);
+        GPX_dist_to_cent = fillmissing(GPX_dist_to_cent,'previous');
+        GPX_dist_to_cent = fillmissing(GPX_dist_to_cent,'constant', nanmean(GPX));
+        GPY_dist_to_cent = ET_event_data.GazePointY - cent_position(2);
+        GPY_dist_to_cent = fillmissing(GPY_dist_to_cent,'previous');
+        GPY_dist_to_cent = fillmissing(GPY_dist_to_cent,'constant', nanmean(GPY));
+        assert(sum(isnan(GPX_dist_to_cent(:))) == 0);
+        assert(sum(isnan(GPY_dist_to_cent(:))) == 0);
+
+        EMT = NaN(numel(event_period_idx), 1);
+        for j = 1:numel(event_period_idx)
+            EMT(j) = M(ET_event_data(j,:).EyeMovementType{:});
+        end
+        assert(sum(isnan(EMT(:))) == 0);
+
+        PDL = NaN(numel(event_period_idx), 1);
+        for j = 1:numel(event_period_idx)
+            tmp = ET_event_data(j,:).PupilDiameterLeft{:};
+            if isempty(tmp)
+                PDL(j) = NaN;
+            else
+                PDL(j) = str2double(tmp(1)) + 0.1*str2double(tmp(3)) + 0.01*str2double(tmp(4));
+            end
+        end
+        PDL = fillmissing(PDL,'previous');
+        PDL = fillmissing(PDL,'constant',nanmean(PDL));
+        assert(sum(isnan(PDL(:))) == 0);
+
+        PDR = NaN(numel(event_period_idx), 1);
+        for j = 1:numel(event_period_idx)
+            tmp = ET_event_data(j,:).PupilDiameterRight{:};
+            if isempty(tmp)
+                PDR(j) = NaN;
+            else
+                PDR(j) = str2double(tmp(1)) + 0.1*str2double(tmp(3)) + 0.01*str2double(tmp(4));
+            end
+        end
+        PDR = fillmissing(PDR,'previous');
+        PDR = fillmissing(PDR,'constant',nanmean(PDR));
+        assert(sum(isnan(PDR(:))) == 0);
+
+        LBL = mod(str2double(ET_data(event_idx, :).PresentedMediaName{:}(1:end-4)), 2) + 1;
+        LBL = LBL*ones(numel(event_period_idx), 1);
+        
+        
+        
+        IM = str2double(ET_event_data(61,:).PresentedStimulusName{:}) * ones(numel(event_period_idx), 1);
+        assert(sum(isnan(IM(:))) == 0);
+
+        % save features
+        ET_trial_data(1, trial_idx, :) = sqrt(GPX_dist_to_targ.^2 + GPY_dist_to_targ.^2);
+        ET_trial_data(2, trial_idx, :) = EMT;
+        ET_trial_data(3, trial_idx, :) = 0.5*(PDL + PDR);
+        ET_trial_data(4, trial_idx, :) = LBL;
+        ET_trial_data(5, trial_idx, :) = GPX;
+        ET_trial_data(6, trial_idx, :) = GPY;
+        ET_trial_data(7, trial_idx, :) = IM;
+        ET_trial_data(8, trial_idx, :) = sqrt(GPX_dist_to_cent.^2 + GPY_dist_to_cent.^2);
+    end
+    assert(sum(isnan(ET_trial_data(:))) == 0);
+
+end
 
 function EEG_averaged = compress_EEG(EEG_trial, ET_trial_ts)
     EEG_full = zeros(1.4*250, 1);
