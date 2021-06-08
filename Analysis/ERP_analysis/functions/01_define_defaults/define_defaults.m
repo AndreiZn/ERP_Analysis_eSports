@@ -32,7 +32,7 @@ end
 CFG.electrode_location_file = fullfile(electrode_location_file_struct.folder, electrode_location_file_struct.name);
 
 %% Experiment specific variables
-keySet = {'1_1_1','1_1_2','1_2_2','2_2_2','2_2_4','2_2_5'}; %,'32_5L','32_5R'
+keySet = {'1_1_1','1_1_2','1_2_2','2_2_2','2_2_4','2_2_5', '4_1_1', '4_1_2', '4_1_3'}; %,'32_5L','32_5R'
 
 value_1_1_1.epoch_boundary_s = [-0.2 0.7]; value_1_1_1.baseline_ms = [-200 0]; value_1_1_1.ERP_bins = [1];
 value_1_1_1.event_type = {'chan36'}; value_1_1_1.event_name = {'bin1_target'};
@@ -76,7 +76,29 @@ value_2_2_5.snr_cut = 1.5; value_2_2_5.autocorr_cut = 0.5;
 value_2_2_5.event_length = 0.4;
 value_2_2_5.target_spacer_s = 0.5;
 
-valueSet = {value_1_1_1,value_1_1_2,value_1_2_2,value_2_2_2,value_2_2_4,value_2_2_5};
+value_4_1_1.epoch_boundary_s = [-0.5 0.9]; value_4_1_1.baseline_ms = [-500 0]; value_4_1_1.ERP_bins = [1 2];
+value_4_1_1.event_type = {{'1'}, {'2'}}; value_4_1_1.event_name = {'bin1_target', 'bin2_non-target'};
+value_4_1_1.amplitude_limit = [-20, 20];
+value_4_1_1.snr_cut = 1.5; value_4_1_1.autocorr_cut = 0.5;
+value_4_1_1.event_length = 0.4;
+value_4_1_1.target_spacer_s = 0.5;
+
+value_4_1_2.epoch_boundary_s = [-0.5 0.9]; value_4_1_2.baseline_ms = [-500 0]; value_4_1_2.ERP_bins = [1 2];
+value_4_1_2.event_type = {{'1'}, {'2'}}; value_4_1_2.event_name = {'bin1_target', 'bin2_non-target'};
+value_4_1_2.amplitude_limit = [-20, 20];
+value_4_1_2.snr_cut = 1.5; value_4_1_2.autocorr_cut = 0.5;
+value_4_1_2.event_length = 0.4;
+value_4_1_2.target_spacer_s = 0.5;
+
+value_4_1_3.epoch_boundary_s = [-0.5 1.3]; value_4_1_3.baseline_ms = [-500 0]; value_4_1_3.ERP_bins = [1 2];
+value_4_1_3.event_type = {{'1'}, {'2'}}; value_4_1_3.event_name = {'bin1_target', 'bin2_non-target'};
+value_4_1_3.amplitude_limit = [-20, 20];
+value_4_1_3.snr_cut = 1.5; value_4_1_3.autocorr_cut = 0.5;
+value_4_1_3.event_length = 0.8;
+value_4_1_3.target_spacer_s = 0.5;
+
+
+valueSet = {value_1_1_1,value_1_1_2,value_1_2_2,value_2_2_2,value_2_2_4,value_2_2_5,value_4_1_1,value_4_1_2,value_4_1_3};
 CFG.exp_param = containers.Map(keySet,valueSet);
 
 %% Folder for ERPLAB experiments' decription files
