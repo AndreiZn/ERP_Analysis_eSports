@@ -68,16 +68,7 @@ for subi=1:numel(subject_folders)
         % read file
         file_struct = files(filei);
         filepath = fullfile(file_struct.folder, file_struct.name);
-        
-        if strcmp(filepath(end-2:end), 'csv')
-            y = readtable(filepath);
-            di_markers = y.DI_markers;
-            y = table2array(y);
-            y(:, CFG.groupid_channel) = di_markers;
-            y = y';
-        else
-            y = load(filepath); y = y.y;
-        end
+        y = load(filepath); y = y.y;
         
         % read experiment id
         exp_id = file_struct.name(9:13);
@@ -293,6 +284,7 @@ for subi=1:numel(subject_folders)
         EEG = pop_rmbase(EEG, baseline_ms);
         EEG = eeg_checkset(EEG);
         
+        
         % combine epochs into one epoch
         EEG = epoch2continuous(EEG);
         EEG = eeg_checkset(EEG);
@@ -306,6 +298,5 @@ for subi=1:numel(subject_folders)
         % compute ERPs
         [ERP] = compute_ERP(EEG);
         
-        keyboard;
     end
 end

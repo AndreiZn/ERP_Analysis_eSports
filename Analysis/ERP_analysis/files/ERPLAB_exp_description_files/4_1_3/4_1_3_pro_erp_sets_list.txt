@@ -1,0 +1,5 @@
+K:\EEG_Experiments\EEGLAB_eSports_datasets\sub0001\4_1_3\sub0001_4_1_3_ERPset.erp
+K:\EEG_Experiments\EEGLAB_eSports_datasets\sub0002\4_1_3\sub0002_4_1_3_ERPset.erp
+K:\EEG_Experiments\EEGLAB_eSports_datasets\sub0022\4_1_3\sub0022_4_1_3_ERPset.erp
+K:\EEG_Experiments\EEGLAB_eSports_datasets\sub0023\4_1_3\sub0023_4_1_3_ERPset.erp
+K:\EEG_Experiments\EEGLAB_eSports_datasets\sub0024\4_1_3\sub0024_4_1_3_ERPset.erp
