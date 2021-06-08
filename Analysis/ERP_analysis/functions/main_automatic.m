@@ -3,6 +3,8 @@
 % Define default variables
 CFG = define_defaults();
 
+global EEG
+
 % Define output folders
 CFG.output_data_folder_name = ['combined_output', filesep, 'data'];
 CFG.output_plots_folder_name = ['combined_output', filesep, 'plots'];
@@ -43,7 +45,7 @@ for subi=1:numel(subject_folders)
         if ~isempty(fl{i})
             filepath = fullfile(files2(i).folder, files2(i).name);
             exp_num = files2(i).name(fl{i}-2);
-            new_name = [files2(i).name(1:8), '4_4_', exp_num, '.csv'];
+            new_name = [files2(i).name(1:8), '4_1_', exp_num, '.csv'];
             new_name = fullfile(files2(i).folder, new_name);
             movefile(filepath, new_name, 'f')
         end
@@ -211,18 +213,16 @@ for subi=1:numel(subject_folders)
 %         end
 %         
         CFG.review_IC_manually = 0;
-        
-        global EEG
-        
+
         % Run SASICA plugin
         snr_cut = CFG.exp_param(exp_id).snr_cut;
         autocorr_cut = CFG.exp_param(exp_id).autocorr_cut;
-        [EEG, config] = eeg_SASICA(EEG,'MARA_enable',0,'FASTER_enable',1,'FASTER_blinkchanname','Fp1','ADJUST_enable',1,...
+        [EEG, config] = eeg_SASICA(EEG,'MARA_enable',0,'FASTER_enable',0,'FASTER_blinkchanname','Fp1','ADJUST_enable',1,...
             'chancorr_enable',0,'chancorr_channames','No channel','chancorr_corthresh','auto 4',...
             'EOGcorr_enable',0,'EOGcorr_Heogchannames','No channel','EOGcorr_corthreshH','auto 4',...
             'EOGcorr_Veogchannames','No channel','EOGcorr_corthreshV','auto 4','resvar_enable',0,...
             'resvar_thresh',15,'SNR_enable',1,'SNR_snrcut',snr_cut,'SNR_snrBL',[-Inf 0] ,'SNR_snrPOI',[0 Inf],...
-            'trialfoc_enable',1,'trialfoc_focaltrialout','auto','focalcomp_enable',1,'focalcomp_focalICAout',3,...
+            'trialfoc_enable',1,'trialfoc_focaltrialout','auto','focalcomp_enable',1,'focalcomp_focalICAout',4.5,...
             'autocorr_enable',1,'autocorr_autocorrint',20,'autocorr_dropautocorr',autocorr_cut,'opts_noplot',0,'opts_nocompute',0,'opts_FontSize',14);
         
         % change the size of one of the plots
@@ -262,21 +262,21 @@ for subi=1:numel(subject_folders)
             end
         end
         
-        % plot data after ICs rejection (if not all of them were rejected)
-        if numel(find(EEG.reject.gcompreject)) < numel(EEG.reject.gcompreject)
-            % remove selected components
-            EEG_with_rejected_comp = pop_subcomp(EEG, find(EEG.reject.gcompreject), 0, 0);
-            
-            % visualize data using the eeglab function eegplot
-            CFG.eeg_plot_spacing = 25;
-            CFG.eeglab_plot_fullscreen = 1;
-            fig = eeglab_plot_EEG(EEG_with_rejected_comp, CFG);
-            plot_name = [CFG.eeglab_set_name, '_02after_IC_rejection'];
-            saveas(fig,[CFG.output_plots_folder_cur, filesep, plot_name '_plot','.png'])
-            close(fig)
-        else
-            warndlg(sprintf('All Independent Components for dataset %s were rejected', CFG.eeglab_set_name),'Warning');
-        end
+%         % plot data after ICs rejection (if not all of them were rejected)
+%         if numel(find(EEG.reject.gcompreject)) < numel(EEG.reject.gcompreject)
+%             % remove selected components
+%             EEG_with_rejected_comp = pop_subcomp(EEG, find(EEG.reject.gcompreject), 0, 0);
+%             
+%             % visualize data using the eeglab function eegplot
+%             CFG.eeg_plot_spacing = 25;
+%             CFG.eeglab_plot_fullscreen = 1;
+%             fig = eeglab_plot_EEG(EEG_with_rejected_comp, CFG);
+%             plot_name = [CFG.eeglab_set_name, '_02after_IC_rejection'];
+%             saveas(fig,[CFG.output_plots_folder_cur, filesep, plot_name '_plot','.png'])
+%             close(fig)
+%         else
+%             warndlg(sprintf('All Independent Components for dataset %s were rejected', CFG.eeglab_set_name),'Warning');
+%         end
         
         % remove marked ICs
         num_components_to_remove = numel(find(EEG.reject.gcompreject));
@@ -287,6 +287,8 @@ for subi=1:numel(subject_folders)
 
         % check rank of the data matrix
         assert(EEG.rank_manually_computed == rank(reshape(EEG.data, EEG.nbchan, [])),'Rank computed manually is not equal to rank computed with a matlab function rank()')
+        
+        
         
         % remove baseline
         baseline_ms = CFG.exp_param(exp_id).baseline_ms;
@@ -305,6 +307,9 @@ for subi=1:numel(subject_folders)
         
         % compute ERPs
         [ERP] = compute_ERP(EEG);
+        
+        EEG_data = EEG.data;
+        save([CFG.output_data_folder_cur, filesep, CFG.eeglab_set_name '_EEG_cleaned.mat'],'EEG_data')
         
         keyboard;
     end
