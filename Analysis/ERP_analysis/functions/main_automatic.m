@@ -1,3 +1,5 @@
+%% 3001 and 3002 are analyzed, go through other datasets
+
 %% run all functions from main automatically 
 
 % Define default variables
@@ -23,7 +25,7 @@ end
 subject_folders = dir(CFG.data_folder_path );
 subject_folders = subject_folders(3:end);
 
-for subi=1:numel(subject_folders)
+for subi=4:numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -287,8 +289,6 @@ for subi=1:numel(subject_folders)
 
         % check rank of the data matrix
         assert(EEG.rank_manually_computed == rank(reshape(EEG.data, EEG.nbchan, [])),'Rank computed manually is not equal to rank computed with a matlab function rank()')
-        
-        
         
         % remove baseline
         baseline_ms = CFG.exp_param(exp_id).baseline_ms;

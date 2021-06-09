@@ -18,7 +18,7 @@ function [file_processed, cur_fig, y_cut, CFG] = plot_and_cut_data(y, CFG, file_
         case 'No'
             change_time_limits = 0;
     end
-
+    
     if change_time_limits
         
         while ~file_processed
