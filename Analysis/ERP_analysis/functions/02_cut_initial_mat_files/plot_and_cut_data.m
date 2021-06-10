@@ -10,15 +10,16 @@ function [file_processed, cur_fig, y_cut, CFG] = plot_and_cut_data(y, CFG, file_
     bad_chs = [];
     y_cut = plot_EEG(y, CFG, file_name, cut_beginning_end, mark_bad_chs, bad_chs);
 
-    answer = questdlg('Do you want to change time limits?', 'Time limits', ...
-        'Yes', 'No', 'No');
-    switch answer
-        case 'Yes'
-            change_time_limits = 1;
-        case 'No'
-            change_time_limits = 0;
-    end
+%     answer = questdlg('Do you want to change time limits?', 'Time limits', ...
+%         'Yes', 'No', 'No');
+%     switch answer
+%         case 'Yes'
+%             change_time_limits = 1;
+%         case 'No'
+%             change_time_limits = 0;
+%     end
     
+    change_time_limits = 0;
     if change_time_limits
         
         while ~file_processed
