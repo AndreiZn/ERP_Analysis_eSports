@@ -285,6 +285,8 @@ function ET_trial_data = preprocess_ET_data(ET_filepath, exp_name, CFG)
         end
         assert(sum(isnan(EMT(:))) == 0);
         
+        keyboard
+        
         PDL = NaN(numel(event_period_idx), 1);
         for j = 1:numel(event_period_idx)
             tmp = ET_event_data(j,:).PupilDiameterLeft;

@@ -6,8 +6,8 @@ CFG = define_defaults();
 global EEG
 
 % Define output folders
-CFG.output_data_folder_name = ['combined_output', filesep, 'data'];
-CFG.output_plots_folder_name = ['combined_output', filesep, 'plots'];
+CFG.output_data_folder_name = ['combined_output_Airat_settings', filesep, 'data'];
+CFG.output_plots_folder_name = ['combined_output_Airat_settings', filesep, 'plots'];
 
 CFG.output_data_folder = [CFG.output_folder_path, filesep, CFG.output_data_folder_name];
 if ~exist(CFG.output_data_folder, 'dir')
@@ -143,16 +143,17 @@ for subi=1:numel(subject_folders)
 %         close(fig)
         
         % Common average referencing
-        EEG_CAR = pop_reref(EEG_interp, []);
-        EEG_CAR = eeg_checkset(EEG_CAR);
+%         EEG_CAR = pop_reref(EEG_interp, []);
+        EEG_CAR = eeg_checkset(EEG);
         % visualize data using the eeglab function eegplot
 %         fig = eeglab_plot_EEG(EEG_CAR, CFG);
 %         cur_set_name = [eeglab_set_name, '_03CAR'];
 %         saveas(fig,[CFG.output_plots_folder_cur, filesep, '06_', cur_set_name '_plot','.png'])
 %         close(fig)
         
+%%%%% Changed parameter from 1 to 0.5
         % Filter data with a basic FIR filter from 1 to 30 Hz
-        EEG_filt = pop_eegfiltnew(EEG_CAR,1,30);
+        EEG_filt = pop_eegfiltnew(EEG_CAR,0.5,30);
         EEG_filt = eeg_checkset(EEG_filt);
         % visualize data using the eeglab function eegplot
         fig = eeglab_plot_EEG(EEG_filt, CFG);
@@ -161,7 +162,8 @@ for subi=1:numel(subject_folders)
         close(fig)
         
         % calculate EEG.data rank decrease due to CAR
-        EEG_filt.rank_manually_computed = EEG_filt.nbchan - numel(EEG_filt.bad_ch.bad_ch_idx) - 1;
+%         EEG_filt.rank_manually_computed = EEG_filt.nbchan - numel(EEG_filt.bad_ch.bad_ch_idx) - 1;
+        EEG_filt.rank_manually_computed = EEG_filt.nbchan - numel(EEG_filt.bad_ch.bad_ch_idx);
         assert(EEG_filt.rank_manually_computed == rank(EEG_filt.data(:,:), 10),'Rank computed manually is not equal to rank computed with a matlab function rank()')
         
         EEG = EEG_filt;
@@ -217,13 +219,22 @@ for subi=1:numel(subject_folders)
         % Run SASICA plugin
         snr_cut = CFG.exp_param(exp_id).snr_cut;
         autocorr_cut = CFG.exp_param(exp_id).autocorr_cut;
+%         [EEG, config] = eeg_SASICA(EEG,'MARA_enable',0,'FASTER_enable',0,'FASTER_blinkchanname','Fp1','ADJUST_enable',1,...
+%             'chancorr_enable',0,'chancorr_channames','No channel','chancorr_corthresh','auto 4',...
+%             'EOGcorr_enable',0,'EOGcorr_Heogchannames','No channel','EOGcorr_corthreshH','auto 4',...
+%             'EOGcorr_Veogchannames','No channel','EOGcorr_corthreshV','auto 4','resvar_enable',0,...
+%             'resvar_thresh',15,'SNR_enable',1,'SNR_snrcut',snr_cut,'SNR_snrBL',[-Inf 0] ,'SNR_snrPOI',[0 Inf],...
+%             'trialfoc_enable',1,'trialfoc_focaltrialout','auto','focalcomp_enable',1,'focalcomp_focalICAout',4.5,...
+%             'autocorr_enable',1,'autocorr_autocorrint',20,'autocorr_dropautocorr',autocorr_cut,'opts_noplot',0,'opts_nocompute',0,'opts_FontSize',14);
+%         
         [EEG, config] = eeg_SASICA(EEG,'MARA_enable',0,'FASTER_enable',0,'FASTER_blinkchanname','Fp1','ADJUST_enable',1,...
             'chancorr_enable',0,'chancorr_channames','No channel','chancorr_corthresh','auto 4',...
             'EOGcorr_enable',0,'EOGcorr_Heogchannames','No channel','EOGcorr_corthreshH','auto 4',...
             'EOGcorr_Veogchannames','No channel','EOGcorr_corthreshV','auto 4','resvar_enable',0,...
             'resvar_thresh',15,'SNR_enable',1,'SNR_snrcut',snr_cut,'SNR_snrBL',[-Inf 0] ,'SNR_snrPOI',[0 Inf],...
-            'trialfoc_enable',1,'trialfoc_focaltrialout','auto','focalcomp_enable',1,'focalcomp_focalICAout',4.5,...
-            'autocorr_enable',1,'autocorr_autocorrint',20,'autocorr_dropautocorr',autocorr_cut,'opts_noplot',0,'opts_nocompute',0,'opts_FontSize',14);
+            'trialfoc_enable',0,'trialfoc_focaltrialout','auto','focalcomp_enable',0,'focalcomp_focalICAout',4.5,...
+            'autocorr_enable',0,'autocorr_autocorrint',20,'autocorr_dropautocorr',autocorr_cut,'opts_noplot',0,'opts_nocompute',0,'opts_FontSize',14);
+        
         
         % change the size of one of the plots
         figHandles = findall(groot, 'Type', 'figure');
@@ -279,6 +290,9 @@ for subi=1:numel(subject_folders)
 %         end
         
         % remove marked ICs
+        rem = zeros(1, numel(EEG.reject.gcompreject));
+        rem(1, 1:3) = 1;
+        EEG.reject.gcompreject = EEG.reject.gcompreject.* rem;
         num_components_to_remove = numel(find(EEG.reject.gcompreject));
         EEG = pop_subcomp(EEG, find(EEG.reject.gcompreject), 0, 0);
         
@@ -305,16 +319,14 @@ for subi=1:numel(subject_folders)
         
         % compute ERPs
         [ERP] = compute_ERP(EEG);
-        
         EEG_data = EEG.data;
         EEG_trigger = [];
-        for i=1:numel(EEG.event)
-            EEG_trigger = [EEG_trigger, EEG.event(i).type];
+        for i=1:numel(EEG.urevent)
+            EEG_trigger = [EEG_trigger, EEG.urevent(i).type];
         end
-        
-        save([CFG.output_data_folder_cur, filesep, CFG.eeglab_set_name '_EEG_cleaned_eeglab.mat'],'EEG', 'ERP')
+ 
+        save([CFG.output_data_folder_cur, filesep, CFG.eeglab_set_name '_EEG_cleaned_eeglab.mat'],'EEG')
         save([CFG.output_data_folder_cur, filesep, CFG.eeglab_set_name '_EEG_cleaned.mat'],'EEG_data')
         save([CFG.output_data_folder_cur, filesep, CFG.eeglab_set_name '_trigger_channel.mat'],'EEG_trigger')
-%         keyboard;
     end
 end
