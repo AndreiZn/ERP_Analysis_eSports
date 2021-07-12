@@ -12,7 +12,7 @@ value_CS_2.im_pres_period = 0.4; value_CS_2.after_im_period = 0.5;
 
 % CS_3
 value_CS_3.EEG_sr = 250; value_CS_3.ET_sr = 120; value_CS_3.baseline_period = 0.5;
-value_CS_3.im_pres_period = 0.4; value_CS_3.after_im_period = 0.5;
+value_CS_3.im_pres_period = 0.8; value_CS_3.after_im_period = 0.5;
 
 % write values to container
 valueSet = {value_CS_1,value_CS_2,value_CS_3};
@@ -27,7 +27,7 @@ dirflag = [sub_folders.isdir] & ~strcmp({sub_folders.name},'..') & ~strcmp({sub_
           ~strcmp({sub_folders.name},'.DS_Store') & ~strcmp({sub_folders.name},'.ipynb_checkpoints');
 sub_folders = sub_folders(dirflag);
 
-for folder_idx = 3:numel(sub_folders)
+for folder_idx = 1:numel(sub_folders)
     folder = sub_folders(folder_idx);
     folderpath = fullfile(folder.folder, folder.name);
     
@@ -83,60 +83,117 @@ for folder_idx = 3:numel(sub_folders)
     end
 end
 
-%% change the sample rate of EEG data
-sub_id = 5003;
-exp = '3';
-exp_name_EEG = ['4_1_', exp];
-exp_name_ET = ['CS_', exp];
+%% change the sample rate of EEG data and combine it with ET data
 
-a = load(['./raw_data/postproc/sub', num2str(sub_id), '_', exp_name_EEG, '_EEG_postproc.mat']);
-EEG = a.eeg_data;
+EEG_root_folder = uigetdir('./', 'Select EEG data root folder');
+ET_root_folder = uigetdir('./', 'Select ET data root folder');
+ouput_folder = uigetdir('./', 'Select data output folder');
 
-ET_data = load(['./output/ET_features_sub', num2str(sub_id), '_', exp_name_ET, '.mat']);
-ET_data = ET_data.ET_trial_data;
+EEG_sub_folders = dir(EEG_root_folder);
+dirflag = [EEG_sub_folders.isdir] & ~strcmp({EEG_sub_folders.name},'..') & ~strcmp({EEG_sub_folders.name},'.') & ...
+          ~strcmp({EEG_sub_folders.name},'.DS_Store') & ~strcmp({EEG_sub_folders.name},'.ipynb_checkpoints');
+EEG_sub_folders = EEG_sub_folders(dirflag);
 
-n_ch = size(EEG, 1);
-n_trials = size(EEG, 3);
-n_ts_ET = size(ET_data, 3);
+ET_sub_folders = dir(ET_root_folder);
+dirflag = [ET_sub_folders.isdir] & ~strcmp({ET_sub_folders.name},'..') & ~strcmp({ET_sub_folders.name},'.') & ...
+          ~strcmp({ET_sub_folders.name},'.DS_Store') & ~strcmp({ET_sub_folders.name},'.ipynb_checkpoints');
+ET_sub_folders = ET_sub_folders(dirflag);
 
-EEG_comp = zeros(n_ch, n_trials, n_ts_ET);
-for ch_idx = 1:n_ch
-    for trial_idx = 1:n_trials
-        EEG_comp(ch_idx, trial_idx, :) = compress_EEG(EEG(ch_idx, :, trial_idx), n_ts_ET);
+n_folders = min(numel(EEG_sub_folders), numel(ET_sub_folders));
+
+for folder_idx = 1:n_folders
+    EEG_folder = EEG_sub_folders(folder_idx);
+    EEG_folderpath = fullfile(EEG_folder.folder, EEG_folder.name);
+    sub_id_EEG = str2double(EEG_folder.name(4:7));
+    
+    ET_folder = ET_sub_folders(folder_idx);
+    ET_folderpath = fullfile(ET_folder.folder, ET_folder.name);
+    sub_id_ET = str2double(ET_folder.name(4:7));
+    
+    if sub_id_EEG == sub_id_ET
+        sub_id = sub_id_EEG;
+    else
+        disp('sub ids of EEG and ET folders are not equal')
+        break
     end
+    
+    EEG_files = dir(EEG_folderpath);
+    fileflag = ~[EEG_files.isdir] & ~strcmp({EEG_files.name},'..') & ~strcmp({EEG_files.name},'.') & ~strcmp({EEG_files.name},'.DS_Store');
+    EEG_files = EEG_files(fileflag);
+    
+    ET_files = dir(ET_folderpath);
+    fileflag = ~[ET_files.isdir] & ~strcmp({ET_files.name},'..') & ~strcmp({ET_files.name},'.') & ~strcmp({ET_files.name},'.DS_Store');
+    ET_files = ET_files(fileflag);
+    
+    for exp_idx = 1:3
+
+        % find EEG data file
+        fileflag = false(numel(EEG_files),1);
+        for idx=1:numel(EEG_files)
+            exp = ['4_1_', int2str(exp_idx)];
+            fileflag(idx, 1) = ~isempty(regexp(EEG_files(idx).name, ['sub[0-9][0-9][0-9][0-9]_', exp, '_EEG_cleaned.mat'], 'once'));
+        end
+        
+        disp(['sub: ', num2str(sub_id), ', exp: ', exp, ' combining data'])
+        
+        EEG_file1 = EEG_files(fileflag);
+        EEG_file1 = load(fullfile(EEG_file1.folder, EEG_file1.name));
+        EEG_data = EEG_file1.EEG_data;
+        
+        % find EEG trigger file
+        fileflag = false(numel(EEG_files),1);
+        for idx=1:numel(EEG_files)
+            exp = ['4_1_', int2str(exp_idx)];
+            exp_CS = ['CS_', int2str(exp_idx)];
+            fileflag(idx, 1) = ~isempty(regexp(EEG_files(idx).name, ['sub[0-9][0-9][0-9][0-9]_', exp, '_trigger_channel.mat'], 'once'));
+        end
+        EEG_file2 = EEG_files(fileflag);
+        EEG_file2 = load(fullfile(EEG_file2.folder, EEG_file2.name));
+        EEG_trigger = EEG_file2.EEG_trigger;
+        
+        ET_data = load(fullfile(ET_files(exp_idx).folder, ET_files(exp_idx).name));
+        ET_data = ET_data.ET_trial_data;
+        
+        n_ch = size(EEG_data, 1);
+        n_trials = size(EEG_data, 3);
+        n_ts_ET = size(ET_data, 3);
+        
+        EEG_comp = zeros(n_ch, n_trials, n_ts_ET);
+        for ch_idx = 1:n_ch
+            for trial_idx = 1:n_trials
+                parameters = exp_param(exp_CS);
+                EEG_comp(ch_idx, trial_idx, :) = compress_EEG(EEG_data(ch_idx, :, trial_idx), n_ts_ET, parameters);
+            end
+        end
+        
+        % combine compressed EEG data, trigger channel and ET data
+        EEG_trigger_channel = zeros(1, n_trials, n_ts_ET);
+        for trial_idx = 1:n_trials
+            EEG_trigger_channel(1, trial_idx, :) = EEG_trigger(trial_idx);
+        end
+        
+        n_total_ch = n_ch + 1 + size(ET_data, 1);
+        combined_data = NaN(n_total_ch, n_trials, n_ts_ET);
+        combined_data(1:32, :, :) = EEG_comp;
+        combined_data(33, :, :) = EEG_trigger_channel;
+        combined_data(34:end, :, :) = ET_data;
+        
+        % save combined data
+        % get sub folder name
+        path = split(EEG_files(fileflag).folder, '/');
+        sub_fld_name = path(end);
+        sub_fld_name = sub_fld_name{:};
+        % generate folder path
+        output_folder_sub = [ouput_folder, '/', sub_fld_name, '/'];
+        % make dir if it doesn't exist
+        if ~exist(output_folder_sub, 'dir')
+            mkdir(output_folder_sub)
+        end
+        % save file
+        save([output_folder_sub, 'sub', num2str(sub_id), '_', exp, '_EEG_ET.mat'], 'combined_data');
+        
+    end  
 end
-
-% combine postprocessed data
-data = [EEG_comp; ET_data];
-save(['sub', num2str(sub_id), '_', exp_name, '_EEG_ET_combined.mat'], 'data');
-
-% EEG_full = EEG_data.EEGCh30(55390:55489);
-% EEG_trial_ts = numel(EEG_full);
-% ET_full = ET_data.GazePointX(15229:15276);
-% ET_trial_ts = numel(ET_full);
-% 
-% EEG_exp = zeros(EEG_trial_ts*ET_trial_ts, 1);
-% 
-% % expand EEG data
-% for time_p_idx = 1:EEG_trial_ts
-%     idx = 1 + (time_p_idx-1)*ET_trial_ts:ET_trial_ts + (time_p_idx-1)*ET_trial_ts;
-%     
-%     if time_p_idx ~= EEG_trial_ts
-%         alpha = (EEG_full(time_p_idx+1) - EEG_full(time_p_idx))/ET_trial_ts;
-%         t_points = 0:ET_trial_ts-1;
-%         EEG_exp(idx) = EEG_full(time_p_idx)*ones(ET_trial_ts,1) + alpha*t_points';
-%     else
-%         EEG_exp(idx) = EEG_full(time_p_idx)*ones(ET_trial_ts,1);
-%     end
-% end
-% 
-% EEG_averaged = zeros(ET_trial_ts, 1);
-% % average EEG data
-% for time_p_idx = 1:ET_trial_ts
-%     idx = 1 + (time_p_idx-1)*EEG_trial_ts:EEG_trial_ts + (time_p_idx-1)*EEG_trial_ts;
-%     EEG_averaged(time_p_idx) = mean(EEG_exp(idx));
-% end
-
 
 %% Annotate images
 % 
@@ -343,9 +400,15 @@ function ET_trial_data = preprocess_ET_data(ET_filepath, exp_name, CFG)
 
 end
 
-function EEG_averaged = compress_EEG(EEG_trial, ET_trial_ts)
-    EEG_full = zeros(1.4*250, 1);
-    EEG_full(2:end-2) = EEG_trial;
+function EEG_averaged = compress_EEG(EEG_trial, ET_trial_ts, params)
+    
+    trial_time = params.EEG_sr * (params.baseline_period + params.im_pres_period + params.after_im_period);
+    if abs(trial_time - numel(EEG_trial)) > 5
+        error('trial time and EEG_trial trial time values are different')
+    end
+    trial_time = numel(EEG_trial);
+    EEG_full = zeros(trial_time, 1);
+%     EEG_full(2:end-2) = EEG_trial;
     EEG_trial_ts = numel(EEG_full);
     
     EEG_comp = zeros(EEG_trial_ts*ET_trial_ts, 1);
