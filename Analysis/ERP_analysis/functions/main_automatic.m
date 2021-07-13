@@ -23,7 +23,7 @@ end
 subject_folders = dir(CFG.data_folder_path );
 subject_folders = subject_folders(3:end);
 
-for subi=1:numel(subject_folders)
+for subi=6:numel(subject_folders)
     % read subject folder
     subj_folder = subject_folders(subi);
     folderpath = fullfile(subj_folder.folder, subj_folder.name);
@@ -83,6 +83,11 @@ for subi=1:numel(subject_folders)
         
         % read experiment id
         exp_id = file_struct.name(9:13);
+        
+%         % skip some files
+%         if strcmp(sub_ID, '3010')
+%             continue
+%         end
         
         % create output folders
         CFG.output_data_folder_cur = [CFG.output_data_folder, filesep, subj_folder.name];

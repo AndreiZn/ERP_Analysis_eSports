@@ -37,7 +37,7 @@ for folder_idx = 1:numel(sub_folders)
     fileflag = ~[files.isdir] & ~strcmp({files.name},'..') & ~strcmp({files.name},'.') & ~strcmp({files.name},'.DS_Store');
     files = files(fileflag);
     
-    fileflag = logical(zeros(numel(files),1));
+    fileflag = false(numel(files),1);
     for idx=1:numel(files)
         fileflag(idx, 1) = ~isempty(regexp(files(idx).name, 'eye_sub[0-9][0-9][0-9][0-9]_CS_[1-3] Data.*tsv', 'once')) + ~isempty(regexp(files(idx).name, 'eye_sub[0-9][0-9][0-9][0-9]_CS_[1-3] Data.*csv', 'once'));
     end
@@ -85,9 +85,9 @@ end
 
 %% change the sample rate of EEG data and combine it with ET data
 
-EEG_root_folder = uigetdir('./', 'Select EEG data root folder');
-ET_root_folder = uigetdir('./', 'Select ET data root folder');
-ouput_folder = uigetdir('./', 'Select data output folder');
+% EEG_root_folder = uigetdir('./', 'Select EEG data root folder');
+% ET_root_folder = uigetdir('./', 'Select ET data root folder');
+% ouput_folder = uigetdir('./', 'Select data output folder');
 
 EEG_sub_folders = dir(EEG_root_folder);
 dirflag = [EEG_sub_folders.isdir] & ~strcmp({EEG_sub_folders.name},'..') & ~strcmp({EEG_sub_folders.name},'.') & ...
@@ -126,7 +126,11 @@ for folder_idx = 1:n_folders
     ET_files = ET_files(fileflag);
     
     for exp_idx = 1:3
-
+        
+        if (exp_idx == 2 && sub_id == 3003) || (exp_idx == 1 && sub_id == 3007)
+            continue
+        end
+        
         % find EEG data file
         fileflag = false(numel(EEG_files),1);
         for idx=1:numel(EEG_files)
