@@ -85,9 +85,9 @@ end
 
 %% change the sample rate of EEG data and combine it with ET data
 
-% EEG_root_folder = uigetdir('./', 'Select EEG data root folder');
-% ET_root_folder = uigetdir('./', 'Select ET data root folder');
-% ouput_folder = uigetdir('./', 'Select data output folder');
+EEG_root_folder = uigetdir('./', 'Select EEG data root folder');
+ET_root_folder = uigetdir('./', 'Select ET data root folder');
+ouput_folder = uigetdir('./', 'Select data output folder');
 
 EEG_sub_folders = dir(EEG_root_folder);
 dirflag = [EEG_sub_folders.isdir] & ~strcmp({EEG_sub_folders.name},'..') & ~strcmp({EEG_sub_folders.name},'.') & ...
@@ -412,7 +412,7 @@ function EEG_averaged = compress_EEG(EEG_trial, ET_trial_ts, params)
     end
     trial_time = numel(EEG_trial);
     EEG_full = zeros(trial_time, 1);
-%     EEG_full(2:end-2) = EEG_trial;
+    EEG_full(1:end, 1) = EEG_trial;
     EEG_trial_ts = numel(EEG_full);
     
     EEG_comp = zeros(EEG_trial_ts*ET_trial_ts, 1);
