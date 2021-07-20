@@ -84,10 +84,10 @@ for subi=1:numel(subject_folders)
         % read experiment id
         exp_id = file_struct.name(9:13);
         
-%         % skip some files
-%         if strcmp(sub_ID, '3010')
-%             continue
-%         end
+        % skip some files
+        if strcmp(sub_ID, '5004')
+            continue
+        end
         
         % create output folders
         CFG.output_data_folder_cur = [CFG.output_data_folder, filesep, subj_folder.name];

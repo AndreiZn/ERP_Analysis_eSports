@@ -20,16 +20,14 @@ exp_param = containers.Map(exp_names,valueSet);
 
 %% preprocess ET data
 
-% next task: preprocess 5004 and further
-
-root_folder = uigetdir('./', 'Select data root folder');
-ouput_folder = uigetdir('./', 'Select data output folder');
+% root_folder = uigetdir('./', 'Select data root folder');
+% ouput_folder = uigetdir('./', 'Select data output folder');
 sub_folders = dir(root_folder);
 dirflag = [sub_folders.isdir] & ~strcmp({sub_folders.name},'..') & ~strcmp({sub_folders.name},'.') & ...
           ~strcmp({sub_folders.name},'.DS_Store') & ~strcmp({sub_folders.name},'.ipynb_checkpoints');
 sub_folders = sub_folders(dirflag);
 
-for folder_idx = 15:numel(sub_folders)
+for folder_idx = 12:numel(sub_folders)
     folder = sub_folders(folder_idx);
     folderpath = fullfile(folder.folder, folder.name);
     
@@ -382,7 +380,7 @@ function ET_trial_data = preprocess_ET_data(ET_filepath, exp_name, CFG)
         try
             assert(sum(isnan(PDL(:))) == 0);
         catch
-            disp(PDL);%PDL = zeros(numel(PDL), 1);
+            PDL = zeros(numel(PDL), 1);
         end
 
         PDR = NaN(numel(event_period_idx), 1);
@@ -413,18 +411,14 @@ function ET_trial_data = preprocess_ET_data(ET_filepath, exp_name, CFG)
         try
             assert(sum(isnan(PDR(:))) == 0);
         catch
-            disp(PDR); %PDR = zeros(numel(PDR), 1);
+            PDR = zeros(numel(PDR), 1);
         end
 
         LBL = mod(str2double(ET_data(event_idx, :).PresentedMediaName{:}(1:end-4)), 2) + 1;
         LBL = LBL*ones(numel(event_period_idx), 1);
         
         IM = str2double(ET_event_data(61,:).PresentedStimulusName{:}) * ones(numel(event_period_idx), 1);
-        try
-            assert(sum(isnan(IM(:))) == 0);
-        catch
-            disp(IM);
-        end
+        assert(sum(isnan(IM(:))) == 0);
 
         % save features
         ET_trial_data(1, trial_idx, :) = sqrt(GPX_dist_to_targ.^2 + GPY_dist_to_targ.^2);
@@ -436,11 +430,7 @@ function ET_trial_data = preprocess_ET_data(ET_filepath, exp_name, CFG)
         ET_trial_data(7, trial_idx, :) = IM;
         ET_trial_data(8, trial_idx, :) = sqrt(GPX_dist_to_cent.^2 + GPY_dist_to_cent.^2);
     end
-    try
-        assert(sum(isnan(ET_trial_data(:))) == 0);
-    catch
-        disp('assertion sum(isnan(ET_trial_data(:))) == 0 failed')
-    end
+    assert(sum(isnan(ET_trial_data(:))) == 0);
 
 end
 
