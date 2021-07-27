@@ -22,14 +22,14 @@ exp_param = containers.Map(exp_names,valueSet);
 
 % next task: 
 
-% root_folder = uigetdir('./', 'Select data root folder');
-% ouput_folder = uigetdir('./', 'Select data output folder');
+root_folder = uigetdir('./', 'Select data root folder');
+ouput_folder = uigetdir('./', 'Select data output folder');
 sub_folders = dir(root_folder);
 dirflag = [sub_folders.isdir] & ~strcmp({sub_folders.name},'..') & ~strcmp({sub_folders.name},'.') & ...
           ~strcmp({sub_folders.name},'.DS_Store') & ~strcmp({sub_folders.name},'.ipynb_checkpoints');
 sub_folders = sub_folders(dirflag);
 
-for folder_idx = 15:numel(sub_folders)
+for folder_idx = [15, 16, 17, 18, 19]%19:numel(sub_folders)
     folder = sub_folders(folder_idx);
     folderpath = fullfile(folder.folder, folder.name);
     
@@ -103,7 +103,7 @@ ET_sub_folders = ET_sub_folders(dirflag);
 
 n_folders = min(numel(EEG_sub_folders), numel(ET_sub_folders));
 
-for folder_idx = 13:n_folders
+for folder_idx = 14:n_folders
     EEG_folder = EEG_sub_folders(folder_idx);
     EEG_folderpath = fullfile(EEG_folder.folder, EEG_folder.name);
     sub_id_EEG = str2double(EEG_folder.name(4:7));
@@ -247,20 +247,24 @@ function ET_trial_data = preprocess_ET_data(ET_filepath, exp_name, CFG)
         stim_name_cur = stim_name{i};
         startIndex = regexp(stim_name_cur,'[0-9][0-9][0-9][0-9][0-9].png');
 
-        if i > 2
+        if i > 3
             startIndex_prev1 = regexp(stim_name{i-1},'\d');
             startIndex_prev2 = regexp(stim_name{i-2},'\d');
+            startIndex_prev3 = regexp(stim_name{i-3},'\d');
         else
             startIndex_prev1 = [];
             startIndex_prev2 = [];
         end
-
+        
+        
+        
         % save event idx
-        if ~isempty(startIndex) && isempty(startIndex_prev1) && isempty(startIndex_prev2)
+        if ~isempty(startIndex) && isempty(startIndex_prev1) && isempty(startIndex_prev2) && isempty(startIndex_prev3)
+            
             ET_events = [ET_events, i];
         end
     end
-
+    
     ET_markers = zeros(numel(ET_events), 1);
     for i = 1:numel(ET_events)
         if mod(str2double(ET_data(ET_events(i), :).PresentedStimulusName{:}), 2) == 0
