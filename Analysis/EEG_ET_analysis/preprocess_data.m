@@ -20,10 +20,10 @@ exp_param = containers.Map(exp_names,valueSet);
 
 %% preprocess ET data
 
-% next task: preprocess 5004 and further
+% next task: 
 
-root_folder = uigetdir('./', 'Select data root folder');
-ouput_folder = uigetdir('./', 'Select data output folder');
+% root_folder = uigetdir('./', 'Select data root folder');
+% ouput_folder = uigetdir('./', 'Select data output folder');
 sub_folders = dir(root_folder);
 dirflag = [sub_folders.isdir] & ~strcmp({sub_folders.name},'..') & ~strcmp({sub_folders.name},'.') & ...
           ~strcmp({sub_folders.name},'.DS_Store') & ~strcmp({sub_folders.name},'.ipynb_checkpoints');
@@ -87,9 +87,9 @@ end
 
 %% change the sample rate of EEG data and combine it with ET data
 
-EEG_root_folder = uigetdir('./', 'Select EEG data root folder');
-ET_root_folder = uigetdir('./', 'Select ET data root folder');
-ouput_folder = uigetdir('./', 'Select data output folder');
+% EEG_root_folder = uigetdir('./', 'Select EEG data root folder');
+% ET_root_folder = uigetdir('./', 'Select ET data root folder');
+% ouput_folder = uigetdir('./', 'Select data output folder');
 
 EEG_sub_folders = dir(EEG_root_folder);
 dirflag = [EEG_sub_folders.isdir] & ~strcmp({EEG_sub_folders.name},'..') & ~strcmp({EEG_sub_folders.name},'.') & ...
@@ -103,7 +103,7 @@ ET_sub_folders = ET_sub_folders(dirflag);
 
 n_folders = min(numel(EEG_sub_folders), numel(ET_sub_folders));
 
-for folder_idx = 1:n_folders
+for folder_idx = 13:n_folders
     EEG_folder = EEG_sub_folders(folder_idx);
     EEG_folderpath = fullfile(EEG_folder.folder, EEG_folder.name);
     sub_id_EEG = str2double(EEG_folder.name(4:7));
@@ -111,8 +111,6 @@ for folder_idx = 1:n_folders
     ET_folder = ET_sub_folders(folder_idx);
     ET_folderpath = fullfile(ET_folder.folder, ET_folder.name);
     sub_id_ET = str2double(ET_folder.name(4:7));
-    
-    keyboard
     
     if sub_id_EEG == sub_id_ET
         sub_id = sub_id_EEG;
